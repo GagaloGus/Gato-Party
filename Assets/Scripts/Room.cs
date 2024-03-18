@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,14 +8,16 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public TMP_Text roomName;
+    public TMP_Text playerCountText;
 
     private void Start()
     {
-        roomName = GetComponentInChildren<TMP_Text>();
+        roomName = transform.Find("Name").GetComponent<TMP_Text>();
+        playerCountText = transform.Find("PlayerCount").GetComponent<TMP_Text>();
     }
 
     public void JoinRoom()
     {
-        FindObjectOfType<CreateAndJoin>().JoinRoomInList(roomName.text);
+        FindObjectOfType<MainMenu>().JoinRoomInList(roomName.text);
     }
 }

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(SkoStats))]
@@ -32,6 +33,7 @@ public class SkoController : MonoBehaviour
     [Header("Photon Stuff")]
     public GameObject Mark;
     PhotonView photonView;
+    public TMP_Text nicknameText;
 
     private void Awake()
     {
@@ -64,6 +66,12 @@ public class SkoController : MonoBehaviour
 
         nearGroundDist = rayDetectFloorDist * stats.jumpForce;
 
+        if (!photonView.IsMine)
+        {
+            GetComponentInChildren<Canvas>().transform.Find("NicknameHolder").gameObject.SetActive(true);
+            nicknameText.text = photonView.Controller.NickName;
+        }
+
     }
 
     // Update is called once per frame
@@ -95,12 +103,6 @@ public class SkoController : MonoBehaviour
         {
             FlipCharacter();
         }
-
-        //le "da la vuelta" al modelo segun los bools
-        /*m_gameobj.transform.localScale = new(
-           (isFlipped ? -1 : 1),
-           m_gameobj.transform.localScale.y,
-           (isFacingBackwards ? -1 : 1));*/
 
         #endregion
 
@@ -137,6 +139,7 @@ public class SkoController : MonoBehaviour
         }
     }
 
+    #region movement functions
     void FlipCharacter()
     {
         if ((!isFlipped && moveInput.x < 0) || (isFlipped && moveInput.x > 0))
@@ -228,9 +231,6 @@ public class SkoController : MonoBehaviour
         get { return isGrounded; }
     }
 
-    private void OnDrawGizmos()
-    {
-        groundPoint = transform.Find("GroundCheckPoint");
-        Gizmos.DrawRay(groundPoint.position, Vector3.down*rayDetectFloorDist);
-    }
+    #endregion
+
 }

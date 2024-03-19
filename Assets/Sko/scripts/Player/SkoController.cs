@@ -199,7 +199,7 @@ public class SkoController : MonoBehaviour
             else if (rb.velocity.y < 0f) { playerState = PlayerStates.JumpDown; }
 
             //si le damos al espacio y el raycast no detecto un suelo debajo del player podemos planear
-            //if(Input.GetKeyDown(jump) && !nearGround) { isGliding = true; }
+            if(Input.GetKeyDown(jump) && !nearGround) { isGliding = true; }
         }
     }
 

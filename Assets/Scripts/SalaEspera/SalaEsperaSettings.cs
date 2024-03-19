@@ -18,11 +18,14 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public TMP_Text roomName;
     public TMP_Text playerCount;
 
-    
-
     // Start is called before the first frame update
     void Start()
     {
+        //Establece el is ready de la sala de espera a false al entrar, por si acaso
+        Hashtable playerProps = new Hashtable();
+        playerProps[Constantes.ReadyPlayerKey_SalaEspera] = false;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+
         UpdatePlayerCount();
         roomName.text = $"Room Name:\n{PhotonNetwork.CurrentRoom.Name}";
 
@@ -34,10 +37,10 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     void OnReadyButtonClicked()
     {
         // Cambiar el estado de listo del jugador local
-        bool isReady = !PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey) || !(bool)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.ReadyPlayerKey];
+        bool isReady = !PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera) || !(bool)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.ReadyPlayerKey_SalaEspera];
 
         Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.ReadyPlayerKey] = isReady;
+        playerProps[Constantes.ReadyPlayerKey_SalaEspera] = isReady;
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         //actualiza el boton de Ready
@@ -49,9 +52,9 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         // Actualizar el estado de listo del jugador en el texto
-        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey))
+        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera))
         {
-            bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey];
+            bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey_SalaEspera];
             Debug.Log("Jugador " + targetPlayer.ActorNumber + ": " + (isReady ? "Listo" : "No Listo"));
         }
 
@@ -64,7 +67,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         // Verificar si todos los jugadores en la sala están listos
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if (!(player.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey) && (bool)player.CustomProperties[Constantes.ReadyPlayerKey]))
+            if (!(player.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera) && (bool)player.CustomProperties[Constantes.ReadyPlayerKey_SalaEspera]))
             {
                 return false;
             }

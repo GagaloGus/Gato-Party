@@ -804,7 +804,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 182923732}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 759469435}
+        m_TargetAssemblyTypeName: BasicButtonFunctions, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ShowcaseMG
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &182923732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,6 +1487,7 @@ GameObject:
   - component: {fileID: 759469431}
   - component: {fileID: 759469430}
   - component: {fileID: 759469434}
+  - component: {fileID: 759469435}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1588,6 +1601,18 @@ MonoBehaviour:
   startGameButton: {fileID: 182923731}
   roomName: {fileID: 1324550354}
   playerCount: {fileID: 1982757315}
+--- !u!114 &759469435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759469429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61934f8b2243c5546aa034c744b76584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &780123738
 GameObject:
   m_ObjectHideFlags: 0

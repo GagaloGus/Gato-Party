@@ -64,9 +64,9 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         // Se llama automáticamente cuando las propiedades personalizadas de un jugador cambian
-        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey))
+        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera))
         {
-            bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey];
+            bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey_SalaEspera];
             Debug.Log("Jugador " + targetPlayer.NickName + " está " + (isReady ? "listo" : "no listo"));
 
             //Activa la imagen de isReady si el player esta listo

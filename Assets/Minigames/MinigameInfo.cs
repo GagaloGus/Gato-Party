@@ -7,6 +7,7 @@ public class MinigameInfo : ScriptableObject
 {
     [Header("Info")]
     public string Name;
+    public Sprite Icon;
     [TextArea(3,2)] public string Description;
     [TextArea(3, 2)] public string HowToPlay;
     public Sprite DisplayImage;

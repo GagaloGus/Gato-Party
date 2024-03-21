@@ -56,6 +56,9 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         {
             bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey_SalaEspera];
             Debug.Log("Jugador " + targetPlayer.ActorNumber + ": " + (isReady ? "Listo" : "No Listo"));
+
+            playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
+            playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
         }
 
         //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos
@@ -91,6 +94,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
+
+        startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnLeftRoom()

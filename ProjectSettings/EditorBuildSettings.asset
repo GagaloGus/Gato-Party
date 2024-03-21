@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ShowcaseMG.unity
     guid: 1bae43556dd34934a83da8bc296f8a0b
+  - enabled: 1
+    path: Assets/Minigames/CommandBomb/MG_CommandBomb.unity
+    guid: 385744d3b1035a647bc2ceb66990c5a1
+  - enabled: 1
+    path: Assets/Minigames/MashButton/MG_MashButton.unity
+    guid: c16dd7b8ae1b57641bf89524cf830f95
   m_configObjects: {}

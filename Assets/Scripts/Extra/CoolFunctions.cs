@@ -53,5 +53,20 @@ public static class CoolFunctions
         yield return new WaitForSeconds(delay);
         f();
     }
+
+    public static List<T> ShuffleList<T>(List<T> lista)
+    {
+        int n = lista.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = UnityEngine.Random.Range(0, n + 1);
+            T valor = lista[k];
+            lista[k] = lista[n];
+            lista[n] = valor;
+        }
+
+        return lista;
+    }
 }
 

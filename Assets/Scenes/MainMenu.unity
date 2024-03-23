@@ -292,7 +292,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minAndMaxPlayers: {x: 2, y: 4}
-  startMenu: {fileID: 0}
   loadingScreen: {fileID: 1549283195}
   roomMenu: {fileID: 1602780969}
   createRoomMenu: {fileID: 851877226}

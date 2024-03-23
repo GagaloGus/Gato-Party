@@ -13,12 +13,19 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public GameObject playerList;
     public Button playerReadyButton;
     public Button startGameButton;
+    public GameObject errorMessage;
 
     [Header("Texts")]
     public TMP_Text roomName;
     public TMP_Text playerCount;
 
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Hashtable roomProps = new Hashtable();
+        roomProps[Constantes.MinigameScene_Room] = "SALA_ESPERA";
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+    }
     void Start()
     {
         //Establece el is ready de la sala de espera a false al entrar, por si acaso
@@ -32,12 +39,14 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
 
         playerReadyButton.onClick.AddListener(OnReadyButtonClicked);
+
+        errorMessage.SetActive(false);
     }
 
     void OnReadyButtonClicked()
     {
         // Cambiar el estado de listo del jugador local
-        bool isReady = !PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera) || !(bool)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.ReadyPlayerKey_SalaEspera];
+        bool isReady = !(bool)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.ReadyPlayerKey_SalaEspera];
 
         Hashtable playerProps = new Hashtable();
         playerProps[Constantes.ReadyPlayerKey_SalaEspera] = isReady;
@@ -52,7 +61,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         // Actualizar el estado de listo del jugador en el texto
-        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera))
+        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SalaEspera) && targetPlayer == PhotonNetwork.LocalPlayer)
         {
             bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey_SalaEspera];
             Debug.Log("Jugador " + targetPlayer.ActorNumber + ": " + (isReady ? "Listo" : "No Listo"));
@@ -87,21 +96,41 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayerCount();
+    }
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 0)
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        //Al cambiar de ADMIN (o sea, que el admin se salio) se cierra la room
+        errorMessage.SetActive(true);
+        errorMessage.GetComponentInChildren<TMP_Text>().text =
+            $"Master Client left the room";
+
+        //Hace la sala invisible para que nadie se una
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        //Los players no se muevan
+        SE_PlayerController[] playerList = FindObjectsOfType<SE_PlayerController>();
+        foreach (SE_PlayerController player in playerList)
         {
-            // Oculta la sala de la lista de salas disponibles
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            player.player_canMove = false;
         }
 
-        startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        //Espera tantos segundos para salir de la room
+        CoolFunctions.Invoke(this, () =>
+        {
+            PhotonNetwork.LeaveRoom();
+        }, 3);
+    }
+    public void ExitRoom()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnLeftRoom()
     {
+        //Al salir de la sala carga la escena del lobby
         SceneManager.LoadScene("MainMenu");
-        Debug.Log("Salido de la sala");
     }
 
     void UpdatePlayerCount()
@@ -109,8 +138,4 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         playerCount.text = $"Players: {PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
 
-    public void ExitRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
 }

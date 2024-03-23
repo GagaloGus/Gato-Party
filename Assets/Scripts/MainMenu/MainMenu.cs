@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     [Header("Rooms")]
     public GameObject roomListDisplay;
     public GameObject roomButtonPrefab;
+    public List<RoomInfo> roomList;
 
     // Start is called before the first frame update
     void Start()
@@ -48,11 +49,17 @@ public class MainMenu : MonoBehaviourPunCallbacks
     #region Create And Join
     public void CreateRoom()
     {
-        string customRoomName = $"Room {PhotonNetwork.CountOfRooms + 1}";
+        string customRoomName = $"{PhotonNetwork.NickName}'s room";
         int maxPlayers = 4;
 
         if (!string.IsNullOrEmpty(input_Create.text))
         {
+            if (CoolFunctions.SearchRoomByName(input_Create.text, roomList))
+            {
+                Debug.Log($"Ya existe una room con el nombre: {input_Create.text}");
+                return;
+            }
+
             customRoomName = input_Create.text;
         }
 
@@ -68,20 +75,27 @@ public class MainMenu : MonoBehaviourPunCallbacks
         else { Debug.LogWarning($"No se pudo parsear: {input_MaxPlayers.text}, se cambio a 4"); }
 
         LoadingScreenWithDelay(
-            () => PhotonNetwork.CreateRoom(
+            () =>
+            {
+                PhotonNetwork.CreateRoom(
                 roomName: customRoomName,
-                roomOptions: new RoomOptions() { MaxPlayers = maxPlayers, IsVisible = true, IsOpen = true },
+                roomOptions: new RoomOptions() { MaxPlayers = maxPlayers, IsVisible = true, IsOpen = true},
                 typedLobby: TypedLobby.Default,
-                expectedUsers: null), 
-            2);
-        
+                expectedUsers: null);
+            }, 2);
     }
 
     public void JoinRoomInputText()
     {
-        LoadingScreenWithDelay(
-            () => PhotonNetwork.JoinRoom(input_Join.text), 1
-            );
+        if (!string.IsNullOrEmpty(input_Join.text))
+        {
+            if(CoolFunctions.SearchRoomByName(input_Join.text, roomList))
+            {
+                LoadingScreenWithDelay(() => PhotonNetwork.JoinRoom(input_Join.text), 1);
+            }
+            else { Debug.LogWarning($"No se encontro ninguna room llamada: {input_Join.text}"); }
+        }
+        else { Debug.LogWarning("No se ha dado ningun input de cuarto"); }
     }
 
     public void JoinRoomInList(string roomName)
@@ -101,6 +115,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
     //Genera los botones para unirse a las diferentes salas disponibles cada vez que se llama a la funcion
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        //actualiza la roomlist guardada localmente
+        this.roomList = roomList;
+
         Transform roomListContent = roomListDisplay.transform.Find("Viewport").Find("Content");
 
         //Destruye todos los botones

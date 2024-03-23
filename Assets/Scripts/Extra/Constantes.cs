@@ -10,4 +10,5 @@ public static class Constantes
 
     //Rooms
     public static readonly string MinigameOrder_Room = "MINIGAME_ORDER";
+    public static readonly string MinigameScene_Room = "MINIGAME_SCENE";
 }

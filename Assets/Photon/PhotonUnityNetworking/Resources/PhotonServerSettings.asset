@@ -40,6 +40,11 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - GetMessage
+  - RPC_StartCounter
+  - RPC_UpdateCounter
+  - RPC_StopTimer
+  - RPC_StartMinigameSelection
+  - SyncronizeRandomMinigames
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -5,63 +5,111 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
 
 public class MinigameSelector : MonoBehaviourPunCallbacks
 {
     [Header("Minigame lists")]
     public List<MinigameInfo> minigames;
-    public List<MinigameInfo> randomizedMinigames;
 
     [Header("References")]
     public GameObject minigameDisplay;
+    public GameObject loadingScreen;
 
     private void Start()
     {
         minigameDisplay.SetActive(false);
+        loadingScreen.SetActive(false);
+
+        if(PhotonNetwork.IsMasterClient)
+            RandomizeMinigames();
     }
 
     void RandomizeMinigames()
     {
-        //Limpia y randomiza los minijuegos nada mas empezar
-        randomizedMinigames.Clear();
+        //crea una lista de los minijuegos randomizados
+        List<MinigameInfo> tempList = CoolFunctions.ShuffleList(minigames);
+        //crea una lista de strings donde iran los nombres de los minijuegos
+        List<string> minigameNames = new List<string>();
 
-        List<MinigameInfo> shuffledList = CoolFunctions.ShuffleList(minigames);
-
-        foreach (MinigameInfo minigame in shuffledList)
+        foreach (MinigameInfo minigame in tempList)
         {
-            randomizedMinigames.Add(minigame);
+            minigameNames.Add(minigame.name);
         }
 
-        /*Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
-        roomProps[Constantes.MinigameOrder_Room] = randomizedMinigames;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);*/
+        //guarda el array en las custom properties
+        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+        roomProps[Constantes.MinigameOrder_Room] = minigameNames.ToArray();
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
 
-        string temp = "Minijuegos Randomizados: ";
-        foreach (MinigameInfo minigameInfo in randomizedMinigames)
+        //debug
+        string temp = "Minijuegos Randomizados y Sincronizados:\n ";
+        foreach (MinigameInfo minigameInfo in tempList)
         {
             temp += $"{minigameInfo.Name}\n";
         }
         print(temp);
     }
 
+
     public void StartMinigameSelection()
     {
-        RandomizeMinigames();
+        //El Master Client llama a la funcion y la manda a todos los clientes
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GetComponent<PhotonView>().RPC(nameof(RPC_StartMinigameSelection), RpcTarget.All);
+        }
+    }
 
+    [PunRPC]
+    void RPC_StartMinigameSelection()
+    {
+        MinigameSelection();
+    }
+
+    void MinigameSelection()
+    {
         minigameDisplay.SetActive(true);
 
         Transform content = minigameDisplay.transform.Find("Content");
 
         //Borra todos los hijos por si acaso
-        foreach(Transform child in content) { Destroy(child.gameObject); }
+        //foreach(Transform child in content) { Destroy(child.gameObject); }
 
-        //instancia los minijuegos en orden
-        for(int i = 0; i < randomizedMinigames.Count; i++)
+        //Borra el contenido de la lista
+        List<MinigameInfo> shuffledMinigames = new List<MinigameInfo>();
+
+        //guarda los minijuegos randomizados en orden en la lista
+        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+        foreach(System.Collections.DictionaryEntry entry in roomProps)
+        {
+            if((string)entry.Key == Constantes.MinigameOrder_Room)
+            {
+                string[] minigameString = (string[])entry.Value;
+
+                for(int i = 0; i < minigameString.Length; i++)
+                {
+                    MinigameInfo mg = Resources.Load<MinigameInfo>($"Minigames/{minigameString[i]}");
+
+                    shuffledMinigames.Add(mg);
+                }
+            }
+        }
+
+        //cambia los valores de los iconos en orden
+        for(int i = 0; i < shuffledMinigames.Count; i++)
         {
             GameObject display = content.GetChild(i).gameObject;
 
-            display.transform.Find("Image").GetComponent<Image>().sprite = randomizedMinigames[i].Icon;
-            display.transform.Find("Name").GetComponent<TMP_Text>().text = randomizedMinigames[i].Name;
+            display.transform.Find("Image").GetComponent<Image>().sprite = shuffledMinigames[i].Icon;
+            display.transform.Find("Name").GetComponent<TMP_Text>().text = shuffledMinigames[i].Name;
         }
+
+        //Activa la pantalla de carga, y luego carga la escena de showcase
+        CoolFunctions.Invoke(this, () =>
+        {
+            loadingScreen.SetActive(true);
+            CoolFunctions.Invoke(this, () => PhotonNetwork.LoadLevel("ShowcaseMG"), 1);
+        }, 2);
     }
 }

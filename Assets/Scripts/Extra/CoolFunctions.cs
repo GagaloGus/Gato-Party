@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,6 +69,16 @@ public static class CoolFunctions
         }
 
         return lista;
+    }
+
+    public static bool SearchRoomByName(string roomName, List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo room in roomList)
+        {
+            if (room.Name == roomName) { return true; }
+        }
+
+        return false;
     }
 }
 

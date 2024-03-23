@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class AnimationEvents : MonoBehaviour
 {
-    GameObject player;
-
-    private void Start()
-    {
-        player = FindObjectOfType<SkoController>().gameObject;
-    }
-
     #region Camera
     public void DisableAnimator()
     {

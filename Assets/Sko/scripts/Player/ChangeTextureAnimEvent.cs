@@ -19,55 +19,35 @@ public class ChangeTextureAnimEvent : MonoBehaviour
     public AnimationPacks[] texturePacks;
 
     Material frontMat, backMat;
+    Dictionary<string, int> animationDic = new Dictionary<string, int>();
 
     private void Start()
     {   
         frontMat = modelo.GetComponent<MeshRenderer>().materials[0];
         backMat = modelo.GetComponent<MeshRenderer>().materials[1];
-    }
 
-    public void ChangeTexture(int textureInt)
-    {
-        //busca el respectivo pack de texturas segun lo que escribamos en el textureName
-        AnimationPacks textures = texturePacks[textureInt];
-
-        //cambia el albedo del material de adelante y atras
-        frontMat.SetTexture("_MainTex", textures.front);
-        backMat.SetTexture("_MainTex", textures.back);
-
-    }
-
-    public void AddNumbersToPacks()
-    {
-        print("Añadiendo...");
+        //añade todas las texturas al diccionario
+        animationDic.Clear();
         for (int i = 0; i < texturePacks.Length; i++)
         {
-            if (!texturePacks[i].name.StartsWith($"[{i}]"))
-            {
-                texturePacks[i].name = $"[{i}]{texturePacks[i].name}";
-            }
+            animationDic.Add(texturePacks[i].name, i);
         }
-        print($"Numeros añadidos a {gameObject.name}");
     }
-}
 
-#if UNITY_EDITOR_WIN
-[CustomEditor(typeof(ChangeTextureAnimEvent))]
-class BotonTrucoParaAñadirOrderANombres : Editor
-{
-    public override void OnInspectorGUI()
+    public void ChangeTexture(string textureName)
     {
-        DrawDefaultInspector();
-
-        ChangeTextureAnimEvent myscript = (ChangeTextureAnimEvent)target;
-        GUILayout.BeginHorizontal();
-        if(GUILayout.Button("Add numbers to texture packs", GUILayout.Height(30)))
+        //busca el respectivo pack de texturas segun lo que escribamos en el textureName
+        if(animationDic.ContainsKey(textureName))
         {
-            myscript.AddNumbersToPacks();
+            AnimationPacks textures = texturePacks[animationDic[textureName]];
+
+            //cambia el albedo del material de adelante y atras
+            frontMat.SetTexture("_MainTex", textures.front);
+            backMat.SetTexture("_MainTex", textures.back);
         }
-
-        GUILayout.EndHorizontal();
-
+        else
+        {
+            Debug.LogWarning($"No se encontro la textura: {textureName}", this);
+        }
     }
 }
-#endif

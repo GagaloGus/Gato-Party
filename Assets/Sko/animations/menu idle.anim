@@ -53,21 +53,21 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: ChangeTexture
-    data: 
+    data: menuIdle_01
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 29
     messageOptions: 0
   - time: 0.7
     functionName: ChangeTexture
-    data: 
+    data: menuIdle_02
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 30
     messageOptions: 0
   - time: 1.3833333
     functionName: ChangeTexture
-    data: 
+    data: menuIdle_02
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 29

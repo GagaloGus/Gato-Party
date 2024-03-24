@@ -16,6 +16,7 @@ public class CountdownController : MonoBehaviour
     private float counterValue = 0f;
     public float incrementAmount = 0.1f;
     public Action endCounterFunction;
+    public string finishedText;
 
     PhotonView photonView;
 
@@ -26,10 +27,11 @@ public class CountdownController : MonoBehaviour
         photonView = GetComponent<PhotonView>();
     }
 
-    public void StartCountdown(float maxTime, Action endCounterFunction)
+    public void StartCountdown(float maxTime, Action endCounterFunction, string finishedText)
     {
         counterGameObject.SetActive(true);
         this.endCounterFunction = endCounterFunction;
+        this.finishedText = finishedText;
         counterValue = maxTime;
 
         if (PhotonNetwork.IsMasterClient)
@@ -62,12 +64,12 @@ public class CountdownController : MonoBehaviour
     void UpdateCounterText()
     {
         // Formatea el valor del contador para mostrarlo en el texto
-        counterText.text = $"Time: {counterValue.ToString("F1")}s";  // "F1" muestra un decimal
+        counterText.text = $"{counterValue.ToString("F1")}";  // "F1" muestra un decimal
     }
 
     void StopTimer()
     {
-        counterText.text = $"Starting minigame...";
+        counterText.text = finishedText;
 
         CoolFunctions.Invoke(this, () =>
         {

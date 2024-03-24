@@ -28,7 +28,7 @@ public class SE_PlayerController : MonoBehaviour
     public enum PlayerStates { Idle, Walk, Run, JumpUp, JumpDown, Glide, Attack }
     public PlayerStates playerState;
 
-    KeyCode jump, run, attack, swapPreviousWeapon, swapNextWeapon;
+    KeyCode jump, run;
 
     [Header("Photon Stuff")]
     public GameObject Mark;
@@ -53,9 +53,6 @@ public class SE_PlayerController : MonoBehaviour
         //Mapeado de teclas
         jump = PlayerKeybinds.jump;
         run = PlayerKeybinds.run;
-        attack = PlayerKeybinds.attack;
-        swapPreviousWeapon = PlayerKeybinds.swapPrevousWeapon;
-        swapNextWeapon = PlayerKeybinds.swapNextWeapon;
     }
 
     private void Start()

@@ -41,22 +41,41 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 currentMinigame = currentMG;
                 ShowMinigameInfo(currentMG);
 
-                //El Master Client borra el minijuego de la lista
-                if(PhotonNetwork.IsMasterClient)
-                {
-                    //quita el minijuego del array
-                    List<string> tempList = temp.ToList();
-                    tempList.RemoveAt(0);
-
-                    //actualiza el array de los minijuegos
-                    Hashtable roomMiniProps = new Hashtable();
-                    roomMiniProps[Constantes.MinigameOrder_Room] = tempList.ToArray();
-                    PhotonNetwork.CurrentRoom.SetCustomProperties(roomMiniProps);
-
-                    
-                }
-
                 print($"Minigame loaded {currentMG.Name}");
+            }
+        }
+    }
+
+    //Borra el minijuego actual del hastable de la room cuando todos los players se hayan unido
+    int playersJoined = 0;
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        int expectedPlayers = PhotonNetwork.CurrentRoom.MaxPlayers;
+        playersJoined++;
+
+        if (playersJoined == expectedPlayers)
+        {
+            //Coje todas las propiedades de la room
+            Hashtable customRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+            foreach (System.Collections.DictionaryEntry entry in customRoomProperties)
+            {
+                if ((string)entry.Key == Constantes.MinigameOrder_Room)
+                {
+                    string[] temp = (string[])entry.Value;
+
+                    //El Master Client borra el minijuego de la lista
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        //quita el minijuego del array
+                        List<string> tempList = temp.ToList();
+                        tempList.RemoveAt(0);
+
+                        //actualiza el array de los minijuegos
+                        Hashtable roomMiniProps = new Hashtable();
+                        roomMiniProps[Constantes.MinigameOrder_Room] = tempList.ToArray();
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(roomMiniProps);
+                    }
+                }
             }
         }
     }
@@ -86,7 +105,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
     {
         if(changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG) && AllPlayersReady())
         {
-            FindObjectOfType<CountdownController>().StartCountdown(5, StartMinigame);
+            FindObjectOfType<CountdownController>().StartCountdown(5, StartMinigame, "Starting minigame...");
         }
     }
 

@@ -1161,9 +1161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da58394dc0a4a1c4f936663da498acfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minigames:
-  - {fileID: 11400000, guid: 44ef0f788650c1d42bad458d8de3f20d, type: 2}
-  - {fileID: 11400000, guid: cae2f1dcf1d37c24796cad3d81879338, type: 2}
+  minigames: []
   minigameDisplay: {fileID: 2000434611}
   loadingScreen: {fileID: 1293338145}
 --- !u!114 &267406093

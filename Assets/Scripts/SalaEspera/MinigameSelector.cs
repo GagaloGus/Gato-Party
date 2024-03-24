@@ -18,6 +18,12 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        MinigameInfo[] miniList = Resources.LoadAll<MinigameInfo>($"Minigames");
+        foreach (MinigameInfo mini in miniList)
+        {
+            minigames.Add(mini);
+        }
+
         minigameDisplay.SetActive(false);
         loadingScreen.SetActive(false);
 
@@ -99,10 +105,10 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         //cambia los valores de los iconos en orden
         for(int i = 0; i < shuffledMinigames.Count; i++)
         {
-            GameObject display = content.GetChild(i).gameObject;
+            Transform display = content.GetChild(i);
 
-            display.transform.Find("Image").GetComponent<Image>().sprite = shuffledMinigames[i].Icon;
-            display.transform.Find("Name").GetComponent<TMP_Text>().text = shuffledMinigames[i].Name;
+            display.Find("Image").GetComponent<Image>().sprite = shuffledMinigames[i].Icon;
+            display.Find("Name").GetComponent<TMP_Text>().text = shuffledMinigames[i].Name;
         }
 
         //Activa la pantalla de carga, y luego carga la escena de showcase

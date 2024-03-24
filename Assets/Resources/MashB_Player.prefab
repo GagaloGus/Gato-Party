@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 0
+  score: 0
   Mark: {fileID: 983457096557379257}
   nicknameHolder: {fileID: 2838057962486057684}
 --- !u!114 &7866983004358794209

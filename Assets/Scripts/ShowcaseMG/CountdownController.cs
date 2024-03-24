@@ -10,28 +10,34 @@ public class CountdownController : MonoBehaviour
 {
     [Header("References")]
     public GameObject counterGameObject;
-    TMP_Text counterText;
+    [SerializeField] TMP_Text counterText;
 
     [Header("Time Variables")]
-    private float counterValue = 0f;
-    public float incrementAmount = 0.1f;
+    float counterValue = 0f;
+    string finishedText;
+    string stringFormat = "F1";
+    float incrementAmount = 1;
+    float delayToInvoke;
     public Action endCounterFunction;
-    public string finishedText;
 
     PhotonView photonView;
 
     private void Awake()
     {
-        counterGameObject.SetActive(false);
         counterText = counterGameObject.GetComponentInChildren<TMP_Text>();
+        counterGameObject.SetActive(false);
         photonView = GetComponent<PhotonView>();
     }
 
-    public void StartCountdown(float maxTime, Action endCounterFunction, string finishedText)
+    public void StartCountdown(float maxTime, Action endCounterFunction, float incrementAmount = 1, string finishedText = "", string stringFormat = "0", float delayToInvoke = 0)
     {
         counterGameObject.SetActive(true);
+
         this.endCounterFunction = endCounterFunction;
         this.finishedText = finishedText;
+        this.incrementAmount = incrementAmount;
+        this.stringFormat = stringFormat;
+        this.delayToInvoke = delayToInvoke;
         counterValue = maxTime;
 
         if (PhotonNetwork.IsMasterClient)
@@ -40,7 +46,6 @@ public class CountdownController : MonoBehaviour
             photonView.RPC(nameof(RPC_StartCounter), RpcTarget.AllBuffered);
         }
     }
-
 
     [PunRPC]
     void RPC_StartCounter()
@@ -53,8 +58,9 @@ public class CountdownController : MonoBehaviour
     {
         counterValue -= incrementAmount;
         UpdateCounterText();
+        print(counterValue);
 
-        if(counterValue < 0f) 
+        if(Mathf.CeilToInt(counterValue) <= 0) 
         {
             CancelInvoke(nameof(Countdown));
             StopTimer();
@@ -64,17 +70,23 @@ public class CountdownController : MonoBehaviour
     void UpdateCounterText()
     {
         // Formatea el valor del contador para mostrarlo en el texto
-        counterText.text = $"{counterValue.ToString("F1")}";  // "F1" muestra un decimal
+        counterText.text = (counterValue).ToString(stringFormat);
     }
 
     void StopTimer()
     {
-        counterText.text = finishedText;
+        if (!string.IsNullOrEmpty(finishedText))
+            counterText.text = finishedText;
+        else
+            counterText.text = 0.ToString(stringFormat);
 
         CoolFunctions.Invoke(this, () =>
         {
-            print("Loading...");
-            endCounterFunction();
-        }, 2);
+            print("terminao");
+
+            try { endCounterFunction();}
+            catch { }
+
+        }, delayToInvoke);
     }
 }

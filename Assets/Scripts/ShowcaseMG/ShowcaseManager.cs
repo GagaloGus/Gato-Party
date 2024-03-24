@@ -31,9 +31,9 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
         //Coje todas las propiedades de la room
         Hashtable customRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-        foreach(System.Collections.DictionaryEntry entry in customRoomProperties)
+        foreach (System.Collections.DictionaryEntry entry in customRoomProperties)
         {
-            if((string)entry.Key == Constantes.MinigameOrder_Room) 
+            if ((string)entry.Key == Constantes.MinigameOrder_Room)
             {
                 string[] temp = (string[])entry.Value;
 
@@ -46,8 +46,76 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         }
     }
 
+    void ShowMinigameInfo(MinigameInfo minigameInfo)
+    {
+        Name.text = minigameInfo.Name;
+        Description.text = minigameInfo.Description;
+        HowToPlay.text = minigameInfo.HowToPlay;
+        DisplayImage.sprite = minigameInfo.DisplayImage;
+    }
+
+    bool AllPlayersReady()
+    {
+        // Verificar si todos los jugadores en la sala están listos
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (!(player.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SMG) && (bool)player.CustomProperties[Constantes.ReadyPlayerKey_SMG]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG) && AllPlayersReady())
+        {
+            FindObjectOfType<CountdownController>().StartCountdown(
+                maxTime: 3,
+                incrementAmount: 0.1f,
+                stringFormat: "F1",
+                finishedText: "Starting minigame...",
+                delayToInvoke: 2,
+                endCounterFunction: () =>
+                {
+                    print($"Loading minigame {currentMinigame.Name}");
+                    LoadingScreen.SetActive(true);
+
+                    CoolFunctions.Invoke(this, () =>
+                    {
+                        PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
+                    }, 2);
+                });
+
+            if (PhotonNetwork.IsMasterClient)
+                EraseFirstMinigame();
+        }
+    }
+
+    void EraseFirstMinigame()
+    {
+        //Borra el minijuego actual del array de la room
+        Hashtable customRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        foreach (System.Collections.DictionaryEntry entry in customRoomProperties)
+        {
+            if ((string)entry.Key == Constantes.MinigameOrder_Room)
+            {
+                string[] temp = (string[])entry.Value;
+                //quita el minijuego del array
+                List<string> tempList = temp.ToList();
+                tempList.RemoveAt(0);
+
+                //actualiza el array de los minijuegos
+                Hashtable roomMiniProps = new Hashtable();
+                roomMiniProps[Constantes.MinigameOrder_Room] = tempList.ToArray();
+                PhotonNetwork.CurrentRoom.SetCustomProperties(roomMiniProps);
+            }
+        }
+    }
+
     //Borra el minijuego actual del hastable de la room cuando todos los players se hayan unido
-    int playersJoined = 0;
+    /*int playersJoined = 0;
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         int expectedPlayers = PhotonNetwork.CurrentRoom.MaxPlayers;
@@ -78,44 +146,5 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 }
             }
         }
-    }
-
-    void ShowMinigameInfo(MinigameInfo minigameInfo)
-    {
-        Name.text = minigameInfo.Name;
-        Description.text = minigameInfo.Description;
-        HowToPlay.text = minigameInfo.HowToPlay;
-        DisplayImage.sprite = minigameInfo.DisplayImage;
-    }
-
-    bool AllPlayersReady()
-    {
-        // Verificar si todos los jugadores en la sala están listos
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            if (!(player.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SMG) && (bool)player.CustomProperties[Constantes.ReadyPlayerKey_SMG]))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    {
-        if(changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG) && AllPlayersReady())
-        {
-            FindObjectOfType<CountdownController>().StartCountdown(5, StartMinigame, "Starting minigame...");
-        }
-    }
-
-    public void StartMinigame()
-    {
-        print($"Loading minigame {currentMinigame.Name}");
-        LoadingScreen.SetActive(true);
-        CoolFunctions.Invoke(this, () =>
-        {
-            PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
-        }, 2);
-    }
+    }*/
 }

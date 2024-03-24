@@ -18,6 +18,15 @@ public class ErrorShowHandler : MonoBehaviour
 
     void HandleLog(string logText, string stackTrace, LogType logType)
     {
+        if(logText.Length > 100)
+            logText.Substring(0, 100);
+
+        if(stackTrace.Length > 100)
+            stackTrace.Substring(0, 100);
+
+        if (GetComponent<TMP_Text>().text.Length > 300)
+            GetComponent<TMP_Text>().text = "";
+
         gameObject.SetActive(true);
         GetComponent<TMP_Text>().text += $"{logType}:{logText}\n{stackTrace}\n\n";
     }

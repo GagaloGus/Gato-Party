@@ -65,6 +65,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        //Pone el sprite del respectivo player que se fue en gris
         foreach (Image image in playerImageList)
         {
             if (int.Parse(image.gameObject.name) == otherPlayer.ActorNumber)

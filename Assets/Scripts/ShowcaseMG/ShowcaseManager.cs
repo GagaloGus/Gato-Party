@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class ShowcaseManager : MonoBehaviourPunCallbacks
 {
@@ -69,8 +70,10 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        //Si estan los players ready
         if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG) && AllPlayersReady())
         {
+            //Empieza el contador
             FindObjectOfType<CountdownController>().StartCountdown(
                 maxTime: 3,
                 incrementAmount: 0.1f,
@@ -79,6 +82,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 delayToInvoke: 2,
                 endCounterFunction: () =>
                 {
+                    //Tarda 2 segundos en cargar el minijuego
                     print($"Loading minigame {currentMinigame.Name}");
                     LoadingScreen.SetActive(true);
 
@@ -88,6 +92,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                     }, 2);
                 });
 
+            //Si es el Master Client borra el minijuego de las propiedades de la room
             if (PhotonNetwork.IsMasterClient)
                 EraseFirstMinigame();
         }
@@ -147,4 +152,15 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
             }
         }
     }*/
+
+    public void ExitRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        //Al salir de la sala carga la escena del lobby
+        SceneManager.LoadScene("MainMenu");
+    }
 }

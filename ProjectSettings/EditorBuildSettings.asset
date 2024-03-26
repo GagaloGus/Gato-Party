@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ShowcaseMG.unity
     guid: 1bae43556dd34934a83da8bc296f8a0b
   - enabled: 1
+    path: Assets/Scenes/Puntuacion.unity
+    guid: 233505fdd459cb448bba80850ebd0acc
+  - enabled: 1
     path: Assets/Minigames/CommandBomb/MG_CommandBomb.unity
     guid: 385744d3b1035a647bc2ceb66990c5a1
   - enabled: 1

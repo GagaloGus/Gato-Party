@@ -25,13 +25,16 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         Hashtable roomProps = new Hashtable();
         roomProps[Constantes.MinigameScene_Room] = "SALA_ESPERA";
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+
+        Hashtable playerProps = new Hashtable();
+        playerProps[Constantes.ReadyPlayerKey_SalaEspera] = false;
+        playerProps[Constantes.PlayerKey_TotalScore] = 0;
+        playerProps[Constantes.PlayerKey_MinigameScore] = 0;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
     void Start()
     {
         //Establece el is ready de la sala de espera a false al entrar, por si acaso
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.ReadyPlayerKey_SalaEspera] = false;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         UpdatePlayerCount();
         roomName.text = $"Room Name:\n{PhotonNetwork.CurrentRoom.Name}";

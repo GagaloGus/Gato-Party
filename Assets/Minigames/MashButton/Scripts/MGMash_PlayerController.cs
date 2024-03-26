@@ -28,6 +28,11 @@ public class MGMash_PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Resetea la puntuacion
+        Hashtable playerProps = new Hashtable();
+        playerProps[Constantes.PlayerKey_MinigameScore] = -1;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+
         Mark.SetActive(photonView.IsMine);
         /*if (!photonView.IsMine)
         {
@@ -39,6 +44,7 @@ public class MGMash_PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Si nos podemos mover y somos el player
         if(canMove && photonView.IsMine)
         {
             if (Input.GetKeyDown(push))
@@ -49,11 +55,13 @@ public class MGMash_PlayerController : MonoBehaviour
         }
     }
 
+    //Al acabar el minijuego, llamado desde el manager
     public void MinigameFinished()
     {
-        canMove = false;
-        int newScore = (score == -1 ? 0 : score);
+        canMove = false; //quieto
+        int newScore = (score == -1 ? 0 : score); //Si no hicimos nada, nos da 0, si no nos da nuestra puntuacion
 
+        //Cambia las propiedades del Player
         Hashtable playerProps = new Hashtable();
         playerProps[Constantes.PlayerKey_MinigameScore] = newScore;
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);

@@ -82,7 +82,6 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         //Borra todos los hijos por si acaso
         //foreach(Transform child in content) { Destroy(child.gameObject); }
 
-        //Borra el contenido de la lista
         List<MinigameInfo> shuffledMinigames = new List<MinigameInfo>();
 
         //guarda los minijuegos randomizados en orden en la lista

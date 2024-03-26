@@ -27,16 +27,20 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     {
         resultsText.SetActive(false);
 
+        //Instancia los players en orden segun su ID (Actor number)
         GameObject player =
             PhotonNetwork.Instantiate(
             prefabName: playerPrefab.name,
             position: spawnerParent.transform.GetChild(PhotonNetwork.LocalPlayer.ActorNumber - 1).position,
             rotation: Quaternion.identity);
 
+        //Espera 2 segundos
         CoolFunctions.Invoke(this, () =>
         {
+            //Deja que los players se muevan
             player.GetComponent<MGMash_PlayerController>().canMove = true;
 
+            //Cuenta atras hasta el final del minijuego
             GetComponent<CountdownController>().StartCountdown(
                 maxTime: maxTime,
                 incrementAmount: 1,
@@ -46,7 +50,8 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                     player.GetComponent<MGMash_PlayerController>().MinigameFinished();                    
                 });
         }, 2);
-
+        
+        //Debug de la lista de jugadores
         string temp = "Lista jugadores: ";
         foreach (System.Collections.Generic.KeyValuePair<int, Player> entry in PhotonNetwork.CurrentRoom.Players)
         {
@@ -59,30 +64,39 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         print(temp);
     }
 
-    int index = 0;
+    int playerCount = 0;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        //Solo si es el Master Client
         if (PhotonNetwork.IsMasterClient)
         {
-            print($"{targetPlayer.NickName}:{(int)changedProps[Constantes.PlayerKey_MinigameScore]}");
-            if (changedProps.ContainsKey(Constantes.PlayerKey_MinigameScore))
+            print($"Puntuacion: {targetPlayer.NickName}->{(int)changedProps[Constantes.PlayerKey_MinigameScore]}");
+
+            //Se ejecuta al final para mostrar el ranking
+            //Si ha cambiado su puntuacion, y no es la de reseteo ( != -1 )
+            if (changedProps.ContainsKey(Constantes.PlayerKey_MinigameScore) && (int)changedProps[Constantes.PlayerKey_MinigameScore] != -1)
             {
+                //añadimos la puntuacion al diccionario
                 resultPlayerlist.Add(targetPlayer, (int)changedProps[Constantes.PlayerKey_MinigameScore]);
-                index++;
+                playerCount++;
             }
 
-            if (index == PhotonNetwork.CurrentRoom.PlayerCount)
+            //Si todos los players actualizaron su informacion
+            if (playerCount == PhotonNetwork.CurrentRoom.PlayerCount)
             {
+                //Ordena la lista de mayor a menor
                 var sortedResults = resultPlayerlist.OrderByDescending(x => x.Value);
 
-                int index = 1;
+                //Añade las puntuaciones a un string en orden
                 string results = "<color=yellow>-- Ranking --</color>\n";
+                int index = 1;
                 foreach (System.Collections.Generic.KeyValuePair<Player, int> entry in sortedResults)
                 {
                     results += $"{index}# {entry.Key.NickName}: {entry.Value} puntos\n";
                     index++;
                 }
 
+                //muestra las puntuaciones para el resto de jugadores
                 GetComponent<PhotonView>().RPC(nameof(ShowResults), RpcTarget.All, results);
             }
         }
@@ -93,5 +107,10 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     {
         resultsText.SetActive(true);
         resultsText.GetComponentInChildren<TMP_Text>().text = result;
+
+        CoolFunctions.Invoke(this, () =>
+        {
+            PhotonNetwork.LoadLevel("Puntuacion");
+        }, 1.5f);
     }
 }

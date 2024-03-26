@@ -56,13 +56,16 @@ public class CountdownController : MonoBehaviour
 
     void Countdown()
     {
-        counterValue -= incrementAmount;
-        UpdateCounterText();
-        print(counterValue);
+        counterValue -= incrementAmount; //Baja el contador
+        UpdateCounterText(); //Actualiza la interfaz
+        print(counterValue); //Debug
 
+        //Si el contador llega a 0
         if(Mathf.CeilToInt(counterValue) <= 0) 
         {
+            //Deja de repetir el Invoke
             CancelInvoke(nameof(Countdown));
+            //Para el contador
             StopTimer();
         }
     }
@@ -75,17 +78,27 @@ public class CountdownController : MonoBehaviour
 
     void StopTimer()
     {
+        //Depende si le pusimos algo en el finish text, lo escribe o escribe 0
         if (!string.IsNullOrEmpty(finishedText))
             counterText.text = finishedText;
         else
             counterText.text = 0.ToString(stringFormat);
 
+        //Ejecuta la funcion que le pasamos
         CoolFunctions.Invoke(this, () =>
         {
             print("terminao");
 
             try { endCounterFunction();}
             catch { }
+
+            //Reseta las variables
+            endCounterFunction = null;
+            finishedText = "";
+            incrementAmount = 0;
+            stringFormat = "F1";
+            delayToInvoke = 0;
+            counterValue = 0;
 
         }, delayToInvoke);
     }

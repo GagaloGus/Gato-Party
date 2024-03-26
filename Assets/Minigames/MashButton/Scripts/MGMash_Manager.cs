@@ -27,16 +27,12 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     {
         resultsText.SetActive(false);
 
-        //Instancia los players en orden segun su ID (Actor number)
-        GameObject player =
-            PhotonNetwork.Instantiate(
-            prefabName: playerPrefab.name,
-            position: spawnerParent.transform.GetChild(PhotonNetwork.LocalPlayer.ActorNumber - 1).position,
-            rotation: Quaternion.identity);
+        GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject();
 
         //Espera 2 segundos
         CoolFunctions.Invoke(this, () =>
         {
+            print("Empieza contador");
             //Deja que los players se muevan
             player.GetComponent<MGMash_PlayerController>().canMove = true;
 
@@ -70,12 +66,11 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         //Solo si es el Master Client
         if (PhotonNetwork.IsMasterClient)
         {
-            print($"Puntuacion: {targetPlayer.NickName}->{(int)changedProps[Constantes.PlayerKey_MinigameScore]}");
-
             //Se ejecuta al final para mostrar el ranking
             //Si ha cambiado su puntuacion, y no es la de reseteo ( != -1 )
             if (changedProps.ContainsKey(Constantes.PlayerKey_MinigameScore) && (int)changedProps[Constantes.PlayerKey_MinigameScore] != -1)
             {
+                print($"Puntuacion: {targetPlayer.NickName}->{(int)changedProps[Constantes.PlayerKey_MinigameScore]}");
                 //añadimos la puntuacion al diccionario
                 resultPlayerlist.Add(targetPlayer, (int)changedProps[Constantes.PlayerKey_MinigameScore]);
                 playerCount++;

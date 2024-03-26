@@ -24,16 +24,17 @@ public class ErrorShowHandler : MonoBehaviour
 
     void HandleLog(string logText, string stackTrace, LogType logType)
     {
-        if(logText.Length > 100)
-            logText = logText.Substring(0, 100);
-
-        if(stackTrace.Length > 100)
-            stackTrace = stackTrace.Substring(0, 100);
-
-        if (errorText.text.Length > 200)
-            errorText.text = errorText.text.Substring(0, 200);
-
         gameObject.SetActive(true);
-        errorText.text += $"{logType}:{logText}\n{stackTrace}\n\n";
+
+        if(logText.Length > 200)
+            logText = logText.Substring(0, 200);
+
+        if(stackTrace.Length > 200)
+            stackTrace = stackTrace.Substring(0, 200);
+
+        string debugString = errorText.text + $"{logType}:{logText}\n{stackTrace}\n\n";
+        
+
+        errorText.text = debugString.Length > 500 ? debugString.Substring(200) : debugString;
     }
 }

@@ -45,12 +45,17 @@ public class MGMash_PlayerController : MonoBehaviour
     void Update()
     {
         //Si nos podemos mover y somos el player
-        if(canMove && photonView.IsMine)
+        if(canMove)
         {
             if (Input.GetKeyDown(push))
             {
-                m_animator.SetTrigger("push");
-                score+= (score == -1 ? 2 : 1);
+                m_animator.SetBool("push", true);
+                score += (score == -1 ? 2 : 1);
+            }
+
+            if (Input.GetKeyUp(push))
+            {
+                m_animator.SetBool("push", false);
             }
         }
     }

@@ -60,7 +60,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         // Verificar si todos los jugadores en la sala están listos
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if (!(player.CustomProperties.ContainsKey(Constantes.ReadyPlayerKey_SMG) && (bool)player.CustomProperties[Constantes.ReadyPlayerKey_SMG]))
+            if (!(player.CustomProperties.ContainsKey(Constantes.PlayerKey_Ready_SMG) && (bool)player.CustomProperties[Constantes.PlayerKey_Ready_SMG]))
             {
                 return false;
             }
@@ -71,7 +71,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         //Si estan los players ready
-        if (changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG) && AllPlayersReady())
+        if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG) && AllPlayersReady())
         {
             //Empieza el contador
             FindObjectOfType<CountdownController>().StartCountdown(

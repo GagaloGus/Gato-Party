@@ -31,6 +31,7 @@ public class CountdownController : MonoBehaviour
 
     public void StartCountdown(float maxTime, Action endCounterFunction, float incrementAmount = 1, string finishedText = "", string stringFormat = "0", float delayToInvoke = 0)
     {
+        print("Start countdown");
         counterGameObject.SetActive(true);
 
         this.endCounterFunction = endCounterFunction;
@@ -40,16 +41,34 @@ public class CountdownController : MonoBehaviour
         this.delayToInvoke = delayToInvoke;
         counterValue = maxTime;
 
+        object[] temp = { 
+            maxTime,
+            incrementAmount,
+            finishedText,
+            stringFormat,
+            delayToInvoke,
+        };
+
         if (PhotonNetwork.IsMasterClient)
         {
             // Si este cliente es el MasterClient, comienza el contador para que no se ejecuten varios a la vez
-            photonView.RPC(nameof(RPC_StartCounter), RpcTarget.AllBuffered);
+            photonView.RPC(nameof(RPC_StartCounter), RpcTarget.AllBuffered, temp);
         }
     }
 
     [PunRPC]
-    void RPC_StartCounter()
+    void RPC_StartCounter(float maxTime, float incrementAmount, string finishedText, string stringFormat, float delayToInvoke)
     {
+        print("Start RPC countdown");
+
+        this.finishedText = finishedText;
+        this.incrementAmount = incrementAmount;
+        this.stringFormat = stringFormat;
+        this.delayToInvoke = delayToInvoke;
+        counterValue = maxTime;
+
+        print($"Max time:{maxTime}, Increment: {incrementAmount}, Delay: {delayToInvoke}");
+
         // Llama al método para iniciar el contador en todos los clientes
         InvokeRepeating(nameof(Countdown), 0, incrementAmount); // Baja el contador cada incremento repetidamente
     }
@@ -58,7 +77,6 @@ public class CountdownController : MonoBehaviour
     {
         counterValue -= incrementAmount; //Baja el contador
         UpdateCounterText(); //Actualiza la interfaz
-        print(counterValue); //Debug
 
         //Si el contador llega a 0
         if(Mathf.CeilToInt(counterValue) <= 0) 

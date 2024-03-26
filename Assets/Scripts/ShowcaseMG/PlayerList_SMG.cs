@@ -20,7 +20,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
     void Start()
     {
         Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.ReadyPlayerKey_SMG] = false;
+        playerProps[Constantes.PlayerKey_Ready_SMG] = false;
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         foreach (Transform child in playerList.transform) 
@@ -37,7 +37,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
     void OnReadyButtonClicked()
     {
         Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.ReadyPlayerKey_SMG] = true;
+        playerProps[Constantes.PlayerKey_Ready_SMG] = true;
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         readyButton.interactable = false;
@@ -45,15 +45,15 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        if(changedProps.ContainsKey(Constantes.ReadyPlayerKey_SMG))
+        if(changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG))
         {
-            bool isReady = (bool)changedProps[Constantes.ReadyPlayerKey_SMG];
+            bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SMG];
             Debug.Log("Jugador " + targetPlayer.NickName + " está minujuego " + (isReady ? "listo" : "no listo"));
 
             foreach (Image image in playerImageList)
             {
                 //Si el ID del player es el mismo que el de su sprite
-                if(int.Parse(image.gameObject.name) == targetPlayer.ActorNumber && isReady)
+                if(int.Parse(image.gameObject.name) == (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID] && isReady)
                 {
                     //Checkar si le dio a ready o no
                     image.sprite = ready;
@@ -68,7 +68,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         //Pone el sprite del respectivo player que se fue en gris
         foreach (Image image in playerImageList)
         {
-            if (int.Parse(image.gameObject.name) == otherPlayer.ActorNumber)
+            if (int.Parse(image.gameObject.name) == (int)otherPlayer.CustomProperties[Constantes.PlayerKey_CustomID])
             {
                 image.sprite = notReady;
                 image.color = new Color(0, 0, 0, 0.5f);

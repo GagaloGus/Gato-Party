@@ -106,6 +106,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         CoolFunctions.Invoke(this, () =>
         {
             PhotonNetwork.LoadLevel("Puntuacion");
-        }, 1.5f);
+        }, 4);
     }
 }

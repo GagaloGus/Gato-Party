@@ -29,8 +29,10 @@ public class MGMash_PlayerController : MonoBehaviour
     void Start()
     {
         //Resetea la puntuacion
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_MinigameScore] = -1;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_MinigameScore] = -1
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         Mark.SetActive(photonView.IsMine);
@@ -67,8 +69,10 @@ public class MGMash_PlayerController : MonoBehaviour
         int newScore = (score == -1 ? 0 : score); //Si no hicimos nada, nos da 0, si no nos da nuestra puntuacion
 
         //Cambia las propiedades del Player
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_MinigameScore] = newScore;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_MinigameScore] = newScore
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
 }

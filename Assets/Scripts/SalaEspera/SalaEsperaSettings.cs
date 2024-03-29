@@ -21,15 +21,19 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        Hashtable roomProps = new Hashtable();
-        roomProps[Constantes.MinigameScene_Room] = "SALA_ESPERA";
+        Hashtable roomProps = new Hashtable
+        {
+            [Constantes.MinigameScene_Room] = "SALA_ESPERA"
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
 
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_CustomID] = PhotonNetwork.IsMasterClient ? 1 : PhotonNetwork.CurrentRoom.PlayerCount;
-        playerProps[Constantes.PlayerKey_Ready_SalaEspera] = false;
-        playerProps[Constantes.PlayerKey_TotalScore] = 0;
-        playerProps[Constantes.PlayerKey_MinigameScore] = 0;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_CustomID] = PhotonNetwork.IsMasterClient ? 1 : PhotonNetwork.CurrentRoom.PlayerCount,
+            [Constantes.PlayerKey_Ready_SalaEspera] = false,
+            [Constantes.PlayerKey_TotalScore] = 0,
+            [Constantes.PlayerKey_MinigameScore] = 0
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
     void Start()
@@ -51,8 +55,10 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         // Cambiar el estado de listo del jugador local
         bool isReady = !(bool)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_Ready_SalaEspera];
 
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_Ready_SalaEspera] = isReady;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_Ready_SalaEspera] = isReady
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         //actualiza el boton de Ready
@@ -103,7 +109,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        //Al cambiar de ADMIN (o sea, que el admin se salio) se cierra la room
+        //Al cambiar de Master Client (o sea, que el Master Client se salio) se cierra la room
         errorMessage.SetActive(true);
         errorMessage.GetComponentInChildren<TMP_Text>().text =
             $"Master Client left the room";
@@ -132,8 +138,10 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_CustomID] = -1;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_CustomID] = -1
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         //Al salir de la sala carga la escena del lobby
@@ -142,6 +150,13 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
     void UpdatePlayerCount()
     {
+        Hashtable resetProp = new Hashtable
+        {
+            [Constantes.PlayerKey_Ready_SalaEspera] = false
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(resetProp);
+
+
         playerCount.text = $"Players: {PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
 

@@ -6,6 +6,7 @@ public static class Constantes
 {
     //Players
     public static readonly string PlayerKey_CustomID = "PLAYER_CUSTOM_ID";
+    public static readonly string PlayerKey_Skin = "PLAYER_SKIN";
 
     public static readonly string PlayerKey_Ready_SalaEspera = "PLAYER_READY_SALAESPERA";
     public static readonly string PlayerKey_Ready_SMG = "PLAYER_READY_SMG";

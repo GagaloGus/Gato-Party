@@ -67,7 +67,6 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
         if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SalaEspera))
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SalaEspera];
-            Debug.Log("Jugador " + targetPlayer.NickName + " está " + (isReady ? "listo" : "no listo"));
 
             //Activa la imagen de isReady si el player esta listo
             Transform display = playerList.transform.Find("Display");

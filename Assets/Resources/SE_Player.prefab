@@ -482,61 +482,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelo: {fileID: 1093049278162964406}
-  texturePacks:
-  - name: idle_01
-    front: {fileID: 2800000, guid: f5cdfdda6aaadc5418668450dec9fd5a, type: 3}
-    back: {fileID: 2800000, guid: de12c0795f305ab48b8f4ab9b7dac8f7, type: 3}
-  - name: idle_02
-    front: {fileID: 2800000, guid: b221cba251e6801468c8c32cfa2970a5, type: 3}
-    back: {fileID: 2800000, guid: 8e0c3d3ec7e6af74fbfdb75575586fd4, type: 3}
-  - name: walk_01
-    front: {fileID: 2800000, guid: fb1c108a9d1bb8b4088f06907b3dba08, type: 3}
-    back: {fileID: 2800000, guid: 4d6bd230286e71b40ab325ba145ad9d0, type: 3}
-  - name: run_01
-    front: {fileID: 2800000, guid: 0cece1a0d4e38fe4fa33f811f4b56369, type: 3}
-    back: {fileID: 2800000, guid: 872a179c784d41447a4d49d20aafac85, type: 3}
-  - name: run_02
-    front: {fileID: 2800000, guid: f66edd7b495187e48bf8e267f1bfec59, type: 3}
-    back: {fileID: 2800000, guid: e048147b28788b34ab9ffaea02a2ddc7, type: 3}
-  - name: frenar_01
-    front: {fileID: 2800000, guid: 6dc8f26a1029e8641a0f6fee87e22670, type: 3}
-    back: {fileID: 2800000, guid: ab15bc0bb117aec4c835481106776333, type: 3}
-  - name: jumpUp_01
-    front: {fileID: 2800000, guid: eb63ee77470f4f246884753d75162a77, type: 3}
-    back: {fileID: 2800000, guid: fea3c154f4c80c547892d3e93db9c5db, type: 3}
-  - name: jumpDown_01
-    front: {fileID: 2800000, guid: ce87c45a857140c4e9ea4c8adf04a0e6, type: 3}
-    back: {fileID: 2800000, guid: c875c9b7ea10ae546a7a28ed873a55b5, type: 3}
-  - name: glideStart_01
-    front: {fileID: 2800000, guid: d644481d978eb5943952d9a1681f3376, type: 3}
-    back: {fileID: 2800000, guid: 21cf7234c372b1341a8178dbefaeee63, type: 3}
-  - name: glideStart_02
-    front: {fileID: 2800000, guid: 89c8ff2d58652574b90387b1cdc77d81, type: 3}
-    back: {fileID: 2800000, guid: 3f15f8aa9b058294fa5d4b80041e7778, type: 3}
-  - name: glideStart_03
-    front: {fileID: 2800000, guid: d1095d001ba5342419b74c497d26eaa3, type: 3}
-    back: {fileID: 2800000, guid: aa1e8d58cb1a7ff4084aeaa58fcb2814, type: 3}
-  - name: glideStart_04
-    front: {fileID: 2800000, guid: bf477a28ad1603a4dae0c1c5201c2c1f, type: 3}
-    back: {fileID: 2800000, guid: f4aad464ca135dd429a60df3b487e48f, type: 3}
-  - name: glideStart_05
-    front: {fileID: 2800000, guid: bfeeea4e8c077984dae367943b2db78e, type: 3}
-    back: {fileID: 2800000, guid: 5065129b7558a024fa4c88467f3c55f7, type: 3}
-  - name: glideStart_06
-    front: {fileID: 2800000, guid: 6a948e67d03513c4c8609c633a5a1bdf, type: 3}
-    back: {fileID: 2800000, guid: 307e97679f164554d9f73a44fd122c82, type: 3}
-  - name: glideStart_07
-    front: {fileID: 2800000, guid: 3c91ded3a69fa8a4fa121d7c601b69c5, type: 3}
-    back: {fileID: 2800000, guid: 445a4c29a14fe6b41a36d54ac2835df7, type: 3}
-  - name: glideIdle_01
-    front: {fileID: 2800000, guid: cd8bbbe185bfb304390d822a1832081d, type: 3}
-    back: {fileID: 2800000, guid: 9f58522c82e4ede418575c4548ba1298, type: 3}
-  - name: menuIdle_01
-    front: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
-    back: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
-  - name: '[30menuIdle_02'
-    front: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
-    back: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
+  ID: 0
+  texturePacks: []
 --- !u!95 &2894008898620839722
 Animator:
   serializedVersion: 5

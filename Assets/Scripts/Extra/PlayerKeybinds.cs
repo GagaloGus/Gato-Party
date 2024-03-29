@@ -7,6 +7,7 @@ public static class PlayerKeybinds
     public static KeyCode
         jump = KeyCode.Space,
         run = KeyCode.LeftShift,
+        openSkinMenu = KeyCode.E,
         push_mashMG = KeyCode.Space;
         
 }

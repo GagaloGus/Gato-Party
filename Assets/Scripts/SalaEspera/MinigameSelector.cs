@@ -25,7 +25,6 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         }
 
         minigameDisplay.SetActive(false);
-        loadingScreen.SetActive(false);
 
         if(PhotonNetwork.IsMasterClient)
             RandomizeMinigames();

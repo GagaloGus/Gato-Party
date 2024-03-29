@@ -82,7 +82,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
                 roomOptions: new RoomOptions() { MaxPlayers = maxPlayers, IsVisible = true, IsOpen = true},
                 typedLobby: TypedLobby.Default,
                 expectedUsers: null);
-            }, 2);
+            }, 1);
     }
 
     public void JoinRoomInputText()

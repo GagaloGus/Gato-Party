@@ -26,9 +26,19 @@ public class ChangeTextureAnimEvent : MonoBehaviour
 
     Material frontMat, backMat;
     Dictionary<string, int> animationDic = new Dictionary<string, int>();
-
     private void Start()
     {   
+        UpdateAnimationDictionary();
+    }
+
+    public void UpdateAnimationDictionary(AnimationPacks[] packs)
+    {
+        this.texturePacks = packs;
+        UpdateAnimationDictionary();
+    }
+
+    public void UpdateAnimationDictionary()
+    {
         frontMat = modelo.GetComponent<MeshRenderer>().materials[0];
         backMat = modelo.GetComponent<MeshRenderer>().materials[1];
 
@@ -39,6 +49,7 @@ public class ChangeTextureAnimEvent : MonoBehaviour
             animationDic.Add(texturePacks[i].name, i);
         }
     }
+
 
     public void ChangeTexture(string textureName)
     {

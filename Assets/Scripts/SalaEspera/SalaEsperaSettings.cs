@@ -19,8 +19,11 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public TMP_Text roomName;
     public TMP_Text playerCount;
 
+    PhotonView photonView;
     private void Awake()
     {
+        photonView = GetComponent<PhotonView>();
+
         Hashtable roomProps = new Hashtable
         {
             [Constantes.MinigameScene_Room] = "SALA_ESPERA"
@@ -73,7 +76,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SalaEspera) && targetPlayer == PhotonNetwork.LocalPlayer)
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SalaEspera];
-            Debug.Log("Jugador " + (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID] + ": " + (isReady ? "Listo" : "No Listo"));
+            Debug.Log("Jugador " + targetPlayer.NickName + ": " + (isReady ? "Listo" : "No Listo"));
 
             playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
             playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
@@ -156,8 +159,45 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(resetProp);
 
-
         playerCount.text = $"Players: {PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
 
+
+    public void UpdatePlayerSkin(int photonViewID, int skinID)
+    {
+        object[] parameters = { photonViewID, skinID };
+        photonView.RPC(nameof(LoadTexturePacks), RpcTarget.All, parameters);
+
+        Hashtable playerProp = new Hashtable
+        {
+            [Constantes.PlayerKey_Skin] = skinID
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties (playerProp);
+    }
+
+    [PunRPC]
+    public void LoadTexturePacks(int photonViewID, int SkinID)
+    {
+        AnimationBundles animationBundles = FindObjectOfType<AnimationBundles>();
+
+        //Encuentra el gameobject del player segun su PhotonView ID
+        GameObject player = PhotonView.Find(photonViewID).gameObject;
+        ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
+
+        AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
+
+        try
+        {
+            textureScript.ID = SkinID;
+            textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+            print($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color>");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.Message, this);
+            //Si algo falla, le pone la skin default
+            textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
+            textureScript.ID = 0;
+        }
+    }
 }

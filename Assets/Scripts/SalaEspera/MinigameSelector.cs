@@ -62,7 +62,28 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         //El Master Client llama a la funcion y la manda a todos los clientes
         if (PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             GetComponent<PhotonView>().RPC(nameof(RPC_StartMinigameSelection), RpcTarget.All);
+
+            List<int> usingIDs = new List<int>();
+
+            foreach (KeyValuePair<int, Player> playerEntry in PhotonNetwork.CurrentRoom.Players)
+            {
+                foreach (System.Collections.DictionaryEntry entry in playerEntry.Value.CustomProperties)
+                {
+                    if ((string)entry.Key == Constantes.PlayerKey_Skin)
+                    {
+                        usingIDs.Add((int)entry.Value);
+                        break;
+                    }
+                }
+            }
+
+            Hashtable roomNewProp = new Hashtable
+            {
+                [Constantes.SkinIDOrder_Room] = usingIDs.ToArray()
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomNewProp);
         }
     }
 

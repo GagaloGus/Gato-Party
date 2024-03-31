@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviourPunCallbacks
 {
@@ -132,11 +133,27 @@ public class MainMenu : MonoBehaviourPunCallbacks
             //Si la sala no esta vacia
             if (roomList[i].PlayerCount > 0)
             {
-                print(roomList[i].Name);
                 GameObject roomButton = Instantiate(roomButtonPrefab, Vector3.zero, Quaternion.identity, roomListContent);
+                Room room = roomButton.GetComponent<Room>();
+                room.roomInfo = roomList[i];
 
-                roomButton.GetComponent<Room>().roomName.text = roomList[i].Name;
-                roomButton.GetComponent<Room>().playerCountText.text = $"Players: {roomList[i].PlayerCount}/{roomList[i].MaxPlayers}";
+                room.roomName.text = roomList[i].Name;
+
+                if (!roomList[i].IsOpen)
+                {
+                    roomButton.GetComponent<Button>().interactable = false;
+                    room.playerCountText.text = "Round started...";
+                }
+                else if(roomList[i].PlayerCount >= roomList[i].MaxPlayers)
+                {
+                    roomButton.GetComponent<Button>().interactable = false;
+                    room.playerCountText.text = $"Players: {roomList[i].PlayerCount}/{roomList[i].MaxPlayers}";
+                }
+                else
+                {
+                    roomButton.GetComponent<Button>().interactable = true; 
+                    room.playerCountText.text = $"Players: {roomList[i].PlayerCount}/{roomList[i].MaxPlayers}";
+                }
             }
         }
     }

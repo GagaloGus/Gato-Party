@@ -10,6 +10,8 @@ public class Room : MonoBehaviour
     public TMP_Text roomName;
     public TMP_Text playerCountText;
 
+    public RoomInfo roomInfo;
+
     private void Start()
     {
         roomName = transform.Find("Name").GetComponent<TMP_Text>();
@@ -18,6 +20,6 @@ public class Room : MonoBehaviour
 
     public void JoinRoom()
     {
-        FindObjectOfType<MainMenu>().JoinRoomInList(roomName.text);
+        FindObjectOfType<MainMenu>().JoinRoomInList(roomInfo.Name);
     }
 }

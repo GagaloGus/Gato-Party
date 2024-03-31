@@ -14,6 +14,8 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     GameObject playerObject;
     GameObject onRangeIcon, skinpanel;
 
+    SalaEsperaSettings salaEsperaSettings;
+
     private void Start()
     {
         Transform buttonPanel = SkinPanel.transform.Find("ButtonPanel");
@@ -42,6 +44,7 @@ public class SkinSelector : MonoBehaviourPunCallbacks
 
         onRangeIcon = transform.Find("OnRange").gameObject;
         skinpanel = FindObjectOfType<BasicButtonFunctions>().transform.Find("SkinSelectorPanel").gameObject;
+        salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
     }
 
     private void Update()
@@ -52,6 +55,10 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             if (Input.GetKeyDown(PlayerKeybinds.openSkinMenu))
             {
                 skinpanel.SetActive(!skinpanel.activeInHierarchy);
+
+                //Temporal//
+                if (skinpanel.activeInHierarchy)
+                    DeselectOtherButtons(salaEsperaSettings.CurrentSkinID);
             }
         }
         else
@@ -90,7 +97,7 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     {
         //No hace falta ninguna comprobacion del boton aqui, ya la hace en el OnPlayerPropertiesUpdate
         DeselectOtherButtons(ID);
-        FindObjectOfType<SalaEsperaSettings>().UpdatePlayerSkin(playerObject.GetComponent<PhotonView>().ViewID, ID);
+        salaEsperaSettings.UpdatePlayerSkin(playerObject.GetComponent<PhotonView>().ViewID, ID);
     }
 
     //Cambia las animaciones dependiendo del boton que hayamos pulsado
@@ -98,18 +105,8 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     {
         for (int i = 0; i <= skinButtons.Count - 1; i++)
         {
-            GameObject currentButton = skinButtons[i];
-            Animator bordeAnimator = currentButton.GetComponent<Animator>();
-
-            if(bordeAnimator != null)
-            {
-                bordeAnimator.SetBool("select", i == buttonIndex);
-            }
-            else
-            {
-                Debug.LogError($"No se encontro animator para {i}");
-            }
-
+            Animator bordeAnimator = skinButtons[i].GetComponent<Animator>();
+            bordeAnimator.SetBool("select", i == buttonIndex);
         }
     }
 
@@ -119,10 +116,10 @@ public class SkinSelector : MonoBehaviourPunCallbacks
         List<int> AllIDs = new List<int>();
         List<int> remainingIDs = new List<int>() { 0, 1, 2, 3, 4, 5 };
 
+        //Coge los IDs de todas las skins que estan siendo usadas
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            Player currentPlayer = player.Value;
-            foreach (System.Collections.DictionaryEntry entry in currentPlayer.CustomProperties)
+            foreach (System.Collections.DictionaryEntry entry in player.Value.CustomProperties)
             {
                 if ((string)entry.Key == Constantes.PlayerKey_Skin)
                 {
@@ -132,12 +129,14 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             }
         }
 
+        //Si esta el ID en la lista de remainingIDs, lo quita
         foreach (int id in AllIDs)
         {
             if (remainingIDs.Contains(id))
             { remainingIDs.Remove(id); }
         }
 
+        //Devuelve una lista con los IDs que no estan en la lista AllIDs (ergo, los IDs que quedan libres)
         return remainingIDs;
     }
 

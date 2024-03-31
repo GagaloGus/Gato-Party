@@ -821,7 +821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &733876805
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2083,8 +2083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerList: {fileID: 1685225118}
   readyButton: {fileID: 1253986183}
-  notReady: {fileID: 21300000, guid: 5cfd905afa0ba3346a0ed414be3692eb, type: 3}
-  ready: {fileID: 21300000, guid: 362cb21a58d757d4b8fe80833a3305a7, type: 3}
 --- !u!1 &1720805630
 GameObject:
   m_ObjectHideFlags: 0

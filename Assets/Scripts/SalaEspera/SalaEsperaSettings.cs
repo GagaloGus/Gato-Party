@@ -19,6 +19,9 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public TMP_Text roomName;
     public TMP_Text playerCount;
 
+    [Header("Skin")]
+    public int CurrentSkinID;
+
     PhotonView photonView;
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
             [Constantes.PlayerKey_MinigameScore] = 0
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+        PhotonNetwork.CurrentRoom.IsOpen = true;
     }
     void Start()
     {
@@ -167,6 +171,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     {
         object[] parameters = { photonViewID, skinID };
         photonView.RPC(nameof(LoadTexturePacks), RpcTarget.All, parameters);
+        CurrentSkinID = skinID;
 
         Hashtable playerProp = new Hashtable
         {

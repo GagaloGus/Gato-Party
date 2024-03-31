@@ -1,8 +1,9 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class CoolFunctions
@@ -50,7 +51,7 @@ public static class CoolFunctions
         mb.StartCoroutine(InvokeRoutine(f, delay));
     }
 
-    private static IEnumerator InvokeRoutine(System.Action f, float delay)
+    private static System.Collections.IEnumerator InvokeRoutine(System.Action f, float delay)
     {
         yield return new WaitForSeconds(delay);
         f();
@@ -79,6 +80,25 @@ public static class CoolFunctions
         }
 
         return false;
+    }
+
+    //Seguramente habra que cambiarlo para que tambien devuelva players, por ahora funciona
+    public static List<int> GetAllPlayerSkinIDs()
+    {
+        List<int> usingIDs = new List<int>();
+
+        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+        foreach(System.Collections.DictionaryEntry entry in roomProps)
+        {
+            if((string)entry.Key == Constantes.SkinIDOrder_Room)
+            {
+                int[] temp = (int[])entry.Value;
+                usingIDs = temp.ToList();
+                break;
+            }
+        }
+
+        return usingIDs;
     }
 }
 

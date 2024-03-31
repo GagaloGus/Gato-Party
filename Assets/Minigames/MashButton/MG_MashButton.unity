@@ -215,6 +215,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 19.804, y: 152.188, z: 0}
+--- !u!1 &201465409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 201465411}
+  - component: {fileID: 201465410}
+  m_Layer: 0
+  m_Name: Animation Bundles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &201465410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201465409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f980d77ee78b8ce44b77f252cd45dc96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bundles:
+  - Name: Sko
+    ID: 0
+    texturePacks:
+    - name: mash_01
+      front: {fileID: 2800000, guid: e696166cb9c8f944b8b8babfc26f85e9, type: 3}
+      back: {fileID: 2800000, guid: 9b398ddba1e367a4b856bc9981e9c398, type: 3}
+    - name: mash_02
+      front: {fileID: 2800000, guid: e4c509f3b52fe2e478985d916aafce7c, type: 3}
+      back: {fileID: 2800000, guid: 5fc3c8b9236824d4f95756eb339871aa, type: 3}
+  - Name: Beeko
+    ID: 1
+    texturePacks:
+    - name: mash_01
+      front: {fileID: 2800000, guid: 8fd38ba28cf07284abe435a0674aa439, type: 3}
+      back: {fileID: 2800000, guid: dd5dbbe941421084b89485a6dc0095f0, type: 3}
+    - name: mash_02
+      front: {fileID: 2800000, guid: 95a6156e4871c474e8b7030a2981f2d8, type: 3}
+      back: {fileID: 2800000, guid: 4e45eb46f0123ab48850a95906fb533f, type: 3}
+--- !u!4 &201465411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201465409}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 530.2541, y: 454.42416, z: 801.2202}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &284717796
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,18 +819,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.368
       objectReference: {fileID: 0}
@@ -810,10 +861,6 @@ PrefabInstance:
     - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_Name
       value: MashB_Player_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1450,7 +1497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1532,7 +1579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1614,7 +1661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1980,3 +2027,4 @@ SceneRoots:
   - {fileID: 421527413}
   - {fileID: 1151418371}
   - {fileID: 933839825}
+  - {fileID: 201465411}

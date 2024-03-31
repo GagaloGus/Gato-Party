@@ -38,6 +38,21 @@ public class AnimationBundles : MonoBehaviour
 
         bundles.Add(bundle);
     }
+
+    public void CreateMashAnimationBundle()
+    {
+        AnimationSpriteBundle bundle = new AnimationSpriteBundle
+        {
+            ID = bundles.Count,
+            texturePacks = new AnimationPacks[]
+            {
+                new AnimationPacks("mash_01"),
+                new AnimationPacks("mash_02")
+            }
+        };
+
+        bundles.Add(bundle);
+    }
 }
 
 [System.Serializable]
@@ -61,6 +76,13 @@ class AnimationBundleEditor : Editor
         if(GUILayout.Button("Add default SALA ESPERA pack", GUILayout.Height(30)))
         {
             myscript.CreateDefaultAnimationBundle();
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if(GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(30)))
+        {
+            myscript.CreateMashAnimationBundle();
         }
         GUILayout.EndHorizontal();
     }

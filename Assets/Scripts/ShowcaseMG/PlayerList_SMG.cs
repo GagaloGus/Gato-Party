@@ -9,24 +9,34 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
 {
     public GameObject playerList;
     List<Image> playerImageList = new List<Image>();
+    List<int> playerSkinsIDs = new List<int>();
 
     [Header("Button")]
     public Button readyButton;
 
-    [Header("Sprites")]
-    public Sprite notReady;
-    public Sprite ready;
     // Start is called before the first frame update
     void Start()
     {
+        playerSkinsIDs.Clear();
+        playerSkinsIDs = CoolFunctions.GetAllPlayerSkinIDs();
+
+        //Solucion temporal para que siempre haya 4 imagenes
+        while(playerSkinsIDs.Count < 4)
+        {
+            playerSkinsIDs.Add(0);
+        }
+
         Hashtable playerProps = new Hashtable();
         playerProps[Constantes.PlayerKey_Ready_SMG] = false;
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
-        foreach (Transform child in playerList.transform) 
-        { 
+        for (int i = 0; i < playerList.transform.childCount; i++)
+        {
+            Transform child = playerList.transform.GetChild(i);
+
             playerImageList.Add(child.GetComponent<Image>());
-            child.GetComponent<Image>().sprite = notReady;
+
+            child.GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_notready");
         }
         readyButton.interactable = true;
 
@@ -50,13 +60,14 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SMG];
             Debug.Log("Jugador " + targetPlayer.NickName + " está minujuego " + (isReady ? "listo" : "no listo"));
 
-            foreach (Image image in playerImageList)
+            for (int i = 0; i < playerImageList.Count; i++)
             {
+                Image image = playerImageList[i];
+
                 //Si el ID del player es el mismo que el de su sprite
                 if(int.Parse(image.gameObject.name) == (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID] && isReady)
                 {
-                    //Checkar si le dio a ready o no
-                    image.sprite = ready;
+                    image.sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_ready"); ;
                     break;
                 }
             }
@@ -66,11 +77,13 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         //Pone el sprite del respectivo player que se fue en gris
-        foreach (Image image in playerImageList)
+        for(int i = 0; i < playerImageList.Count; i++)
         {
+            Image image = playerImageList[i];
+
             if (int.Parse(image.gameObject.name) == (int)otherPlayer.CustomProperties[Constantes.PlayerKey_CustomID])
             {
-                image.sprite = notReady;
+                image.sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_notready"); ;
                 image.color = new Color(0, 0, 0, 0.5f);
             }
         }

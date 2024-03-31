@@ -100,5 +100,46 @@ public static class CoolFunctions
 
         return usingIDs;
     }
+
+    //Actualiza las texturas de el propio personaje y de todos los demas players
+    //Esta funcion se debe llamar al inicio de cada minijuego para cargar las texturas, no en la Sala Espera
+    public static void LoadAllTexturePacks<T>() where T : MonoBehaviour
+    {
+        T[] players = UnityEngine.Object.FindObjectsOfType<T>();
+        foreach (T player in players)
+        {
+            PhotonView otherPhotonView = player.gameObject.GetComponent<PhotonView>();
+            int otherSkinID = (int)otherPhotonView.Owner.CustomProperties[Constantes.PlayerKey_Skin];
+            Debug.LogAssertion($"{otherSkinID} SKIN ID -> {player.name}, {otherPhotonView.Owner.NickName}");
+
+            LoadPacks(otherPhotonView.ViewID, otherSkinID);
+        }
+    }
+
+    static void LoadPacks(int photonViewID, int SkinID)
+    {
+        AnimationBundles animationBundles = UnityEngine.Object.FindObjectOfType<AnimationBundles>();
+
+        //Encuentra el gameobject del player segun su PhotonView ID
+        GameObject player = PhotonView.Find(photonViewID).gameObject;
+        ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
+
+        AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
+
+        try
+        {
+            textureScript.ID = SkinID;
+            textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+            Debug.Log($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color> -> {player.name}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.Message);
+            //Si algo falla, le pone la skin default
+            textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
+            textureScript.ID = 0;
+        }
+    }
+
 }
 

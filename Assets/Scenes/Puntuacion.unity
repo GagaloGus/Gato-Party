@@ -1815,6 +1815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ad83a1a29be48469e5cba873107222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundsOver: 0
+  FinalScore_SceneName: FinalScores
   NextMinigamePanel: {fileID: 1361036549}
   LoadingScreen: {fileID: 1786803050}
 --- !u!4 &2074548422

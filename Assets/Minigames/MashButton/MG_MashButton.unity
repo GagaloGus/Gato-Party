@@ -1522,18 +1522,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 842538722331555474, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.35100007
       objectReference: {fileID: 0}
@@ -1576,10 +1564,6 @@ PrefabInstance:
     - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
       propertyPath: m_Name
       value: MashB_Player_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

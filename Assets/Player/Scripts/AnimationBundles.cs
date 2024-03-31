@@ -53,6 +53,26 @@ public class AnimationBundles : MonoBehaviour
 
         bundles.Add(bundle);
     }
+
+    public void CreateFinalScoreAnimationBundle()
+    {
+        AnimationSpriteBundle bundle = new AnimationSpriteBundle
+        {
+            ID = bundles.Count,
+            texturePacks = new AnimationPacks[]
+            {
+                new AnimationPacks("idle_01"),
+                new AnimationPacks("idle_02"),
+                new AnimationPacks("jumpDown_01"),
+                new AnimationPacks("fall_01"),
+                new AnimationPacks("fall_02"),
+                new AnimationPacks("victory_01"),
+                new AnimationPacks("victory_02")
+            }
+        };
+
+        bundles.Add(bundle);
+    }
 }
 
 [System.Serializable]
@@ -73,7 +93,7 @@ class AnimationBundleEditor : Editor
         AnimationBundles myscript = (AnimationBundles)target;
 
         GUILayout.BeginHorizontal();
-        if(GUILayout.Button("Add default SALA ESPERA pack", GUILayout.Height(30)))
+        if(GUILayout.Button("Add SALA ESPERA pack", GUILayout.Height(30)))
         {
             myscript.CreateDefaultAnimationBundle();
         }
@@ -83,6 +103,13 @@ class AnimationBundleEditor : Editor
         if(GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(30)))
         {
             myscript.CreateMashAnimationBundle();
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add FINAL SCORE pack", GUILayout.Height(30)))
+        {
+            myscript.CreateFinalScoreAnimationBundle();
         }
         GUILayout.EndHorizontal();
     }

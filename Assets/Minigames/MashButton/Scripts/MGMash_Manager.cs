@@ -29,6 +29,15 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
         GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject();
 
+        //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
+        //- aqui habra que poner una pantalla de carga en vez del delay -//
+        CoolFunctions.Invoke(this, () =>
+        {
+            CoolFunctions.LoadAllTexturePacks<MGMash_PlayerController>();
+            player.GetComponentInChildren<Animator>().SetBool("push", false);
+        }, 0.5f);
+
+
         //Espera 2 segundos
         CoolFunctions.Invoke(this, () =>
         {

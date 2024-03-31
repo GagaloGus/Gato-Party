@@ -29,7 +29,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
         Hashtable roomProps = new Hashtable
         {
-            [Constantes.MinigameScene_Room] = "SALA_ESPERA"
+            [Constantes.MinigameScene_Room] = "SALA_ESPERA",
+            [Constantes.RoundsOver_Room] = false
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
 

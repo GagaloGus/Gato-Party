@@ -12,6 +12,8 @@ using UnityEngine.UI;
 public class Ranking_Settings : MonoBehaviour
 {
     MinigameInfo nextMinigame;
+    public bool roundsOver;
+    public string FinalScore_SceneName;
 
     [Header("References")]
     public GameObject NextMinigamePanel;
@@ -20,9 +22,12 @@ public class Ranking_Settings : MonoBehaviour
     [Header("Lists")]
     List<Sprite> rankingNumberSprites = new List<Sprite>();
     List<GameObject> RankingPanels = new List<GameObject>();
-    
+
     private void Awake()
     {
+        //Mira si quedan minijuegos disponibles
+        roundsOver = (bool)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.RoundsOver_Room];
+
         NextMinigamePanel.SetActive(false);
         LoadingScreen.SetActive(false);
 
@@ -33,12 +38,12 @@ public class Ranking_Settings : MonoBehaviour
         //Guarda los paneles donde iran las puntuaciones
         Transform rankingPanel = FindObjectOfType<Canvas>().transform.Find("Ranking");
 
-        foreach(Transform panel in rankingPanel)
+        foreach (Transform panel in rankingPanel)
         {
             RankingPanels.Add(panel.gameObject);
         }
 
-        for (int i = 0;i < RankingPanels.Count;i++)
+        for (int i = 0; i < RankingPanels.Count; i++)
         {
             RankingPanels[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
         }
@@ -77,7 +82,7 @@ public class Ranking_Settings : MonoBehaviour
 
     void UpdateUI(List<Player> sortedPlayerList)
     {
-        for(int i = 0; i < sortedPlayerList.Count; i++)
+        for (int i = 0; i < sortedPlayerList.Count; i++)
         {
             Player currentPlayer = sortedPlayerList[i];
             int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
@@ -99,7 +104,7 @@ public class Ranking_Settings : MonoBehaviour
         UpdateUI(RanklistGlob);
 
         //Actualiza las puntuaciones solo si es el Master Client
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             //Coje una lista ordenada segun la pt del minijuego anterior
             List<Player> RanklistMinigame = GetPlayerListSorted(Constantes.PlayerKey_MinigameScore);
@@ -111,19 +116,19 @@ public class Ranking_Settings : MonoBehaviour
                 int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
 
                 int amountOfPlayersSameMGScore = 0;
-                for(int j = 0; j < RanklistMinigame.Count; j++)
+                for (int j = 0; j < RanklistMinigame.Count; j++)
                 {
                     Player nextPlayer = RanklistMinigame[j];
                     int nextWinPoints = (int)nextPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
 
-                    if(nextWinPoints == currentWinPoints 
+                    if (nextWinPoints == currentWinPoints
                         && nextPlayer != currentPlayer)
                     {
                         amountOfPlayersSameMGScore++;
-                    }   
+                    }
                 }
 
-                if(amountOfPlayersSameMGScore > 0)
+                if (amountOfPlayersSameMGScore > 0)
                 {
                     int totalScore = 0;
                     for (int k = 0; k < amountOfPlayersSameMGScore; k++)
@@ -131,14 +136,14 @@ public class Ranking_Settings : MonoBehaviour
                         totalScore += Constantes.Win_Points[k];
                     }
                     int averageScore = Mathf.RoundToInt((float)totalScore / amountOfPlayersSameMGScore);
-                } 
+                }
 
                 Hashtable newPlayerProps = new Hashtable();
                 newPlayerProps[Constantes.PlayerKey_TotalScore] = currentWinPoints + Constantes.Win_Points[i];
                 currentPlayer.SetCustomProperties(newPlayerProps);
             }
         }
-        
+
         //Tarda tantos segundos en actualizar la puntuacion a la actual (suspense)
         CoolFunctions.Invoke(this, () =>
         {
@@ -147,30 +152,40 @@ public class Ranking_Settings : MonoBehaviour
             UpdateUI(NewRankListGlob);
         }, 2);
 
-        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
-        foreach (System.Collections.DictionaryEntry entry in roomProps)
+        //Mira si se acabaron las rondas
+        if (!roundsOver)
         {
-            if ((string)entry.Key == Constantes.MinigameOrder_Room)
+            //Cambia al siguiente minijuego
+            Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+            foreach (System.Collections.DictionaryEntry entry in roomProps)
             {
-                string[] temp = (string[])entry.Value;
-                nextMinigame = Resources.Load<MinigameInfo>($"Minigames/{temp[0]}");
+                if ((string)entry.Key == Constantes.MinigameOrder_Room)
+                {
+                    string[] temp = (string[])entry.Value;
+                    nextMinigame = Resources.Load<MinigameInfo>($"Minigames/{temp[0]}");
+                    break;
+                }
             }
-        }
 
-        CoolFunctions.Invoke(this, () =>
-        {
-            NextMinigamePanel.SetActive(true);
-
-            NextMinigamePanel.transform.Find("Name").GetComponent<TMP_Text>().text = nextMinigame.Name;
-            NextMinigamePanel.transform.Find("DisplayImage").GetComponent<Image>().sprite = nextMinigame.Icon;
 
             CoolFunctions.Invoke(this, () =>
             {
-                LoadingScreen.SetActive(true);
-                PhotonNetwork.LoadLevel("ShowcaseMG");
-            }, 4);
-        }, 6);
+                NextMinigamePanel.SetActive(true);
 
+                NextMinigamePanel.transform.Find("Name").GetComponent<TMP_Text>().text = nextMinigame.Name;
+                NextMinigamePanel.transform.Find("DisplayImage").GetComponent<Image>().sprite = nextMinigame.Icon;
+
+                CoolFunctions.Invoke(this, () =>
+                {
+                    LoadingScreen.SetActive(true);
+                    PhotonNetwork.LoadLevel("ShowcaseMG");
+                }, 4);
+            }, 6);
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel(FinalScore_SceneName);
+        }
     }
 
 }

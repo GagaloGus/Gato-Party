@@ -112,8 +112,13 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 tempList.RemoveAt(0);
 
                 //actualiza el array de los minijuegos
-                Hashtable roomMiniProps = new Hashtable();
-                roomMiniProps[Constantes.MinigameOrder_Room] = tempList.ToArray();
+                Hashtable roomMiniProps = new Hashtable
+                {
+                    [Constantes.MinigameOrder_Room] = tempList.ToArray(),
+                    [Constantes.RoundsOver_Room] = (tempList.Count > 0)
+
+                };
+
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomMiniProps);
             }
         }

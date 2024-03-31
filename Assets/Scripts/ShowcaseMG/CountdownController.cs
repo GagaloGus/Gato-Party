@@ -31,7 +31,6 @@ public class CountdownController : MonoBehaviour
 
     public void StartCountdown(float maxTime, Action endCounterFunction, float incrementAmount = 1, string finishedText = "", string stringFormat = "0", float delayToInvoke = 0)
     {
-        print("Start countdown");
         counterGameObject.SetActive(true);
 
         this.endCounterFunction = endCounterFunction;
@@ -105,10 +104,8 @@ public class CountdownController : MonoBehaviour
         //Ejecuta la funcion que le pasamos
         CoolFunctions.Invoke(this, () =>
         {
-            print("terminao");
-
             try { endCounterFunction();}
-            catch { }
+            catch { Debug.LogError("No se llamo a la funcion del fin del contador"); }
 
             //Reseta las variables
             endCounterFunction = null;

@@ -14,11 +14,9 @@ public class Spawner : MonoBehaviourPunCallbacks
     public Vector3 minPositions;
     public Vector3 maxPositions;
 
-    AnimationBundles animationBundles;
     PhotonView photonView;
     private void Awake()
     {
-        animationBundles = FindObjectOfType<AnimationBundles>();
         photonView = GetComponent<PhotonView>();
     }
 
@@ -62,14 +60,7 @@ public class Spawner : MonoBehaviourPunCallbacks
         //Ligero delay para que todo este iniciado y cargar las texturas correctamente
         CoolFunctions.Invoke(this, () =>
         {
-            SE_PlayerController[] players = FindObjectsOfType<SE_PlayerController>();
-            foreach (SE_PlayerController player in players)
-            {
-                PhotonView otherPhotonView = player.gameObject.GetComponent<PhotonView>();
-                int otherSkinID = (int)otherPhotonView.Owner.CustomProperties[Constantes.PlayerKey_Skin];
-
-                salaEsperaSettings.LoadTexturePacks(otherPhotonView.ViewID, otherSkinID);
-            }
+            CoolFunctions.LoadAllTexturePacks<SE_PlayerController>();
         }, 0.1f);
 
         //desactiva la pantalla de carga

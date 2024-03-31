@@ -18,6 +18,7 @@ public static class Constantes
     public static readonly string MinigameOrder_Room = "MINIGAME_ORDER";
     public static readonly string MinigameScene_Room = "MINIGAME_SCENE";
     public static readonly string SkinIDOrder_Room = "SKIN_ID_ORDER";
+    public static readonly string RoundsOver_Room = "ROUNDSOVER";
 
     //Puntos
     public static readonly int[] Win_Points = new int[] { 7, 4, 2, 0 };

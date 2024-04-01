@@ -166,7 +166,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void LoadingScreenWithDelay(System.Action f, int delay)
     {
-        Debug.Log("Cargando...");
         ToggleMenu(loadingScreen.name);
         CoolFunctions.Invoke(this, () => { f(); }, delay);
     }

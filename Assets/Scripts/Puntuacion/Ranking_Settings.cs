@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Ranking_Settings : MonoBehaviour
 {
     MinigameInfo nextMinigame;
     public bool roundsOver;
-    public string FinalScore_SceneName;
 
     [Header("References")]
     public GameObject NextMinigamePanel;
@@ -25,9 +25,6 @@ public class Ranking_Settings : MonoBehaviour
 
     private void Awake()
     {
-        //Mira si quedan minijuegos disponibles
-        roundsOver = (bool)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.RoundsOver_Room];
-
         NextMinigamePanel.SetActive(false);
         LoadingScreen.SetActive(false);
 
@@ -99,6 +96,14 @@ public class Ranking_Settings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Mira si quedan minijuegos disponibles
+        roundsOver = (bool)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.RoundsOver_Room];
+
+        StartCoroutine(nameof(TimeLine));
+    }
+
+    System.Collections.IEnumerator TimeLine()
+    {
         //Actualiza la interfaz con el ranking de pt globales anterior al minijuego
         List<Player> RanklistGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
         UpdateUI(RanklistGlob);
@@ -144,13 +149,13 @@ public class Ranking_Settings : MonoBehaviour
             }
         }
 
-        //Tarda tantos segundos en actualizar la puntuacion a la actual (suspense)
-        CoolFunctions.Invoke(this, () =>
-        {
+        yield return new WaitForSeconds(2);
+
             //Actualiza la interfaz con el ranking de pt globales POSTERIOR al minijuego
             List<Player> NewRankListGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
             UpdateUI(NewRankListGlob);
-        }, 2);
+
+        yield return new WaitForSeconds(3);
 
         //Mira si se acabaron las rondas
         if (!roundsOver)
@@ -167,24 +172,21 @@ public class Ranking_Settings : MonoBehaviour
                 }
             }
 
+            NextMinigamePanel.SetActive(true);
 
-            CoolFunctions.Invoke(this, () =>
-            {
-                NextMinigamePanel.SetActive(true);
+            NextMinigamePanel.transform.Find("Name").GetComponent<TMP_Text>().text = nextMinigame.Name;
+            NextMinigamePanel.transform.Find("DisplayImage").GetComponent<Image>().sprite = nextMinigame.Icon;
 
-                NextMinigamePanel.transform.Find("Name").GetComponent<TMP_Text>().text = nextMinigame.Name;
-                NextMinigamePanel.transform.Find("DisplayImage").GetComponent<Image>().sprite = nextMinigame.Icon;
+            yield return new WaitForSeconds(4);
 
-                CoolFunctions.Invoke(this, () =>
-                {
-                    LoadingScreen.SetActive(true);
-                    PhotonNetwork.LoadLevel("ShowcaseMG");
-                }, 4);
-            }, 6);
+            LoadingScreen.SetActive(true);
+
+            yield return new WaitForSeconds(1);
+            PhotonNetwork.LoadLevel("ShowcaseMG");
         }
         else
         {
-            PhotonNetwork.LoadLevel(FinalScore_SceneName);
+            SceneManager.LoadScene("FinalScores");
         }
     }
 

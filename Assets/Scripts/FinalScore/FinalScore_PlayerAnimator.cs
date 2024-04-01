@@ -7,6 +7,7 @@ using UnityEngine;
 public class FinalScore_PlayerAnimator : MonoBehaviour
 {
     public int order;
+    public int skinID;
 
     private Transform groundPoint;
 

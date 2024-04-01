@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47441cf024eaa064b955f98ccc30acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 10
+  maxTime: 3
   resultsText: {fileID: 887950884}
   playerPrefab: {fileID: 1785142480979993342, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
   spawnerParent: {fileID: 1884110200}

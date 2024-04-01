@@ -115,8 +115,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 Hashtable roomMiniProps = new Hashtable
                 {
                     [Constantes.MinigameOrder_Room] = tempList.ToArray(),
-                    [Constantes.RoundsOver_Room] = (tempList.Count > 0)
-
+                    [Constantes.RoundsOver_Room] = (tempList.Count == 0)
                 };
 
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomMiniProps);

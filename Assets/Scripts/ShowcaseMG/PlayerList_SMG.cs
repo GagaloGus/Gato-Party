@@ -26,8 +26,10 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
             playerSkinsIDs.Add(0);
         }
 
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_Ready_SMG] = false;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_Ready_SMG] = false
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         for (int i = 0; i < playerList.transform.childCount; i++)
@@ -58,7 +60,6 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         if(changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG))
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SMG];
-            Debug.Log("Jugador " + targetPlayer.NickName + " está minujuego " + (isReady ? "listo" : "no listo"));
 
             for (int i = 0; i < playerImageList.Count; i++)
             {

@@ -110,7 +110,6 @@ public static class CoolFunctions
         {
             PhotonView otherPhotonView = player.gameObject.GetComponent<PhotonView>();
             int otherSkinID = (int)otherPhotonView.Owner.CustomProperties[Constantes.PlayerKey_Skin];
-            Debug.LogAssertion($"{otherSkinID} SKIN ID -> {player.name}, {otherPhotonView.Owner.NickName}");
 
             LoadPacks(otherPhotonView.ViewID, otherSkinID);
         }

@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 7735909398945552866}
   - component: {fileID: 8894553075410508213}
   - component: {fileID: 4583696058797969183}
-  - component: {fileID: 3030701541903461435}
   m_Layer: 0
   m_Name: 3dmodel Sko
   m_TagString: Untagged
@@ -159,27 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2026fd40bc8ddb94391a2af1b1401683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3030701541903461435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3363124888592308050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: push
-  m_SynchronizeLayers:
-  - SynchronizeType: 1
-    LayerIndex: 0
 --- !u!1 &3431836034195937263
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +213,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3199022793534036930}
-  - {fileID: 3030701541903461435}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

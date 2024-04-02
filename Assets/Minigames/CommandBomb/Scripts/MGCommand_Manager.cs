@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -13,26 +14,75 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
     [Header("Photon")]
     public int[] randomKeyOrder;
+    public int turnCount;
     public int roundCount;
+    PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
     {
-        roundCount = 1;
+        photonView = GetComponent<PhotonView>();
+        roundCount = 0;
+
+        Debug.LogAssertion("START COMMAND");
+
         foreach (Transform child in KeyHolder)
         {
             Destroy(child.gameObject);
         }
+        KeyHolder.gameObject.SetActive(false);
 
-        StartCoroutine(nameof(Round));
+        CoolFunctions.Invoke(this, () =>
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StartGame();
+                print("Start");
+            }
+        }, 0.3f);
+        
+
+        //StartCoroutine(nameof(Round));
     }
 
     System.Collections.IEnumerator Round()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
 
-        //Genera un array de INTs random
-        randomKeyOrder = GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4);
+        //Espera a que el Player le de a la tecla que toca, y avanza a la siguiente
+        for (int i = 0; i < randomKeyOrder.Length; i++)
+        {
+            KeySpritePair currentPair = CommandKeys[randomKeyOrder[i]];
+            yield return new WaitUntil(() => Input.GetKeyDown(currentPair.KeyCode));
+
+            photonView.RPC(nameof(RPC_ClickedKey), RpcTarget.All, i, true);
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        photonView.RPC(nameof(RPC_Finished), RpcTarget.All);
+
+        //Al acabar espera un poquito
+        yield return new WaitForSeconds(0.5f);
+        EndTurn();
+    }
+
+    void StartGame()
+    {
+        object[] parameters =
+        {
+            GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4),
+            1
+        };
+
+        photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, parameters);
+    }
+
+    [PunRPC]
+    void RPC_StartTurn(int[] randoms, int turn)
+    {
+        roundCount++;
+        turnCount = turn;
+        randomKeyOrder = randoms;
 
         //Instancia segun el orden del array 
         for (int i = 0; i < randomKeyOrder.Length; i++)
@@ -40,33 +90,45 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             GameObject key = Instantiate(keySpritePrefab, KeyHolder);
             key.GetComponent<Image>().sprite = CommandKeys[randomKeyOrder[i]].Sprite;
         }
-
         //Activa el panel
         KeyHolder.gameObject.SetActive(true);
 
-        //Espera a que el Player le de a la tecla que toca, y avanza a la siguiente
-        for (int i = 0; i < randomKeyOrder.Length; i++) 
+        //Si el turno corresponde con el ID del player
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] == turn)
         {
-            KeySpritePair currentPair = CommandKeys[randomKeyOrder[i]];
-            yield return new WaitUntil(() => Input.GetKeyDown(currentPair.KeyCode));
-            
-            KeyHolder.GetChild(i).gameObject.GetComponent<Image>().color = Color.gray;
-            yield return new WaitForSeconds(0.05f);
+            StartCoroutine(nameof(Round));
         }
 
-        //Al acabar espera un poquito
-        yield return new WaitForSeconds(0.5f);
+        Debug.Log($"Turn: {turnCount} / Round number {roundCount}");
+    }
 
-        //Desactiva el panel y borra los hijos
+    [PunRPC]
+    void RPC_ClickedKey(int i, bool correct)
+    {
+        KeyHolder.GetChild(i).gameObject.GetComponent<Image>().color = Color.gray;
+    }
+
+    void EndTurn()
+    {
+        int nextPlayerturn = (turnCount % PhotonNetwork.CurrentRoom.PlayerCount) + 1;
+
+        object[] parameters =
+        {
+            GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4),
+            nextPlayerturn
+        };
+
+        photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, parameters);
+    }
+
+    [PunRPC]
+    void RPC_Finished()
+    {
         KeyHolder.gameObject.SetActive(false);
-        foreach(Transform child in KeyHolder)
+        foreach (Transform child in KeyHolder)
         {
             Destroy(child.gameObject);
         }
-
-        roundCount++;
-
-        StartCoroutine(nameof(Round));
     }
 
     int[] GenerateRandomList(int length)

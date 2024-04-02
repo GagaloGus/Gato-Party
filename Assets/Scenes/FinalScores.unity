@@ -2576,10 +2576,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ranked_Player_1
       objectReference: {fileID: 0}
-    - target: {fileID: 3451380003900328557, guid: de010183f60effc4aa6342a5a0ed796f, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4962155149528676417, guid: de010183f60effc4aa6342a5a0ed796f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.48

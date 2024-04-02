@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6251499554506505221}
   - component: {fileID: 633838612113041092}
   - component: {fileID: 6417574422441294096}
-  - component: {fileID: 3451380003900328557}
   m_Layer: 0
   m_Name: Ranked_Player
   m_TagString: Player
@@ -79,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 0
+  skinID: 0
   rayDetectFloorDist: 0.5
   playerState: 0
 --- !u!75 &633838612113041092
@@ -114,28 +114,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7408306, y: 0.8100978, z: 0.47}
   m_Center: {x: 0.00019797683, y: 0.28735262, z: 0.000000029802322}
---- !u!114 &3451380003900328557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655780311901164889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &1516753595902523196
 GameObject:
   m_ObjectHideFlags: 0

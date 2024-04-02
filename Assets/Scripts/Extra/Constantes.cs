@@ -20,6 +20,9 @@ public static class Constantes
     public static readonly string SkinIDOrder_Room = "SKIN_ID_ORDER";
     public static readonly string RoundsOver_Room = "ROUNDSOVER";
 
+    //Minijuegos
+    public static readonly string KeyOrder_MGCommand = "KEY_ORDER";
+
     //Puntos
     public static readonly int[] Win_Points = new int[] { 7, 4, 2, 0 };
 }

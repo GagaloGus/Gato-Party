@@ -13,6 +13,7 @@ public static class Constantes
 
     public static readonly string PlayerKey_TotalScore = "PLAYER_TOTALSCORE";
     public static readonly string PlayerKey_MinigameScore = "PLAYER_MGSCORE";
+    public static readonly string PlayerKey_Eliminated = "PLAYER_ELIMINATED";
 
     //Rooms
     public static readonly string MinigameOrder_Room = "MINIGAME_ORDER";

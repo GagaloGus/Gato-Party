@@ -51,6 +51,10 @@ MonoBehaviour:
   - RPC_EndTurn
   - RPC_StartTurn
   - RPC_Finished
+  - RPC_PlayerEliminated
+  - RPC_Countdown
+  - RPC_FinishedGame
+  - RPC_StartCountdown
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

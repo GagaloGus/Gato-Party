@@ -26,8 +26,16 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
         currentMinigame = null;
 
-        Hashtable roomProps = new Hashtable();
-        roomProps[Constantes.MinigameScene_Room] = "SHOWCASE";
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_Eliminated] = false
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+
+        Hashtable roomProps = new Hashtable
+        {
+            [Constantes.MinigameScene_Room] = "SHOWCASE"
+        };
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
 
         //Coje todas las propiedades de la room

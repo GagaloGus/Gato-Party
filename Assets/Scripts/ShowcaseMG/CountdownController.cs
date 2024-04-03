@@ -58,16 +58,13 @@ public class CountdownController : MonoBehaviour
     [PunRPC]
     void RPC_StartCounter(float maxTime, float incrementAmount, string finishedText, string stringFormat, float delayToInvoke)
     {
-        print("Start RPC countdown");
-
         this.finishedText = finishedText;
         this.incrementAmount = incrementAmount;
         this.stringFormat = stringFormat;
         this.delayToInvoke = delayToInvoke;
         counterValue = maxTime;
 
-        print($"Max time:{maxTime}, Increment: {incrementAmount}, Delay: {delayToInvoke}");
-
+        print($"Start RPC countdown: Max time:{maxTime}, Increment: {incrementAmount}, Delay: {delayToInvoke}");
         // Llama al método para iniciar el contador en todos los clientes
         InvokeRepeating(nameof(Countdown), 0, incrementAmount); // Baja el contador cada incremento repetidamente
     }

@@ -73,6 +73,24 @@ public class AnimationBundles : MonoBehaviour
 
         bundles.Add(bundle);
     }
+
+    public void CreateMGCommandAnimationBundle()
+    {
+        AnimationSpriteBundle bundle = new AnimationSpriteBundle
+        {
+            ID = bundles.Count,
+            texturePacks = new AnimationPacks[]
+            {
+                new AnimationPacks("recieve_01"),
+                new AnimationPacks("recieve_02"),
+                new AnimationPacks("idle_01"),
+                new AnimationPacks("idle_02"),
+                new AnimationPacks("throw_01")
+            }
+        };
+
+        bundles.Add(bundle);
+    }
 }
 
 [System.Serializable]
@@ -103,6 +121,10 @@ class AnimationBundleEditor : Editor
         if(GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(30)))
         {
             myscript.CreateMashAnimationBundle();
+        }
+        if (GUILayout.Button("Add COMMAND Minigame pack", GUILayout.Height(30)))
+        {
+            myscript.CreateMGCommandAnimationBundle();
         }
         GUILayout.EndHorizontal();
 

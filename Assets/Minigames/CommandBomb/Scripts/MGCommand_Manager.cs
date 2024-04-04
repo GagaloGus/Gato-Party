@@ -15,7 +15,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public Transform KeyHolder;
 
     [Header("Objects")]
-    public GameObject[] PlayerObjects;
+    public List<GameObject> PlayerObjects = new List<GameObject>();
+    public GameObject bombPrefab;
 
     [Header("Countdown")]
     public Slider CountdownSlider;
@@ -27,30 +28,44 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public int[] randomKeyOrder;
     public int turnCount;
     public int roundCount;
-    PhotonView photonView;
     public int playersRemaining;
+    PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
     {
         interval /= 10;
         photonView = GetComponent<PhotonView>();
+        turnCount = 1;
         roundCount = 0;
 
-        foreach (Transform child in KeyHolder.Find("Content"))
-        {
-            Destroy(child.gameObject);
-        }
-        KeyHolder.gameObject.SetActive(false);
+        GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject(PlayerObjects);
 
         CoolFunctions.Invoke(this, () =>
         {
-            playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
-            if (PhotonNetwork.IsMasterClient)
+            CoolFunctions.LoadAllTexturePacks<MGCommand_PlayerController>();
+
+            foreach (Transform child in KeyHolder.Find("Content"))
             {
-                StartGame();
+                Destroy(child.gameObject);
             }
-        }, 0.3f);
+            KeyHolder.gameObject.SetActive(false);
+
+            CoolFunctions.Invoke(this, () =>
+            {
+                playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    StartGame();
+                }
+            }, 0.3f);
+
+        }, 0.5f);
+    }
+
+    private void Update()
+    {
+        Camera.main.transform.LookAt(bombPrefab.transform.position);
     }
 
     void StartGame()
@@ -67,7 +82,12 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_StartTurn(int[] randoms, int turn)
     {
-        Debug.Log($"Current Turn:{turnCount} / Next Turn: {turn} / Rounds: {roundCount}");
+        //turnCount = turno anterior
+        //turn = turno actual
+        Debug.Log($"Actual Turn:{turn} -> Object: {PlayerObjects[turn - 1].name} / Rounds: {roundCount}");
+
+        PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().ThrowBomb();
+        PlayerObjects[turn - 1].GetComponent<MGCommand_PlayerController>().RecieveBomb();
 
         roundCount++;
         turnCount = turn;
@@ -75,22 +95,25 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         CountdownSlider.value = 1;
         currentTime = maxTime;
 
-        //Instancia segun el orden del array 
-        for (int i = 0; i < randomKeyOrder.Length; i++)
-        {
-            GameObject key = Instantiate(keySpritePrefab, KeyHolder.Find("Content"));
-            key.GetComponent<Image>().sprite = CommandKeys[randomKeyOrder[i]].Sprite;
-        }
-        //Activa el panel
-        KeyHolder.gameObject.SetActive(true);
+        bombPrefab.GetComponent<MGCommand_Bomb>().ThrowBomb(turn - 1, 1);
 
-        //Si el turno corresponde con el ID del player
-        if ((int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] == turnCount)
+        CoolFunctions.Invoke(this, () =>
         {
-            StartCoroutine(nameof(Round));
-        }
+            //Instancia segun el orden del array 
+            for (int i = 0; i < randomKeyOrder.Length; i++)
+            {
+                GameObject key = Instantiate(keySpritePrefab, KeyHolder.Find("Content"));
+                key.GetComponent<Image>().sprite = CommandKeys[randomKeyOrder[i]].Sprite;
+            }
+            //Activa el panel
+            KeyHolder.gameObject.SetActive(true);
 
-        //Debug.Log($"Turn: {turnCount} / Round number {roundCount}");
+            //Si el turno corresponde con el ID del player
+            if ((int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] == turnCount)
+            {
+                StartCoroutine(nameof(Round));
+            }
+        }, 1);
     }
 
     [PunRPC]
@@ -98,6 +121,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     {
         this.maxTime = maxTime;
         this.interval = interval;
+
+        PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().IdleBomb();
 
         Debug.Log($"StartCountdown {this.maxTime}, {this.interval}");
         InvokeRepeating(nameof(Countdown), 0, interval);
@@ -138,9 +163,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
     System.Collections.IEnumerator Round()
     {
-        yield return new WaitForSeconds(0.7f);
-
         photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
+
         //Espera a que el Player le de a la tecla que toca, y avanza a la siguiente
         for (int i = 0; i < randomKeyOrder.Length; i++)
         {
@@ -170,10 +194,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(0.01f);
         }
 
-
-
         //Al acabar espera un poquito
-        yield return new WaitForSeconds(0.5f);
         EndTurn();
     }
 
@@ -193,26 +214,22 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     void EndTurn()
     {
         photonView.RPC(nameof(RPC_Finished), RpcTarget.All);
+        int nextPlayerturn = GetNextTurn();
 
-        CoolFunctions.Invoke(this, () =>
+        if (playersRemaining <= 1)
         {
-            int nextPlayerturn = GetNextTurn();
-
-            if (playersRemaining <= 1)
+            photonView.RPC(nameof(RPC_FinishedGame), RpcTarget.All);
+        }
+        else
+        {
+            object[] parameters =
             {
-                photonView.RPC(nameof(RPC_FinishedGame), RpcTarget.All);
-            }
-            else
-            {
-                object[] parameters =
-                {
                 GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4),
                 nextPlayerturn
                 };
 
             photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, parameters);
-            }
-        }, 1);
+        }
     }
 
     [PunRPC]
@@ -221,9 +238,9 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         Debug.Log($"PLAYER {(turnCount % PhotonNetwork.CurrentRoom.PlayerCount) + 1} WINS!!!!");
 
         //Le da la puntuacion mas alta al jugador que no quedo eliminado
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
-            foreach(KeyValuePair<int,Player> playerEntry in PhotonNetwork.CurrentRoom.Players)
+            foreach (KeyValuePair<int, Player> playerEntry in PhotonNetwork.CurrentRoom.Players)
             {
                 if (!(bool)playerEntry.Value.CustomProperties[Constantes.PlayerKey_Eliminated])
                 {

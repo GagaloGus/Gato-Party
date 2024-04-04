@@ -5,16 +5,28 @@ using UnityEngine;
 
 public class MGCommand_PlayerController : MonoBehaviour
 {
+    Animator m_animator;
+    enum ThrowStates { Recieve, Idle, Throw}
     // Start is called before the first frame update
     void Start()
     {
-
+        m_animator = GetComponentInChildren<Animator>();
+        m_animator.SetInteger("state", -1);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RecieveBomb()
     {
-        
+        m_animator.SetInteger("state", (int)ThrowStates.Recieve);
+    }
+
+    public void IdleBomb()
+    {
+        m_animator.SetInteger("state", (int)ThrowStates.Idle);
+    }
+
+    public void ThrowBomb()
+    {
+        m_animator.SetInteger("state", (int)ThrowStates.Throw);
     }
 
     public void Eliminated()

@@ -8,6 +8,12 @@ public class AssingObjectToPlayer : MonoBehaviour
 {
     public List<GameObject> objetosControlables;
 
+    public GameObject AssignObject(List<GameObject> playerObjectsList)
+    {
+        objetosControlables = playerObjectsList;
+        return AssignObject();
+    }
+
     public GameObject AssignObject()
     {
         for(int i = 0; i < objetosControlables.Count; i++)

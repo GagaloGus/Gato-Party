@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 7735909398945552866}
   - component: {fileID: 8894553075410508213}
   - component: {fileID: 4583696058797969183}
+  - component: {fileID: 3828063604491666312}
   m_Layer: 0
   m_Name: 3dmodel Sko
   m_TagString: Untagged
@@ -135,7 +136,7 @@ Animator:
   m_GameObject: {fileID: 3363124888592308050}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33f4bd4c7a58e544c9706854c7356b3a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -158,6 +159,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2026fd40bc8ddb94391a2af1b1401683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3828063604491666312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363124888592308050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 3
+    SynchronizeType: 1
+    Name: state
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!1 &3431836034195937263
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +191,7 @@ GameObject:
   - component: {fileID: 1376721858503666267}
   - component: {fileID: 6883951503955364954}
   - component: {fileID: 3199022793534036930}
+  - component: {fileID: 7151144958319711306}
   m_Layer: 0
   m_Name: Commnand_Player
   m_TagString: Player
@@ -213,6 +236,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3199022793534036930}
+  - {fileID: 3828063604491666312}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -249,6 +273,18 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &7151144958319711306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431836034195937263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a3e00f7cff1dd428f52bae6a701e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3666456969355241200
 GameObject:
   m_ObjectHideFlags: 0

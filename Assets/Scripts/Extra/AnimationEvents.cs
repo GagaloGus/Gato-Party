@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class AnimationEvents : MonoBehaviour
 {
-    #region Camera
     public void DisableAnimator()
     {
         GetComponent<Animator>().enabled = false;
     }
 
-    #endregion
+    public void DeactivateObject()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void DestroyGameObj()
     {

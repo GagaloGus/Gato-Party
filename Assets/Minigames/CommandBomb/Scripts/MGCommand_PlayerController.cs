@@ -32,5 +32,6 @@ public class MGCommand_PlayerController : MonoBehaviour
     public void Eliminated()
     {
         Debug.Log($"Me eliminaron :( {(int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID]}");
+        m_animator.Play("died");
     }
 }

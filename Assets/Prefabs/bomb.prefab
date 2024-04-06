@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9094669336224866748}
   - component: {fileID: 4435639035071588954}
+  - component: {fileID: 4964195880971017829}
   m_Layer: 0
   m_Name: bomb
   m_TagString: Untagged
@@ -50,6 +51,27 @@ MonoBehaviour:
   maxHeight: 0.7
   margin: {x: 0, y: 0.22, z: 0.17}
   rotationDirection: {x: 0, y: 0, z: 1}
+--- !u!95 &4964195880971017829
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2449445121473392705}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 810cf055b1ed37c46877848da4730086, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &3108461118440731408
 PrefabInstance:
   m_ObjectHideFlags: 0

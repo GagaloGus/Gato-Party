@@ -13,6 +13,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public KeySpritePair[] CommandKeys;
     public GameObject keySpritePrefab;
     public Transform KeyHolder;
+    public GameObject ExplosionSprite;
 
     [Header("Objects")]
     public List<GameObject> PlayerObjects = new List<GameObject>();
@@ -39,6 +40,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         turnCount = 1;
         roundCount = 0;
 
+        ExplosionSprite.SetActive(false);
+
         GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject(PlayerObjects);
 
         CoolFunctions.Invoke(this, () =>
@@ -61,11 +64,6 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             }, 0.3f);
 
         }, 0.5f);
-    }
-
-    private void Update()
-    {
-        Camera.main.transform.LookAt(bombPrefab.transform.position);
     }
 
     void StartGame()
@@ -96,6 +94,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         currentTime = maxTime;
 
         bombPrefab.GetComponent<MGCommand_Bomb>().ThrowBomb(turn - 1, 1);
+        Camera.main.GetComponent<MGCommand_Camera>().RotateTowardsPlayer(turn - 1, 1);
 
         CoolFunctions.Invoke(this, () =>
         {
@@ -133,9 +132,12 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     {
         currentTime -= interval;
         CountdownSlider.value = CoolFunctions.MapValues(currentTime, 0, maxTime, 0, 1);
+        bombPrefab.GetComponent<Animator>().SetFloat("multi", CoolFunctions.MapValues(currentTime, 0, maxTime, 5, 1));
 
         if (currentTime < 0)
         {
+            ExplosionSprite.SetActive(true);
+            bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 3;
             CancelInvoke(nameof(Countdown));
             StopAllCoroutines();
 
@@ -157,7 +159,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             CoolFunctions.Invoke(this, () =>
             {
                 if (PhotonNetwork.IsMasterClient) { EndTurn(); }
-            }, 1);
+            }, 2.5f);
         }
     }
 

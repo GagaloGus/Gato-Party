@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+public enum SkinNames
+{
+    Sko, Beeko, Misheow, News, test1, test2
+}
+
 public class AnimationBundles : MonoBehaviour
 {
     public List<AnimationSpriteBundle> bundles;
@@ -84,7 +89,9 @@ public class AnimationBundles : MonoBehaviour
             new AnimationPacks("recieve_02"),
             new AnimationPacks("idle_01"),
             new AnimationPacks("idle_02"),
-            new AnimationPacks("throw_01")
+            new AnimationPacks("throw_01"),
+            new AnimationPacks("death_01"),
+            new AnimationPacks("death_02")
         };
 
         CreatePack(texturePacks);
@@ -100,11 +107,6 @@ public class AnimationBundles : MonoBehaviour
             }
         }
     }
-}
-
-public enum SkinNames
-{
-    Sko, Beeko, Misheow, News, test1, test2
 }
 
 [System.Serializable]

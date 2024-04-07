@@ -28,8 +28,7 @@ public class MGCommand_Bomb : MonoBehaviour
     public void ThrowBomb(int targetPlayer, float time)
     {
         Transform targetTransform = PlayerObjects[targetPlayer].transform;
-        Vector3 offset = targetTransform.right * margin.x + targetTransform.up * margin.y + targetTransform.forward * margin.z; 
-        endPoint = targetTransform.position + offset;
+        endPoint = targetTransform.position + CoolFunctions.MoveAlongAxis(targetTransform, margin);
         timeToReachDestination = time;
 
         StartCoroutine(nameof(MoveObjectCoroutine));
@@ -44,11 +43,11 @@ public class MGCommand_Bomb : MonoBehaviour
         while (elapsedTime < timeToReachDestination)
         {
             float t = elapsedTime / timeToReachDestination;
-            float height = Mathf.Sin(t * Mathf.PI) * maxHeight; // Función sinusoidal para la parábola
+            float height = Mathf.Sin(t * Mathf.PI) * maxHeight; // Funcion seno para la parabola
             Vector3 newPos = Vector3.Lerp(startPos, endPos, t) + Vector3.up * height; // Añade la altura en Y
             transform.position = newPos;
 
-            // Rotar el objeto durante el movimiento
+            // Rota
             float rotationAmount = 360 * Time.deltaTime;
             transform.Rotate(rotationDirection.normalized, rotationAmount);
 

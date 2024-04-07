@@ -24,7 +24,7 @@ public class MGCommand_Camera : MonoBehaviour
     public void RotateTowardsPlayer(int targetPlayer, float duration)
     {
         Transform targetTransform = PlayerObjects[targetPlayer].transform;
-        Vector3 offset = targetTransform.right * margin.x + targetTransform.up * margin.y + targetTransform.forward * margin.z;
+        Vector3 offset = CoolFunctions.MoveAlongAxis(targetTransform, margin);
 
         StartCoroutine(RotateTowardsCoroutine(targetTransform.position + offset, duration));
     }

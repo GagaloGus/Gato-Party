@@ -137,7 +137,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         if (currentTime < 0)
         {
             ExplosionSprite.SetActive(true);
-            bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 3;
+            bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 5;
             CancelInvoke(nameof(Countdown));
             StopAllCoroutines();
 

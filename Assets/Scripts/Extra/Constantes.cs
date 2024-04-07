@@ -25,5 +25,5 @@ public static class Constantes
     public static readonly string KeyOrder_MGCommand = "KEY_ORDER";
 
     //Puntos
-    public static readonly int[] Win_Points = new int[] { 7, 4, 2, 0 };
+    public static readonly int[] Win_Points = new int[] { 7, 4, 2, 1 };
 }

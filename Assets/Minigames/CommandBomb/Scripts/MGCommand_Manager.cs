@@ -42,7 +42,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
         ExplosionSprite.SetActive(false);
 
-        GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject(PlayerObjects);
+        GameObject player = FindObjectOfType<AssignObjectToPlayer>().AssignObject(PlayerObjects);
 
         CoolFunctions.Invoke(this, () =>
         {

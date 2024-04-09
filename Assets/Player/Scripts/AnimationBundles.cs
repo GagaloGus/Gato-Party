@@ -12,7 +12,21 @@ public enum SkinNames
 public class AnimationBundles : MonoBehaviour
 {
     public List<AnimationSpriteBundle> bundles;
+#if UNITY_EDITOR_WIN
+    [MenuItem("GameObject/Custom Objects/Animation Bundles")]
+    static void CreateAnimationBundleObject(MenuCommand menuCommand)
+    {
+        // Crea un nuevo GameObject y añade el componente MyCustomObject
+        GameObject newObject = new GameObject("MyCustomObject");
+        newObject.name = "Animation Bundles";
+        newObject.AddComponent<AnimationBundles>();
 
+        // Registra el nuevo GameObject en la escena
+        GameObjectUtility.SetParentAndAlign(newObject, menuCommand.context as GameObject);
+        Undo.RegisterCreatedObjectUndo(newObject, "Create " + newObject.name);
+        Selection.activeObject = newObject;
+    }
+#endif
     void CreatePack(AnimationPacks[] newPack)
     {
         AnimationSpriteBundle bundle = new AnimationSpriteBundle
@@ -53,12 +67,42 @@ public class AnimationBundles : MonoBehaviour
         CreatePack(texturePacks);
     }
 
+    public void CreateCommandAnimationBundle()
+    {
+        AnimationPacks[] texturePacks = new AnimationPacks[]
+        {
+            new AnimationPacks("recieve_01"),
+            new AnimationPacks("recieve_02"),
+            new AnimationPacks("idle_01"),
+            new AnimationPacks("idle_02"),
+            new AnimationPacks("throw_01"),
+            new AnimationPacks("death_01"),
+            new AnimationPacks("death_02")
+        };
+
+        CreatePack(texturePacks);
+    }
+
     public void CreateMashAnimationBundle()
     {
         AnimationPacks[] texturePacks = new AnimationPacks[]
         {
             new AnimationPacks("mash_01"),
             new AnimationPacks("mash_02")
+        };
+
+        CreatePack(texturePacks);
+    }
+
+    public void CreateLastSecAnimationBundle()
+    {
+        AnimationPacks[] texturePacks = new AnimationPacks[]
+        {
+            new AnimationPacks("lookUp_01"),
+            new AnimationPacks("idleScared_01"),
+            new AnimationPacks("idleScared_02"),
+            new AnimationPacks("press_01"),
+            new AnimationPacks("bonked_01"),
         };
 
         CreatePack(texturePacks);
@@ -76,22 +120,6 @@ public class AnimationBundles : MonoBehaviour
             new AnimationPacks("victory_01"),
             new AnimationPacks("victory_02")
 
-        };
-
-        CreatePack(texturePacks);
-    }
-
-    public void CreateMGCommandAnimationBundle()
-    {
-        AnimationPacks[] texturePacks = new AnimationPacks[]
-        {
-            new AnimationPacks("recieve_01"),
-            new AnimationPacks("recieve_02"),
-            new AnimationPacks("idle_01"),
-            new AnimationPacks("idle_02"),
-            new AnimationPacks("throw_01"),
-            new AnimationPacks("death_01"),
-            new AnimationPacks("death_02")
         };
 
         CreatePack(texturePacks);
@@ -133,14 +161,22 @@ class AnimationBundleEditor : Editor
         }
         GUILayout.EndHorizontal();
 
+        //Minijuegos
+        int height = 30;
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(30)))
+        if (GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(height)))
         {
             myscript.CreateMashAnimationBundle();
         }
-        if (GUILayout.Button("Add COMMAND Minigame pack", GUILayout.Height(30)))
+        if (GUILayout.Button("Add COMMAND Minigame pack", GUILayout.Height(height)))
         {
-            myscript.CreateMGCommandAnimationBundle();
+            myscript.CreateCommandAnimationBundle();
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add LAST SEC Minigame pack", GUILayout.Height(height)))
+        {
+            myscript.CreateLastSecAnimationBundle();
         }
         GUILayout.EndHorizontal();
 

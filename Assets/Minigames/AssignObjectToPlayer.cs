@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AssingObjectToPlayer : MonoBehaviour
+public class AssignObjectToPlayer : MonoBehaviour
 {
     public List<GameObject> objetosControlables;
 

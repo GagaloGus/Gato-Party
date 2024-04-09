@@ -27,7 +27,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     {
         resultsText.SetActive(false);
 
-        GameObject player = FindObjectOfType<AssingObjectToPlayer>().AssignObject();
+        GameObject player = FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
         //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
         //- aqui habra que poner una pantalla de carga en vez del delay -//

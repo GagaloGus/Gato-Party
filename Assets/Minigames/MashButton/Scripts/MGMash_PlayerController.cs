@@ -18,6 +18,9 @@ public class MGMash_PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (!photonView.IsMine)
+            return;
+
         score = -1;
         canMove = false;
         photonView = GetComponent<PhotonView>();
@@ -28,6 +31,9 @@ public class MGMash_PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!photonView.IsMine)
+            return;
+
         //Resetea la puntuacion
         Hashtable playerProps = new Hashtable
         {
@@ -46,8 +52,11 @@ public class MGMash_PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+            return;
+
         //Si nos podemos mover y somos el player
-        if(canMove)
+        if (canMove)
         {
             if (Input.GetKeyDown(push))
             {

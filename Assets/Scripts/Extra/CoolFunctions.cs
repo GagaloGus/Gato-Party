@@ -1,5 +1,6 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
@@ -139,5 +140,80 @@ public static class CoolFunctions
             textureScript.ID = 0;
         }
     }
+
+    public static List<T> GetFilteredObjects<T>(params VariableValuePair[] filters) where T : MonoBehaviour
+    {
+        List<T> AllObjects =  UnityEngine.Object.FindObjectsOfType<T>().ToList();
+
+        List<T> filteredObjects = new List<T>();
+
+        if (filters != null)
+        {
+            foreach (T obj in AllObjects)
+            {
+                Debug.Log("------------------------------------------------------");
+                bool passFilter = true;
+
+                foreach (VariableValuePair filter in filters)
+                {
+                    object value = GetFieldValue(obj, filter.Name);
+
+                    Debug.Log($"({value.GetType()}){value} // {filter.Value}({filter.Value.GetType()})");
+
+                    if (value == null)
+                    {
+                        Debug.Log($"No existe la variable {filter.Name}");
+                        break;
+                    }
+
+                    if (!value.Equals(filter.Value))
+                    {
+                        Debug.Log($"<color=red>{obj.GetType().Name} no paso el filtro {filter.Name} ({filter.Value} != {value})</color>");
+                        passFilter = false;
+                        break;
+                    }
+                }
+
+                if (passFilter)
+                {
+                    Debug.Log($"<color=green>{obj.GetType().Name} paso los filtros!</color>");
+                    filteredObjects.Add(obj);
+                }
+            }
+
+            Debug.Log($"<color=cyan>Se devolvio una lista de {filteredObjects.Count} {typeof(T).Name}(s)</color>");
+            return filteredObjects;
+        }
+        else
+        {
+            return AllObjects;
+        }
+    }
+
+    static object GetFieldValue<T>(T obj, string fieldName)
+    {
+        var field = typeof(T).GetField(fieldName);
+        if (field != null)
+        {
+            Debug.Log($"Field {field} found! -> {field.GetValue(obj)}");
+            return field.GetValue(obj);
+        }
+        else
+        {
+            Debug.LogError($"Field {fieldName} not found in {typeof(T).Name} object.");
+            return null;
+        }
+    }
 }
 
+public class VariableValuePair
+{
+    public string Name;
+    public object Value;
+
+    public VariableValuePair(string name, object value)
+    {
+        Name = name;
+        Value = value;
+    }
+}

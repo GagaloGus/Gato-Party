@@ -59,6 +59,7 @@ public class AnimationBundles : MonoBehaviour
             new AnimationPacks("glideStart_05"),
             new AnimationPacks("glideStart_06"),
             new AnimationPacks("glideStart_07"),
+            new AnimationPacks("glideStart_08"),
             new AnimationPacks("glideIdle_01"),
             new AnimationPacks("menuIdle_01"),
             new AnimationPacks("menuIdle_02"),

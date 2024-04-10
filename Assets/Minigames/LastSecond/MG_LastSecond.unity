@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 748589554}
   - component: {fileID: 748589553}
   - component: {fileID: 748589552}
+  - component: {fileID: 748589556}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -627,6 +628,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &748589556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748589551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61934f8b2243c5546aa034c744b76584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &804054329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1056,7 +1069,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff927ce18aa7d24588546384880a4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetosControlables: []
+  objetosControlables:
+  - {fileID: 2022595813}
+  - {fileID: 804054330}
+  - {fileID: 1416649916}
+  - {fileID: 1119032930}
 --- !u!114 &1161608282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1130,14 +1147,6 @@ PrefabInstance:
     - target: {fileID: 5412757126594415575, guid: 4017bb00ac1351e46b8a270084baa3d2, type: 3}
       propertyPath: m_Name
       value: Bonk 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5991538035598557551, guid: 4017bb00ac1351e46b8a270084baa3d2, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7136735239036157843, guid: 4017bb00ac1351e46b8a270084baa3d2, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1405,10 +1414,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LastSec_Player 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7868659518623265262, guid: 3a30afed697d64e4e940ad4e7a192f74, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: aba0e6d23b1058c4fa5e96465ab7c54c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -52,11 +52,11 @@ public class MGLast_Manager : MonoBehaviour
         {
             CoolFunctions.LoadAllTexturePacks<MGLast_PlayerController>();
             remainingPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-            PlayerObjects[TargetPlayer].GetComponent<MGLast_PlayerController>().LookUp();
-
-            for (int i = 0; i < Bonks.Count; i++)
+            
+            for (int i = 0; i < PlayerObjects.Count; i++)
             {
                 Bonks[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
+                PlayerObjects[i].GetComponent<MGLast_PlayerController>().LookUp();
             }
         }, 0.5f);
 
@@ -84,7 +84,7 @@ public class MGLast_Manager : MonoBehaviour
         {
             if (Input.GetKeyDown(PlayerKeybinds.stop_lastSecMG))
             {
-                photonView.RPC(nameof(RPC_StoppedBonk), RpcTarget.All, TargetPlayer);
+                photonView.RPC(nameof(RPC_StoppedBonk), RpcTarget.All, TargetPlayer, targetBonk.transform.position.y);
                 gameStarted = false;
             }
 
@@ -92,23 +92,29 @@ public class MGLast_Manager : MonoBehaviour
             {
                 Hashtable dead = new Hashtable
                 {
-                    [Constantes.PlayerKey_Eliminated] = true
+                    [Constantes.PlayerKey_Eliminated] = true,
                 };
                 PhotonNetwork.LocalPlayer.SetCustomProperties(dead);
 
                 //- Cambiar por un RPC -//
-                photonView.RPC(nameof(RPC_BonkedPlayer), RpcTarget.All, TargetPlayer);
+                photonView.RPC(nameof(RPC_BonkedPlayer), RpcTarget.All, TargetPlayer, bonkHeight);
                 gameStarted = false;   
             }
         }
     }
 
     [PunRPC]
-    void RPC_StoppedBonk(int playerInt)
+    void RPC_StoppedBonk(int playerInt, float height)
     {
         remainingPlayers--;
         PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
         BonkPhysics(playerInt, false);
+
+        Bonks[playerInt].transform.position = new Vector3(
+            Bonks[playerInt].transform.position.x,
+            height,
+            Bonks[playerInt].transform.position.z
+            );
 
         CoolFunctions.Invoke(this, () =>
         {
@@ -119,11 +125,17 @@ public class MGLast_Manager : MonoBehaviour
     }
 
     [PunRPC]
-    void RPC_BonkedPlayer(int playerInt)
+    void RPC_BonkedPlayer(int playerInt, float height)
     {
         remainingPlayers--;
         PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().Bonked();
         BonkPhysics(playerInt, false);
+
+        Bonks[playerInt].transform.position = new Vector3(
+            Bonks[playerInt].transform.position.x,
+            height,
+            Bonks[playerInt].transform.position.z
+            );
 
         CoolFunctions.Invoke(this, () =>
         {
@@ -164,7 +176,7 @@ public class MGLast_Manager : MonoBehaviour
             }
             else
             {
-                playerMGprop[Constantes.PlayerKey_MinigameScore] = -1;
+                playerMGprop[Constantes.PlayerKey_MinigameScore] = 0;
             }
 
             playerEntry.Value.SetCustomProperties(playerMGprop);
@@ -187,11 +199,11 @@ public class MGLast_Manager : MonoBehaviour
 
             if (!(bool)currentPlayer.CustomProperties[Constantes.PlayerKey_Eliminated])
             {
-                results += $"{currentPlayer.NickName} -> {score}m";
+                results += $"{currentPlayer.NickName} -> {score}m\n";
             }
             else
             {
-                results += $"{currentPlayer.NickName} -> ------";
+                results += $"{currentPlayer.NickName} -> ------\n";
             }
         }
 
@@ -209,14 +221,9 @@ public class MGLast_Manager : MonoBehaviour
     {
         GameObject targetBonk = Bonks[bonkInt];
 
-        targetBonk.GetComponent<ConstantForce>().enabled = enable;
-        targetBonk.GetComponent<Rigidbody>().useGravity = enable;
-
-        if (!enable)
-        {
-            targetBonk.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        }
-    }
+        /*targetBonk.GetComponent<ConstantForce>().enabled = enable;
+        targetBonk.GetComponent<Rigidbody>().useGravity = enable;*/
+        targetBonk.GetComponent<Rigidbody>().isKinematic = !enable;   }
 
 
     private void OnDrawGizmos()

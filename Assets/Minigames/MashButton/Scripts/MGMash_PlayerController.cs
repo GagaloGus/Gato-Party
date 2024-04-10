@@ -21,7 +21,7 @@ public class MGMash_PlayerController : MonoBehaviour
         if (!photonView.IsMine)
             return;
 
-        score = -1;
+        score = 0;
         canMove = false;
         photonView = GetComponent<PhotonView>();
         m_animator = transform.Find("3dmodel Sko").gameObject.GetComponent<Animator>();
@@ -61,7 +61,7 @@ public class MGMash_PlayerController : MonoBehaviour
             if (Input.GetKeyDown(push))
             {
                 m_animator.SetBool("push", true);
-                score += (score == -1 ? 2 : 1);
+                score++;
             }
 
             if (Input.GetKeyUp(push))
@@ -74,13 +74,12 @@ public class MGMash_PlayerController : MonoBehaviour
     //Al acabar el minijuego, llamado desde el manager
     public void MinigameFinished()
     {
-        canMove = false; //quieto
-        int newScore = (score == -1 ? 0 : score); //Si no hicimos nada, nos da 0, si no nos da nuestra puntuacion
+        canMove = false; //quieto //Si no hicimos nada, nos da 0, si no nos da nuestra puntuacion
 
         //Cambia las propiedades del Player
         Hashtable playerProps = new Hashtable
         {
-            [Constantes.PlayerKey_MinigameScore] = newScore
+            [Constantes.PlayerKey_MinigameScore] = score
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }

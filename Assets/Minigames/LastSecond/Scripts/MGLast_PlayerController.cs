@@ -12,11 +12,11 @@ public class MGLast_PlayerController : MonoBehaviour
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
+    }
 
-        if (!photonView.IsMine)
-            return;
-
-        m_animator = transform.Find("3dmodel Sko").gameObject.GetComponent<Animator>();
+    private void Start()
+    {
+        m_animator = GetComponentInChildren<Animator>();
     }
 
     public void LookUp()

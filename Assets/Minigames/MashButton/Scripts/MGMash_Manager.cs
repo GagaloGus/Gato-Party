@@ -14,12 +14,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     [Header("References")]
     public GameObject resultsText;
 
-    [Header("Prefab to spawn")]
-    public GameObject playerPrefab;
-
-    [Header("Spawner")]
-    public GameObject spawnerParent;
-
     Dictionary<Player, int> resultPlayerlist = new();
 
     // Start is called before the first frame update
@@ -32,7 +26,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
         //- aqui habra que poner una pantalla de carga en vez del delay -//
         CoolFunctions.Invoke(this, () =>
-
         {
             CoolFunctions.LoadAllTexturePacks<MGMash_PlayerController>();
             player.GetComponentInChildren<Animator>().SetBool("push", false);

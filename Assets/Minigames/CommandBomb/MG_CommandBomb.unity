@@ -915,9 +915,10 @@ MonoBehaviour:
   - {fileID: 9540826}
   bombPrefab: {fileID: 4237834668702413380}
   CountdownSlider: {fileID: 373031999}
-  maxTime: 20
+  maxTime: 15
   interval: 0.5
-  currentTime: 0
+  playerEliminatedReduceTime: 2
+  roundCountReduceTime: 0.5
   randomKeyOrder: 
   turnCount: 0
   roundCount: 0

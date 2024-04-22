@@ -12,13 +12,17 @@ public class SkinSelector : MonoBehaviourPunCallbacks
 
     List<int> avaliableIDs = new List<int>();
     GameObject playerObject;
-    GameObject onRangeIcon, skinpanel;
+    GameObject onRangeIcon;
 
     SalaEsperaSettings salaEsperaSettings;
+
+    bool[] avaliableButton;
 
     private void Start()
     {
         Transform buttonPanel = SkinPanel.transform.Find("ButtonPanel");
+
+        avaliableButton = new bool[buttonPanel.childCount];
 
         int temp = 0;
         foreach (Transform child in buttonPanel)
@@ -28,6 +32,9 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             child.GetComponentInChildren<Button>().onClick.AddListener(() => { ClickedSkinButton(index); });
 
             temp++;
+
+            //Si los botones estan desactivados en el editor, no se pueden usar en el juego
+            avaliableButton[index] = child.GetComponentInChildren<Button>().interactable;
         }
 
         PhotonView[] allPhotonViews = FindObjectsOfType<PhotonView>();
@@ -43,7 +50,6 @@ public class SkinSelector : MonoBehaviourPunCallbacks
         }
 
         onRangeIcon = transform.Find("OnRange").gameObject;
-        skinpanel = FindObjectOfType<BasicButtonFunctions>().transform.Find("SkinSelectorPanel").gameObject;
         salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
     }
 
@@ -54,17 +60,17 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             onRangeIcon.SetActive(true);
             if (Input.GetKeyDown(PlayerKeybinds.openSkinMenu))
             {
-                skinpanel.SetActive(!skinpanel.activeInHierarchy);
+                SkinPanel.SetActive(!SkinPanel.activeInHierarchy);
 
                 //Temporal//
-                if (skinpanel.activeInHierarchy)
+                if (SkinPanel.activeInHierarchy)
                     DeselectOtherButtons(salaEsperaSettings.CurrentSkinID);
             }
         }
         else
         {
             onRangeIcon.SetActive(false);
-            skinpanel.SetActive(false);
+            SkinPanel.SetActive(false);
         }
     }
 
@@ -73,25 +79,35 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     {
         if (changedProps.ContainsKey(Constantes.PlayerKey_Skin))
         {
-            //Actualiza la lista de las skins disponibles
-            avaliableIDs = GetRemainingSkinIDs();
-
-            string debugtext = "Remaining skins: <color=green> ";
-            foreach(int i in avaliableIDs)
-            {
-                debugtext += $"{i}, ";
-            }
-            Debug.Log($"{debugtext}</color>");
-
-            //Desactiva botones segun las skins que esten disponibles
-            for (int i = 0; i < skinButtons.Count; i++)
-            {
-                Button button = skinButtons[i].GetComponentInChildren<Button>();
-                button.interactable = avaliableIDs.Contains(i);
-            }
+            UpdateButtons();
         }
     }
-    
+
+    void UpdateButtons()
+    {
+        //Actualiza la lista de las skins disponibles
+        avaliableIDs = GetRemainingSkinIDs();
+
+        string debugtext = "Remaining skins: <color=green> ";
+        foreach (int i in avaliableIDs)
+        {
+            debugtext += $"{i}, ";
+        }
+        Debug.Log($"{debugtext}</color>");
+
+        //Desactiva botones segun las skins que esten disponibles
+        for (int i = 0; i < skinButtons.Count; i++)
+        {
+            Button button = skinButtons[i].GetComponentInChildren<Button>();
+            button.interactable = avaliableIDs.Contains(i) && avaliableButton[i];
+        }
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        UpdateButtons();
+    }
+
     //Onclick del boton de la skin
     public void ClickedSkinButton(int ID)
     {

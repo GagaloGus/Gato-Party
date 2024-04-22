@@ -170,8 +170,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
     public void UpdatePlayerSkin(int photonViewID, int skinID)
     {
-        object[] parameters = { photonViewID, skinID };
-        photonView.RPC(nameof(LoadTexturePacks), RpcTarget.All, parameters);
+        photonView.RPC(nameof(LoadTexturePacks), RpcTarget.All, photonViewID, skinID);
         CurrentSkinID = skinID;
 
         Hashtable playerProp = new Hashtable

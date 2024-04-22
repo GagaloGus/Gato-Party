@@ -23,7 +23,10 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public Slider CountdownSlider;
     public float maxTime;
     public float interval;
-    [SerializeField] float currentTime;
+    public float playerEliminatedReduceTime;
+    public float roundCountReduceTime;
+
+    float currentTime;
 
     [Header("Photon")]
     public int[] randomKeyOrder;

@@ -46,6 +46,40 @@ public static class CoolFunctions
     }
     #endregion
 
+    public static List<int> GenerateRandomNumbers(int amount, int minNumber, int maxNumber)
+    {
+        List<int> numbers = new List<int>();
+
+        while (numbers.Count < amount)
+        {
+            int rnd = UnityEngine.Random.Range(minNumber, maxNumber + 1);
+
+            if (!numbers.Contains(rnd)) { numbers.Add(rnd); }
+        }
+
+        return numbers;
+    }
+
+    public static string StringContentOfList<T>(List<T> list, bool saltoDeLinea)
+    {
+        string content = "";
+        foreach (T item in list)
+        {
+            content += item.ToString();
+
+            if(saltoDeLinea)
+            {
+                content += "\n";
+            }
+            else
+            {
+                content += ", ";
+            }
+        }
+
+        return content;
+    }
+
     public static void Invoke(this MonoBehaviour mb, Action f, float delay)
     {
         mb.StartCoroutine(InvokeRoutine(f, delay));

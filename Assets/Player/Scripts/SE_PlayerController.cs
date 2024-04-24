@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class SE_PlayerController : MonoBehaviour
 {
-    private Rigidbody rb;
+    Rigidbody rb;
     Animator animator;
-    private Vector3 moveInput, moveDirection;
-    private Transform groundPoint;
+    Vector3 moveInput, moveDirection;
+    Transform groundPoint;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -23,7 +23,7 @@ public class SE_PlayerController : MonoBehaviour
     [Header("Debug Variables")]
     [Range(0f, 2f)] public float rayDetectFloorDist;
     public float nearGroundDist;
-    private bool isGrounded, isFlipped, isFacingBackwards, canMove, isGliding, isRunning;
+    bool isGrounded, isFlipped, isFacingBackwards, canMove, isGliding, isRunning;
 
     public enum PlayerStates { Idle, Walk, Run, JumpUp, JumpDown, Glide, Attack }
     public PlayerStates playerState;
@@ -53,6 +53,15 @@ public class SE_PlayerController : MonoBehaviour
         //Mapeado de teclas
         jump = PlayerKeybinds.jump;
         run = PlayerKeybinds.run;
+    }
+
+    private void OnDrawGizmos()
+    {
+        groundPoint = transform.Find("GroundCheckPoint");
+        Gizmos.DrawRay(groundPoint.position, Vector3.down * rayDetectFloorDist);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(groundPoint.position + Vector3.right/10, Vector3.down * nearGroundDist);
     }
 
     private void Start()
@@ -111,15 +120,9 @@ public class SE_PlayerController : MonoBehaviour
         if (!photonView.IsMine)
             return;
 
-        #region raycast ground
         Ray detectGround = new Ray(groundPoint.position, Vector3.down);
 
-        if(Physics.Raycast(detectGround, out RaycastHit hit, rayDetectFloorDist, LayerMask.GetMask("Ground")))
-        {
-            isGrounded = true;
-        }
-        else { isGrounded = false; }
-        #endregion
+        isGrounded = Physics.Raycast(detectGround, out RaycastHit hit, rayDetectFloorDist, LayerMask.GetMask("Ground"));
 
         if (canMove)
         {
@@ -195,24 +198,6 @@ public class SE_PlayerController : MonoBehaviour
 
             //si le damos al espacio y el raycast no detecto un suelo debajo del player podemos planear
             if(Input.GetKeyDown(jump) && !nearGround) { isGliding = true; }
-        }
-    }
-
-
-    void EnablePhysics(bool enable)
-    {
-        GetComponent<ConstantForce>().enabled = enable;
-        rb.velocity = Vector3.zero;
-
-        if (enable)
-        {
-            rb.constraints = RigidbodyConstraints.None;
-            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
-            rb.constraints |= RigidbodyConstraints.FreezeRotationX;
-        }
-        else
-        {
-            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 

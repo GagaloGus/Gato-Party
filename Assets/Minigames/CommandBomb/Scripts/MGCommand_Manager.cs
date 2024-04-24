@@ -25,6 +25,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public float interval;
     public float playerEliminatedReduceTime;
     public float roundCountReduceTime;
+    public float minTime;
 
     float currentTime;
 
@@ -131,6 +132,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
     }
 
+    //Se ejecuta para todos pq se invoca dentro de un RPC
     void Countdown()
     {
         currentTime -= interval;
@@ -140,8 +142,10 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         if (currentTime < 0)
         {
             ExplosionSprite.SetActive(true);
-            bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 5;
+            bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 15;
             CancelInvoke(nameof(Countdown));
+
+            //Se cancela la corrutina de la ronda
             StopAllCoroutines();
 
             PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().Eliminated();
@@ -159,6 +163,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             playersRemaining--;
             Debug.Log($"Players remaining: {playersRemaining}");
 
+            ReduceMaxTime(playerEliminatedReduceTime);
+
             CoolFunctions.Invoke(this, () =>
             {
                 if (PhotonNetwork.IsMasterClient) { EndTurn(); }
@@ -166,8 +172,10 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         }
     }
 
+    //Cada ronda
     System.Collections.IEnumerator Round()
     {
+        ReduceMaxTime(roundCountReduceTime);
         photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
 
         //Espera a que el Player le de a la tecla que toca, y avanza a la siguiente
@@ -216,8 +224,10 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         }
     }
 
+    //Determina si acaba la ronda segun los jugadores que queden
     void EndTurn()
     {
+        //Ajustes de cada vez que termina una ronda
         photonView.RPC(nameof(RPC_Finished), RpcTarget.All);
         int nextPlayerturn = GetNextTurn();
 
@@ -327,6 +337,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         while (sortedDic[nextTurn]);
 
         return nextTurn;
+    }
+
+    void ReduceMaxTime(float reduceAmount)
+    {
+        maxTime = Mathf.Clamp(maxTime-reduceAmount, minTime, Mathf.Infinity);
     }
 }
 

@@ -97,7 +97,7 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
     {
         minigameDisplay.SetActive(true);
 
-        Transform content = minigameDisplay.transform.Find("Content");
+        Transform content = minigameDisplay.transform.Find("Display").Find("Content");
 
         //Borra todos los hijos por si acaso
         //foreach(Transform child in content) { Destroy(child.gameObject); }

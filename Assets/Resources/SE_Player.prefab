@@ -551,7 +551,6 @@ GameObject:
   - component: {fileID: 2120665806219072765}
   - component: {fileID: 1170115040403223023}
   - component: {fileID: 72071289077555267}
-  - component: {fileID: 8773626005814607425}
   - component: {fileID: 6230556942007801494}
   - component: {fileID: 5790849729328774723}
   - component: {fileID: 1076744912890741110}
@@ -597,7 +596,7 @@ MonoBehaviour:
   moveSpeed: 7
   jumpForce: 9
   runSpeedMult: 2
-  rayDetectFloorDist: 0.5
+  rayDetectFloorDist: 0.22
   nearGroundDist: 2
   playerState: 0
   Mark: {fileID: 1901490029830457194}
@@ -660,31 +659,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.95476574, y: 0.6990162, z: 0.22}
-  m_Center: {x: -0.10676959, y: 0.34289342, z: 0.000000029802322}
---- !u!136 &8773626005814607425
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8344253251668500606}
-  m_Material: {fileID: 13400000, guid: 91eb28fa5f605764d977b099ef43809d, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.14
-  m_Height: 0.92
-  m_Direction: 0
-  m_Center: {x: -0.1, y: -0.02, z: -0.01}
+  m_Size: {x: 0.95476574, y: 0.85496825, z: 0.22}
+  m_Center: {x: -0.10676959, y: 0.2649174, z: 0.000000029802322}
 --- !u!114 &6230556942007801494
 MonoBehaviour:
   m_ObjectHideFlags: 0

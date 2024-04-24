@@ -919,6 +919,7 @@ MonoBehaviour:
   interval: 0.5
   playerEliminatedReduceTime: 2
   roundCountReduceTime: 0.5
+  minTime: 4
   randomKeyOrder: 
   turnCount: 0
   roundCount: 0

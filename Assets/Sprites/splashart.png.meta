@@ -206,6 +206,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: splashart_News
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 231
+        width: 463
+        height: 596
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3aa223a98e0342843882bf54c3e1992d
+      internalID: 1273482460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: splashart_Kiroi
+      rect:
+        serializedVersion: 2
+        x: 1308
+        y: 1581
+        width: 463
+        height: 596
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cf19136e0f5d9744bce90ba8236f583
+      internalID: 1427164346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -218,7 +260,9 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       splashart_Beeko: -154137657
+      splashart_Kiroi: 1427164346
       splashart_Misheow: -1013387966
+      splashart_News: 1273482460
       splashart_Sko: -304327607
       splashart_placeholder: -210723036
   mipmapLimitGroupName: 

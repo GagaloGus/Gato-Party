@@ -33,15 +33,6 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
             [Constantes.RoundsOver_Room] = false
         };
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
-
-        Hashtable playerProps = new Hashtable
-        {
-            [Constantes.PlayerKey_CustomID] = PhotonNetwork.IsMasterClient ? 1 : PhotonNetwork.CurrentRoom.PlayerCount,
-            [Constantes.PlayerKey_Ready_SalaEspera] = false,
-            [Constantes.PlayerKey_TotalScore] = 0,
-            [Constantes.PlayerKey_MinigameScore] = 0
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
         PhotonNetwork.CurrentRoom.IsOpen = true;
     }
     void Start()
@@ -167,7 +158,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         playerCount.text = $"Players: {PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
 
-
+    //Cambia la skin de un player en especifico para todos los jugadores de la sala
     public void UpdatePlayerSkin(int photonViewID, int skinID)
     {
         photonView.RPC(nameof(LoadTexturePacks), RpcTarget.All, photonViewID, skinID);

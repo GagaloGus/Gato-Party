@@ -35,7 +35,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         //Espera 2 segundos
         CoolFunctions.Invoke(this, () =>
         {
-            print("Empieza contador");
             //Deja que los players se muevan
             player.GetComponent<MGMash_PlayerController>().canMove = true;
 
@@ -49,18 +48,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                     player.GetComponent<MGMash_PlayerController>().MinigameFinished();                    
                 });
         }, 2);
-        
-        //Debug de la lista de jugadores
-        string temp = "Lista jugadores: ";
-        foreach (System.Collections.Generic.KeyValuePair<int, Player> entry in PhotonNetwork.CurrentRoom.Players)
-        {
-            if (entry.Value.IsLocal)
-                temp += $"{entry.Value} (LOCAL), ";
-            else
-                temp += $"{entry.Value}, ";
-
-        }
-        print(temp);
     }
 
     int playerCount = 0;
@@ -71,7 +58,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         {
             //Se ejecuta al final para mostrar el ranking
             //Si ha cambiado su puntuacion, y no es la de reseteo ( != -1 )
-            if (changedProps.ContainsKey(Constantes.PlayerKey_MinigameScore) && (int)changedProps[Constantes.PlayerKey_MinigameScore] != -1)
+            if (changedProps.ContainsKey(Constantes.PlayerKey_MinigameScore))
             {
                 print($"Puntuacion: {targetPlayer.NickName}->{(int)changedProps[Constantes.PlayerKey_MinigameScore]}");
                 //añadimos la puntuacion al diccionario
@@ -88,7 +75,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                 //Añade las puntuaciones a un string en orden
                 string results = "<color=yellow>-- Ranking --</color>\n";
                 int index = 1;
-                foreach (System.Collections.Generic.KeyValuePair<Player, int> entry in sortedResults)
+                foreach (KeyValuePair<Player, int> entry in sortedResults)
                 {
                     results += $"{index}# {entry.Key.NickName}: {entry.Value} puntos\n";
                     index++;

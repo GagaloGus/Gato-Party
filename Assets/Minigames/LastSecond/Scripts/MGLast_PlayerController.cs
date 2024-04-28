@@ -8,11 +8,6 @@ public class MGLast_PlayerController : MonoBehaviour
     enum GameStates { LookUp, IdleScared, Pressed, Bonked}
 
     Animator m_animator;
-    PhotonView photonView;
-    private void Awake()
-    {
-        photonView = GetComponent<PhotonView>();
-    }
 
     private void Start()
     {

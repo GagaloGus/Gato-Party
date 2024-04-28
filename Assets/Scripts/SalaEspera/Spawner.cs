@@ -14,12 +14,6 @@ public class Spawner : MonoBehaviourPunCallbacks
     public Vector3 minPositions;
     public Vector3 maxPositions;
 
-    PhotonView photonView;
-    private void Awake()
-    {
-        photonView = GetComponent<PhotonView>();
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -37,10 +31,20 @@ public class Spawner : MonoBehaviourPunCallbacks
                 Random.Range(minPositions.z, maxPositions.z)), 
             rotation: Quaternion.identity);
 
-        //Le asigna temporalmente el -1 de skin
         Hashtable playerProps = new Hashtable
         {
-            [Constantes.PlayerKey_Skin] = -1
+            //Le asigna temporalmente el -1 de skin
+            [Constantes.PlayerKey_Skin] = -1,
+
+            //ID de identificacion
+            [Constantes.PlayerKey_CustomID] = PhotonNetwork.IsMasterClient ? 1 : PhotonNetwork.CurrentRoom.PlayerCount,
+
+            //No esta listo
+            [Constantes.PlayerKey_Ready_SalaEspera] = false,
+
+            //Reseteo de las puntuaciones
+            [Constantes.PlayerKey_TotalScore] = 0,
+            [Constantes.PlayerKey_MinigameScore] = 0
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 

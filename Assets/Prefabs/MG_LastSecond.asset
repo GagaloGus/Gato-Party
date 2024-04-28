@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Watch Out!
   Icon: {fileID: 21300000, guid: 6c3990fda4fc7734f8eb12c1994553c7, type: 3}
-  Description: Press the button at the last second!
-  HowToPlay: bonk
+  Description: Ayuda conchetumare
+  HowToPlay: presiona Espacio lo mas tarde posible antes de que te caiga el peso
+    encima
   DisplayImage: {fileID: 21300000, guid: 6c3990fda4fc7734f8eb12c1994553c7, type: 3}
   MG_SceneName: MG_LastSecond

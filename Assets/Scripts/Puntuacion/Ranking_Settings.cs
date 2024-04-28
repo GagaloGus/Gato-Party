@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 public class Ranking_Settings : MonoBehaviour
 {
-    MinigameInfo nextMinigame;
     public bool roundsOver;
 
     [Header("References")]
@@ -51,7 +50,7 @@ public class Ranking_Settings : MonoBehaviour
         Dictionary<Player, int> sortedDic = new Dictionary<Player, int>();
 
         //Si la propKey es la de la puntuacion del anterior minijuego, guarda el propValue en el diccionario con su respectivo player
-        foreach (System.Collections.Generic.KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
             Hashtable playerProps = player.Value.CustomProperties;
             foreach (System.Collections.DictionaryEntry props in playerProps)
@@ -88,8 +87,6 @@ public class Ranking_Settings : MonoBehaviour
             currentPanel.Find("Rank").GetComponent<Image>().sprite = rankingNumberSprites[i];
             currentPanel.Find("Name").GetComponent<TMP_Text>().text = currentPlayer.NickName;
             currentPanel.Find("PuntGlobal").GetComponent<TMP_Text>().text = currentWinPoints.ToString();
-
-            print($"Updated {i} panel");
         }
     }
 
@@ -108,6 +105,7 @@ public class Ranking_Settings : MonoBehaviour
         List<Player> RanklistGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
         UpdateUI(RanklistGlob);
 
+        yield return new WaitForSeconds(0.5f);
         //Actualiza las puntuaciones solo si es el Master Client
         if (PhotonNetwork.IsMasterClient)
         {
@@ -120,6 +118,7 @@ public class Ranking_Settings : MonoBehaviour
                 Player currentPlayer = RanklistMinigame[i];
                 int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
 
+                //Si hay puntuaciones repetidas
                 int amountOfPlayersSameMGScore = 0;
                 for (int j = 0; j < RanklistMinigame.Count; j++)
                 {
@@ -143,23 +142,27 @@ public class Ranking_Settings : MonoBehaviour
                     int averageScore = Mathf.RoundToInt((float)totalScore / amountOfPlayersSameMGScore);
                 }
 
-                Hashtable newPlayerProps = new Hashtable();
-                newPlayerProps[Constantes.PlayerKey_TotalScore] = currentWinPoints + Constantes.Win_Points[i];
+                Hashtable newPlayerProps = new Hashtable
+                {
+                    [Constantes.PlayerKey_TotalScore] = currentWinPoints + Constantes.Win_Points[i]
+                };
                 currentPlayer.SetCustomProperties(newPlayerProps);
             }
         }
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
 
-            //Actualiza la interfaz con el ranking de pt globales POSTERIOR al minijuego
-            List<Player> NewRankListGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
-            UpdateUI(NewRankListGlob);
+        //Actualiza la interfaz con el ranking de pt globales POSTERIOR al minijuego
+        List<Player> NewRankListGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
+        UpdateUI(NewRankListGlob);
 
         yield return new WaitForSeconds(3);
 
         //Mira si se acabaron las rondas
         if (!roundsOver)
         {
+            MinigameInfo nextMinigame = null;
+
             //Cambia al siguiente minijuego
             Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
             foreach (System.Collections.DictionaryEntry entry in roomProps)

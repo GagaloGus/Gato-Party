@@ -28,19 +28,7 @@ public class MGMash_PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Resetea la puntuacion
-        Hashtable playerProps = new Hashtable
-        {
-            [Constantes.PlayerKey_MinigameScore] = -1
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-
         Mark.SetActive(photonView.IsMine);
-        /*if (!photonView.IsMine)
-        {
-            nicknameHolder.SetActive(true);
-            nicknameHolder.GetComponentInChildren<TMP_Text>().text = photonView.Controller.NickName;
-        }*/
     }
 
     // Update is called once per frame

@@ -135,42 +135,42 @@ public static class CoolFunctions
         return usingIDs;
     }
 
-    //Actualiza las texturas de el propio personaje y de todos los demas players
-    //Esta funcion se debe llamar al inicio de cada minijuego para cargar las texturas, no en la Sala Espera
+    //Actualiza las texturas de el propio personaje y de todos los demas jugadores
+    //Esta funcion se debe llamar al inicio para cargar las texturas de todos los jugadores
     public static void LoadAllTexturePacks<T>() where T : MonoBehaviour
     {
+        //Coje todos los jugadores con un componente en especifico
         T[] players = UnityEngine.Object.FindObjectsOfType<T>();
         foreach (T player in players)
         {
+            //Coge el PhotonView y el ID de la skin de cada player
             PhotonView otherPhotonView = player.gameObject.GetComponent<PhotonView>();
             int otherSkinID = (int)otherPhotonView.Owner.CustomProperties[Constantes.PlayerKey_Skin];
 
-            LoadPacks(otherPhotonView.ViewID, otherSkinID);
-        }
-    }
+            //Encuentra el script que contiene todos los paquetes de texturas
+            AnimationBundles animationBundles = UnityEngine.Object.FindObjectOfType<AnimationBundles>();
 
-    static void LoadPacks(int photonViewID, int SkinID)
-    {
-        AnimationBundles animationBundles = UnityEngine.Object.FindObjectOfType<AnimationBundles>();
+            //Coge el script del jugador que se encarga de el cambio de sprites
+            ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
 
-        //Encuentra el gameobject del player segun su PhotonView ID
-        GameObject player = PhotonView.Find(photonViewID).gameObject;
-        ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
+            //Busca el paquete de texturas acorde al ID del jugador
+            AnimationSpriteBundle selectedBundle = Array.Find(animationBundles.bundles.ToArray(), x => x.ID == otherSkinID);
 
-        AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
-
-        try
-        {
-            textureScript.ID = SkinID;
-            textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
-            Debug.Log($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color> -> {player.name}");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(e.Message);
-            //Si algo falla, le pone la skin default
-            textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
-            textureScript.ID = 0;
+            try
+            {
+                //Establece el ID del script y actualiza su diccionario
+                textureScript.ID = otherSkinID;
+                textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+                Debug.Log($"Loaded sprites of <color=cyan>{otherPhotonView.Owner.NickName}</color>, skin id: {otherSkinID} <color=yellow>({selectedBundle.Name})</color> -> {player.name}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                //Si algo falla, le pone la skin default
+                textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
+                textureScript.ID = 0;
+                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks);
+            }
         }
     }
 

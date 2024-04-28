@@ -31,8 +31,6 @@ public class FinalScoreAnimation : MonoBehaviour
         for (int i = 0; i < PlayerObjects.Count; i++)
         {
             PlayerObjects[i].GetComponent<FinalScore_PlayerAnimator>().order = 4 - i;
-
-            //Aqui ira todo sobre el cargado de skins
         }
     }
 
@@ -41,7 +39,10 @@ public class FinalScoreAnimation : MonoBehaviour
         //Espera (suspense)
         yield return new WaitForSeconds(1);
 
+        //Ordena los players de mayor a menor por su puntuacion
         Players = GetPlayerFinalScoreSorted();
+
+        //Carga sus skins acorde a la lista ordenada
         LoadSkins();
 
         //Recorre solo los 3 primeros players

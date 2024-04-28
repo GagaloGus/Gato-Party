@@ -63,22 +63,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
                 playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    StartGame();
+                    photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4), 1);
                 }
             }, 0.3f);
 
         }, 0.5f);
-    }
-
-    void StartGame()
-    {
-        object[] parameters =
-        {
-            GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4),
-            1
-        };
-
-        photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, parameters);
     }
 
     [PunRPC]
@@ -237,13 +226,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         }
         else
         {
-            object[] parameters =
-            {
-                GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4),
-                nextPlayerturn
-                };
-
-            photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, parameters);
+            photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4), nextPlayerturn);
         }
     }
 
@@ -290,7 +273,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
     int[] GenerateRandomList(int length)
     {
-        length = Mathf.Clamp(length, 0, 7);
+        length = Mathf.Clamp(length, 0, 8);
         List<int> result = new List<int>();
 
         for (int i = 0; i < length; i++)
@@ -300,19 +283,6 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         }
 
         return result.ToArray();
-    }
-
-    bool GameFinished()
-    {
-        foreach (Player playerEntry in PhotonNetwork.PlayerListOthers)
-        {
-            if (!(bool)playerEntry.CustomProperties[Constantes.PlayerKey_Eliminated])
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     int GetNextTurn()

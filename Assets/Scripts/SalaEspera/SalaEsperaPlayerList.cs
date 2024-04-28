@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -37,8 +36,6 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
         foreach(Transform child in display) 
         { Destroy(child.gameObject); }
 
-        GameObject ownerTag = null;
-
         //Crea tags acorde a los players que hay en la sala
         foreach (KeyValuePair<int, Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
         {
@@ -49,21 +46,14 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
             //Si somos el owner activa la coronita
             if(playerInfo.Value.IsMasterClient)
             {
-                ownerTag = tag;
                 tag.transform.Find("IsOwner").gameObject.SetActive(true);
             }
         }
-
-        //Pone el owner en la parte de arriba de la lista
-        if(ownerTag != null)
-        {
-            ownerTag.transform.SetAsFirstSibling();
-        }
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        // Se llama automáticamente cuando las propiedades personalizadas de un jugador cambian
+        // Se llama automï¿½ticamente cuando las propiedades personalizadas de un jugador cambian
         if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SalaEspera))
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SalaEspera];

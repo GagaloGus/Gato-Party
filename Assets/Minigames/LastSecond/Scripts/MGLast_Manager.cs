@@ -75,8 +75,6 @@ public class MGLast_Manager : MonoBehaviour
         }, 2);
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -84,7 +82,7 @@ public class MGLast_Manager : MonoBehaviour
         {
             if (Input.GetKeyDown(PlayerKeybinds.stop_lastSecMG))
             {
-                photonView.RPC(nameof(RPC_StoppedBonk), RpcTarget.All, TargetPlayer, targetBonk.transform.position.y);
+                photonView.RPC(nameof(RPC_ResultBonk), RpcTarget.All, TargetPlayer, targetBonk.transform.position.y, false);
                 gameStarted = false;
             }
 
@@ -97,17 +95,22 @@ public class MGLast_Manager : MonoBehaviour
                 PhotonNetwork.LocalPlayer.SetCustomProperties(dead);
 
                 //- Cambiar por un RPC -//
-                photonView.RPC(nameof(RPC_BonkedPlayer), RpcTarget.All, TargetPlayer, bonkHeight);
+                photonView.RPC(nameof(RPC_ResultBonk), RpcTarget.All, TargetPlayer, bonkHeight, true);
                 gameStarted = false;   
             }
         }
     }
 
     [PunRPC]
-    void RPC_StoppedBonk(int playerInt, float height)
+    void RPC_ResultBonk(int playerInt, float height, bool bonked)
     {
         remainingPlayers--;
-        PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
+
+        if(bonked)
+            PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().Bonked();
+        else
+            PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
+
         BonkPhysics(playerInt, false);
 
         Bonks[playerInt].transform.position = new Vector3(
@@ -124,30 +127,9 @@ public class MGLast_Manager : MonoBehaviour
         
     }
 
-    [PunRPC]
-    void RPC_BonkedPlayer(int playerInt, float height)
-    {
-        remainingPlayers--;
-        PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().Bonked();
-        BonkPhysics(playerInt, false);
-
-        Bonks[playerInt].transform.position = new Vector3(
-            Bonks[playerInt].transform.position.x,
-            height,
-            Bonks[playerInt].transform.position.z
-            );
-
-        CoolFunctions.Invoke(this, () =>
-        {
-            if (remainingPlayers == 0 && PhotonNetwork.IsMasterClient)
-                FinishGame();
-        }, 1);
-    }
 
     void FinishGame()
     {
-        Debug.Log(Mathf.RoundToInt(CoolFunctions.MapValues(targetBonk.transform.position.y, originalHeight, bonkHeight, minMaxScore.x, minMaxScore.y)));
-
         //ordena de mayor a menor segun las posiciones en y
         List<GameObject> OrderedBonks = Bonks.OrderByDescending(x => x.transform.position.y).ToList();
         //Invierte la lista, ahora es de menor a mayor
@@ -197,13 +179,14 @@ public class MGLast_Manager : MonoBehaviour
             Player currentPlayer = System.Array.Find(currentPlayers, x => (int)x.CustomProperties[Constantes.PlayerKey_CustomID] == i + 1);
             int score = Mathf.RoundToInt(CoolFunctions.MapValues(Bonks[i].transform.position.y, originalHeight, bonkHeight, minMaxScore.x, minMaxScore.y));
 
-            if (!(bool)currentPlayer.CustomProperties[Constantes.PlayerKey_Eliminated])
+            if ((bool)currentPlayer.CustomProperties[Constantes.PlayerKey_Eliminated])
             {
-                results += $"{currentPlayer.NickName} -> {score}m\n";
+                results += $"{currentPlayer.NickName} -> ------\n";
             }
             else
             {
-                results += $"{currentPlayer.NickName} -> ------\n";
+                results += $"{currentPlayer.NickName} -> {score}m\n";
+                
             }
         }
 
@@ -221,8 +204,6 @@ public class MGLast_Manager : MonoBehaviour
     {
         GameObject targetBonk = Bonks[bonkInt];
 
-        /*targetBonk.GetComponent<ConstantForce>().enabled = enable;
-        targetBonk.GetComponent<Rigidbody>().useGravity = enable;*/
         targetBonk.GetComponent<Rigidbody>().isKinematic = !enable;   }
 
 

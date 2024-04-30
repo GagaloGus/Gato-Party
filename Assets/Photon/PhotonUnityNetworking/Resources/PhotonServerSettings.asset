@@ -58,6 +58,7 @@ MonoBehaviour:
   - RPC_StartCountDown
   - RPC_BonkedPlayer
   - RPC_StoppedBonk
+  - RPC_ResultBonk
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

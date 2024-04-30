@@ -1,6 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,8 @@ public class MGFindItem_Manager : MonoBehaviour
     public List<GameObject> PlayerObjects = new List<GameObject>();
 
     [Header("Lata managment")]
-    public int lataAmount;
+    public int normalLataAmount;
+    public int goldenLataAmount;
 
     bool[] isOpened;
 
@@ -33,14 +33,15 @@ public class MGFindItem_Manager : MonoBehaviour
         choseObject = false;
 
         //Por si se pasa
-        lataAmount = Mathf.Clamp(lataAmount, 0, ObjetoParent.childCount);
+        normalLataAmount = Mathf.Clamp(normalLataAmount, 0, ObjetoParent.childCount - 1);
+        goldenLataAmount = Mathf.Clamp(goldenLataAmount, 0, ObjetoParent.childCount - 1 - normalLataAmount);
 
         foreach (Transform child in ObjetoParent)
         {
             ObjetosList.Add(child.gameObject);
         }
 
-        List<int> randomPlaces = CoolFunctions.GenerateRandomNumbers(lataAmount, 0, ObjetoParent.childCount - 1);
+        List<int> randomPlaces = GenerateRandomChests(normalLataAmount, goldenLataAmount);
 
         RPC_StartMiniGame(randomPlaces.ToArray());
     }
@@ -49,21 +50,15 @@ public class MGFindItem_Manager : MonoBehaviour
     {
         turnCount = 0;
         List<int> randomPlaces = numbers.ToList();
+
         Debug.Log($"<color=yellow>Random ints:</color> {CoolFunctions.StringContentOfList(randomPlaces, false)}");
 
         for (int i = 0; i < ObjetosList.Count; i++)
         {
-            GameObject obj = ObjetosList[i];
-            GameObject lata = obj.transform.Find("Lata").gameObject;
+            MGFindItem_Cofre cofreScript = ObjetosList[i].GetComponent<MGFindItem_Cofre>();
 
-            if (randomPlaces.Contains(i))
-            {
-                lata.SetActive(true);
-            }
-            else
-            {
-                lata.SetActive(false);
-            }
+            //Cambia las latas
+            cofreScript.UpdateLata((MGFindItem_Cofre.LataState)randomPlaces[i]);
         }
     }
 
@@ -71,16 +66,16 @@ public class MGFindItem_Manager : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if(Input.GetKeyUp(KeyCode.Mouse0) && !choseObject) 
+        if (Input.GetKeyUp(KeyCode.Mouse0) && !choseObject)
         {
-            if(Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 Debug.Log(hit.collider.gameObject.name);
                 for (int i = 0; i < ObjetosList.Count; i++)
                 {
-                    if(hit.collider.gameObject == ObjetosList[i] && !isOpened[i])
+                    if (hit.collider.gameObject == ObjetosList[i] && !isOpened[i])
                     {
-                        RPC_OpenChest(i); 
+                        RPC_OpenChest(i);
                         break;
                     }
                 }
@@ -92,14 +87,16 @@ public class MGFindItem_Manager : MonoBehaviour
     {
         isOpened[index] = true;
         choseObject = true;
-        StartCoroutine(OpenChestMiniCinematic(ObjetosList[index].transform.position));
+        StartCoroutine(OpenChestMiniCinematic(index));
     }
 
-    IEnumerator OpenChestMiniCinematic(Vector3 objectPos)
+    IEnumerator OpenChestMiniCinematic(int index)
     {
-        cam.MoveRotateTowards(objectPos, 1f);
         GameObject currentPlayer = PlayerObjects[turnCount];
+        Vector3 objectPos = ObjetosList[index].transform.position;
         Vector3 originalPlayerPos = currentPlayer.transform.position;
+
+        cam.MoveRotateTowards(objectPos, 1f);
 
         float elapsedTime = 0f;
 
@@ -108,7 +105,7 @@ public class MGFindItem_Manager : MonoBehaviour
         while (elapsedTime < 0.5f)
         {
             float t = elapsedTime / 0.5f;
-            currentPlayer.transform.position = Vector3.Lerp(originalPlayerPos, originalPlayerPos + (objectPos-originalPlayerPos).normalized, t); // Movimiento
+            currentPlayer.transform.position = Vector3.Lerp(originalPlayerPos, originalPlayerPos + (objectPos - originalPlayerPos).normalized, t); // Movimiento
             yield return null;
             elapsedTime += Time.deltaTime;
         }
@@ -120,12 +117,14 @@ public class MGFindItem_Manager : MonoBehaviour
         while (elapsedTime < 0.5f)
         {
             float t = elapsedTime / 0.5f;
-            currentPlayer.transform.position = Vector3.Lerp(objectPos + Vector3.forward *-2.5f, objectPos + Vector3.forward * -0.7f, t); // Movimiento
+            currentPlayer.transform.position = Vector3.Lerp(objectPos + Vector3.forward * -2.5f, objectPos + Vector3.forward * -0.7f, t); // Movimiento
             yield return null;
             elapsedTime += Time.deltaTime;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        ObjetosList[index].GetComponent<MGFindItem_Cofre>().OpenChest();
+
+        yield return new WaitForSeconds(3);
 
         cam.ResetPosRotOriginal();
         currentPlayer.transform.position = originalPlayerPos;
@@ -159,5 +158,38 @@ public class MGFindItem_Manager : MonoBehaviour
         nextTurn %= 4;
 
         return nextTurn;
+    }
+
+    List<int> GenerateRandomChests(int normalAmount, int goldenAmount)
+    {
+        List<int> result = new List<int>();
+        foreach (GameObject cofre in ObjetosList)
+        {
+            result.Add(0);
+        }
+
+        while (normalAmount > 0)
+        {
+            int position = Random.Range(0, result.Count);
+
+            if (result[position] == 0)
+            {
+                result[position] = 1;
+                normalAmount--;
+            }
+        }
+
+        while (goldenAmount > 0)
+        {
+            int position = Random.Range(0, result.Count);
+
+            if (result[position] == 0)
+            {
+                result[position] = 2;
+                goldenAmount--;
+            }
+        }
+
+        return result;
     }
 }

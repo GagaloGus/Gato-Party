@@ -196,7 +196,6 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(0.01f);
         }
 
-        //Al acabar espera un poquito
         EndTurn();
     }
 

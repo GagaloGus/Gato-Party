@@ -109,6 +109,24 @@ public class AnimationBundles : MonoBehaviour
         CreatePack(texturePacks);
     }
 
+    public void CreateFindItemAnimationBundle()
+    {
+        AnimationPacks[] texturePacks = new AnimationPacks[]
+        {
+            new AnimationPacks("think_01"),
+            new AnimationPacks("think_02"),
+            new AnimationPacks("walk_01"),
+            new AnimationPacks("walk_02"),
+            new AnimationPacks("open_01"),
+            new AnimationPacks("open_02"),
+            new AnimationPacks("open_03"),
+            new AnimationPacks("sad_01"),
+            new AnimationPacks("happy_01"),
+        };
+
+        CreatePack(texturePacks);
+    }
+
     public void CreateFinalScoreAnimationBundle()
     {
         AnimationPacks[] texturePacks = new AnimationPacks[]
@@ -132,7 +150,8 @@ public class AnimationBundles : MonoBehaviour
         {
             foreach (AnimationPacks pack in bundle.texturePacks)
             {
-                pack.back = pack.front;
+                if(pack.back == null)
+                    pack.back = pack.front;
             }
         }
     }
@@ -155,39 +174,43 @@ class AnimationBundleEditor : Editor
         DrawDefaultInspector();
         AnimationBundles myscript = (AnimationBundles)target;
 
+        EditorGUILayout.LabelField("Animation Packs", EditorStyles.boldLabel);
+
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Add SALA ESPERA pack", GUILayout.Height(30)))
         {
             myscript.CreateDefaultAnimationBundle();
         }
-        GUILayout.EndHorizontal();
-
-        //Minijuegos
-        int height = 30;
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add MASH Minigame pack", GUILayout.Height(height)))
-        {
-            myscript.CreateMashAnimationBundle();
-        }
-        if (GUILayout.Button("Add COMMAND Minigame pack", GUILayout.Height(height)))
-        {
-            myscript.CreateCommandAnimationBundle();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add LAST SEC Minigame pack", GUILayout.Height(height)))
-        {
-            myscript.CreateLastSecAnimationBundle();
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Add FINAL SCORE pack", GUILayout.Height(30)))
         {
             myscript.CreateFinalScoreAnimationBundle();
         }
         GUILayout.EndHorizontal();
 
+        //Minijuegos
+        EditorGUILayout.LabelField("Minijuego Packs", EditorStyles.boldLabel);
+
+        int height = 30;
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("MASH", GUILayout.Height(height + 10)))
+        {
+            myscript.CreateMashAnimationBundle();
+        }
+        if (GUILayout.Button("COMMAND", GUILayout.Height(height + 10)))
+        {
+            myscript.CreateCommandAnimationBundle();
+        }
+        if (GUILayout.Button("LAST\nSEC", GUILayout.Height(height + 10)))
+        {
+            myscript.CreateLastSecAnimationBundle();
+        }
+        if (GUILayout.Button("FIND\nITEM", GUILayout.Height(height + 10)))
+        {
+            myscript.CreateFindItemAnimationBundle();
+        }
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Extra", EditorStyles.boldLabel);
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Copy FIRST texture to SECOND texture", GUILayout.Height(20)))
         {

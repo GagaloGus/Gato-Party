@@ -59,6 +59,11 @@ MonoBehaviour:
   - RPC_BonkedPlayer
   - RPC_StoppedBonk
   - RPC_ResultBonk
+  - RPC_NewRound
+  - RPC_OpenChest
+  - RPC_StartMiniGame
+  - RPC_FinishRound
+  - RPC_FinishGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

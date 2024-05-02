@@ -45,4 +45,13 @@ public class MGFindItem_Cofre : MonoBehaviour
     {
         animator.SetTrigger("open");
     }
+
+    public void FinishedCutscene()
+    {
+        //Des-ilumina el cristal
+        Material emission = transform.Find("modelo").Find("tapa").GetComponent<MeshRenderer>().materials[2];
+        emission.SetColor("_EmissionColor", Color.black);
+
+        FindObjectOfType<MGFindItem_Manager>().FinishedOpeningChest();
+    }
 }

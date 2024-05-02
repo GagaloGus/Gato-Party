@@ -10,9 +10,6 @@ public class MGFindItem_Camera : MonoBehaviour
     Vector3 originalPosition;
     Vector3 originalRotation;
 
-    [Header("Movement")]
-    public float timeToReachDestination;
-
     // Start is called before the first frame update
     void Start()
     {

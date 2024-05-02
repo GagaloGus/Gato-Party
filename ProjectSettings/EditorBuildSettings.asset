@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Minigames/LastSecond/MG_LastSecond.unity
     guid: 277b8c09717b3964a9b6cb27aa614dfe
+  - enabled: 1
+    path: Assets/Minigames/FindItem/MG_FindItem.unity
+    guid: 6393c6101cb8c694eabceb4fe896a527
   m_configObjects: {}

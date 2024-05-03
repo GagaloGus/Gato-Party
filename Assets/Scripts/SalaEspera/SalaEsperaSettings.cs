@@ -42,7 +42,10 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         UpdatePlayerCount();
         roomName.text = $"Room Name:\n{PhotonNetwork.CurrentRoom.Name}";
 
-        startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        startGameButton.interactable = false;
+
+        startGameButton.gameObject.GetComponent<Image>().color = (PhotonNetwork.IsMasterClient ? new Color(1, 0.72f, 0) : Color.gray);
+        startGameButton.GetComponentInChildren<TMP_Text>().text = (PhotonNetwork.IsMasterClient ? "Start Game" : "Waiting...");
 
         playerReadyButton.onClick.AddListener(OnReadyButtonClicked);
 

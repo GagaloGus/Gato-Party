@@ -13,8 +13,11 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
     [Header("References")]
     public GameObject resultsText;
+    public List<GameObject> PlayerObjects = new List<GameObject>();
 
     Dictionary<Player, int> resultPlayerlist = new();
+
+    public Color[] aireColors;
 
     // Start is called before the first frame update
     void Start()
@@ -45,9 +48,17 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                 stringFormat: "00",
                 endCounterFunction: () =>
                 {
-                    player.GetComponent<MGMash_PlayerController>().MinigameFinished();                    
+                    player.GetComponent<MGMash_PlayerController>().MinigameFinished();
                 });
         }, 2);
+
+        for(int i = 0; i < Mathf.Min(PlayerObjects.Count, aireColors.Length); i++)
+        {
+            Transform playr = PlayerObjects[i].transform;
+            MeshRenderer mshr = playr.Find("3dmodel Sko").Find("aire").Find("tubo").GetComponent<MeshRenderer>();
+
+            mshr.materials[0].color = aireColors[i];
+        }
     }
 
     int playerCount = 0;

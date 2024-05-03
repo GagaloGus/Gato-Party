@@ -36,6 +36,8 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
         foreach(Transform child in display) 
         { Destroy(child.gameObject); }
 
+        Transform MasterTag = null;
+
         //Crea tags acorde a los players que hay en la sala
         foreach (KeyValuePair<int, Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
         {
@@ -47,8 +49,11 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
             if(playerInfo.Value.IsMasterClient)
             {
                 tag.transform.Find("IsOwner").gameObject.SetActive(true);
+                MasterTag = tag.transform;
             }
         }
+
+        MasterTag.SetAsFirstSibling();
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

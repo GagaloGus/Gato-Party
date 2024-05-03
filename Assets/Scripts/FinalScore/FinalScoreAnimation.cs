@@ -138,8 +138,8 @@ public class FinalScoreAnimation : MonoBehaviour
             {
                 Debug.Log($"Loaded default sprite -> {PlayerObjects[i].name}");
                 //Si algo falla, le pone la skin default
-                textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
                 textureScript.ID = 0;
+                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks);
             }
         }
     }

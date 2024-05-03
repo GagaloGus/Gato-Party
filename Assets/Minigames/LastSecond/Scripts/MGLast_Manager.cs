@@ -32,7 +32,10 @@ public class MGLast_Manager : MonoBehaviour
         photonView = GetComponent<PhotonView>();
 
         for (int i = 0; i < Bonks.Count; i++)
-        { BonkPhysics(i, false); }
+        {
+            BonkPhysics(i, false);
+            Bonks[i].GetComponent<Animator>().speed = 0;
+        }
     }
 
     // Start is called before the first frame update
@@ -56,23 +59,57 @@ public class MGLast_Manager : MonoBehaviour
             for (int i = 0; i < PlayerObjects.Count; i++)
             {
                 Bonks[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
+                
+
                 PlayerObjects[i].GetComponent<MGLast_PlayerController>().LookUp();
             }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                int[] randomFruits = new int[Bonks.Count];
+                for (int i = 0; i < randomFruits.Length; i++) { randomFruits[i] = Random.Range(0, Bonks.Count); }
+
+                photonView.RPC(nameof(RPC_Setup), RpcTarget.All, randomFruits);
+            }
+
         }, 0.5f);
 
         //Cooldown hasta que empiece el minijuego
         CoolFunctions.Invoke(this, () =>
         {
-            gameStarted = true;
-            
-            Debug.Log("Game Started!");
-
-            for(int i = 0; i < PlayerObjects.Count; i++)
+            if(PhotonNetwork.IsMasterClient)
             {
-                PlayerObjects[i].GetComponent<MGLast_PlayerController>().StartGame();
-                BonkPhysics(i, true);
+                photonView.RPC(nameof(RPC_StartGame), RpcTarget.All);
             }
-        }, 2);
+        }, 4);
+    }
+
+    [PunRPC]
+    void RPC_Setup(int[] randomFruits)
+    {
+        for (int j = 0; j < Bonks.Count; j++)
+        {
+            Transform fruitParent = Bonks[j].transform.Find("Fruits");
+
+            for (int i = 0; i < fruitParent.childCount; i++)
+            {
+                fruitParent.GetChild(i).gameObject.SetActive(i == randomFruits[j]);
+            }
+        }
+    }
+
+    [PunRPC]
+    void RPC_StartGame()
+    {
+        gameStarted = true;
+
+        Debug.Log("Game Started!");
+
+        for (int i = 0; i < PlayerObjects.Count; i++)
+        {
+            PlayerObjects[i].GetComponent<MGLast_PlayerController>().StartGame();
+            BonkPhysics(i, true);
+        }
     }
 
     // Update is called once per frame
@@ -104,24 +141,33 @@ public class MGLast_Manager : MonoBehaviour
     [PunRPC]
     void RPC_ResultBonk(int playerInt, float height, bool bonked)
     {
+        GameObject theBonk = Bonks[playerInt];
+
         remainingPlayers--;
 
-        if(bonked)
+        if (bonked)
+        {
+            theBonk.transform.Find("Canvas").Find("Explosion").gameObject.SetActive(true);
+            theBonk.transform.Find("Fruits").gameObject.SetActive(false);
             PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().Bonked();
+        }
         else
+        {
+            theBonk.GetComponent<Animator>().speed = 1;
             PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
+        }
 
         BonkPhysics(playerInt, false);
 
-        Bonks[playerInt].transform.position = new Vector3(
-            Bonks[playerInt].transform.position.x,
+        theBonk.transform.position = new Vector3(
+            theBonk.transform.position.x,
             height,
-            Bonks[playerInt].transform.position.z
+            theBonk.transform.position.z
             );
 
         CoolFunctions.Invoke(this, () =>
         {
-            if (remainingPlayers == 0 && PhotonNetwork.IsMasterClient)
+            if (remainingPlayers <= 0 && PhotonNetwork.IsMasterClient)
                 FinishGame();
         }, 1);
         

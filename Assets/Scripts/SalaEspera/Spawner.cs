@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviourPunCallbacks
 {
     [Header("Prefab to spawn")]
     public GameObject objectToSpawn;
+    public GameObject playerSpawned;
 
     [Header("Random Position to spawn")]
     public Vector3 minPositions;
@@ -30,6 +31,8 @@ public class Spawner : MonoBehaviourPunCallbacks
                 Random.Range(minPositions.y, maxPositions.y),
                 Random.Range(minPositions.z, maxPositions.z)), 
             rotation: Quaternion.identity);
+
+        playerSpawned = playerObj;
 
         Hashtable playerProps = new Hashtable
         {
@@ -72,5 +75,16 @@ public class Spawner : MonoBehaviourPunCallbacks
         {
             FindObjectOfType<MinigameSelector>(true).loadingScreen.SetActive(false);
         }, 0.5f);
+    }
+
+    public void Respawn()
+    {
+        playerSpawned.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+        playerSpawned.transform.position = new Vector3(
+                Random.Range(minPositions.x, maxPositions.x),
+                Random.Range(minPositions.y, maxPositions.y),
+                Random.Range(minPositions.z, maxPositions.z))
+            ;
     }
 }

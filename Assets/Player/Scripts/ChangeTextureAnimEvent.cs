@@ -31,9 +31,10 @@ public class ChangeTextureAnimEvent : MonoBehaviour
         UpdateAnimationDictionary();
     }
 
-    public void UpdateAnimationDictionary(AnimationPacks[] packs)
+    public void UpdateAnimationDictionary(AnimationPacks[] packs, int ID)
     {
         this.texturePacks = packs;
+        this.ID = ID;
         UpdateAnimationDictionary();
     }
 
@@ -41,6 +42,8 @@ public class ChangeTextureAnimEvent : MonoBehaviour
     {
         frontMat = modelo.GetComponent<MeshRenderer>().materials[0];
         backMat = modelo.GetComponent<MeshRenderer>().materials[1];
+
+        GetComponent<Animator>().SetInteger("ID", ID);
 
         //añade todas las texturas al diccionario
         animationDic.Clear();

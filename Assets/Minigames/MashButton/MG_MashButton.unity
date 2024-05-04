@@ -258,11 +258,11 @@ MonoBehaviour:
     ID: 1
     texturePacks:
     - name: mash_01
-      front: {fileID: 2800000, guid: 8fd38ba28cf07284abe435a0674aa439, type: 3}
-      back: {fileID: 2800000, guid: dd5dbbe941421084b89485a6dc0095f0, type: 3}
+      front: {fileID: 2800000, guid: 0a1aea0a481880d4d9cb93a3b7d98c58, type: 3}
+      back: {fileID: 0}
     - name: mash_02
-      front: {fileID: 2800000, guid: 95a6156e4871c474e8b7030a2981f2d8, type: 3}
-      back: {fileID: 2800000, guid: 4e45eb46f0123ab48850a95906fb533f, type: 3}
+      front: {fileID: 2800000, guid: 44d180d0b48af0a439fd1f53fd1340dc, type: 3}
+      back: {fileID: 0}
   - Name: Misheow
     ID: 2
     texturePacks:

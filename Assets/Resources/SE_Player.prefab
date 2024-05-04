@@ -535,6 +535,9 @@ MonoBehaviour:
   - Type: 3
     SynchronizeType: 1
     Name: player states
+  - Type: 3
+    SynchronizeType: 0
+    Name: ID
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -880,9 +883,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6513385704784279613}
     m_Modifications:
+    - target: {fileID: 2471540787618757660, guid: 9fc1a3768967d53438c65cda7cee6edc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.4110003
+      objectReference: {fileID: 0}
     - target: {fileID: 3699925922556575176, guid: 9fc1a3768967d53438c65cda7cee6edc, type: 3}
       propertyPath: m_Name
       value: Glider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699925922556575176, guid: 9fc1a3768967d53438c65cda7cee6edc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462473324622874200, guid: 9fc1a3768967d53438c65cda7cee6edc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.4110003
       objectReference: {fileID: 0}
     - target: {fileID: 8993765462951577963, guid: 9fc1a3768967d53438c65cda7cee6edc, type: 3}
       propertyPath: m_LocalPosition.x

@@ -145,17 +145,15 @@ public static class CoolFunctions
             try
             {
                 //Establece el ID del script y actualiza su diccionario
-                textureScript.ID = otherSkinID;
-                textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+                textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, otherSkinID);
                 Debug.Log($"Loaded sprites of <color=cyan>{otherPhotonView.Owner.NickName}</color>, skin id: {otherSkinID} <color=yellow>({selectedBundle.Name})</color> -> {player.name}");
             }
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
                 //Si algo falla, le pone la skin default
-                textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
-                textureScript.ID = 0;
-                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks);
+
+                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks, 0);
             }
         }
     }

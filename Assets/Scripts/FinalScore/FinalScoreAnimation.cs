@@ -130,16 +130,14 @@ public class FinalScoreAnimation : MonoBehaviour
 
                 AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
 
-                textureScript.ID = SkinID;
-                textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+                textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, SkinID);
                 Debug.Log($"Loaded sprites of <color=cyan>{Players[i].NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color> -> {PlayerObjects[i].name}");
             }
             catch
             {
                 Debug.Log($"Loaded default sprite -> {PlayerObjects[i].name}");
                 //Si algo falla, le pone la skin default
-                textureScript.ID = 0;
-                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks);
+                textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks, 0);
             }
         }
     }

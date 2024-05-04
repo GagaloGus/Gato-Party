@@ -187,16 +187,14 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
         try
         {
-            textureScript.ID = SkinID;
-            textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks);
+            textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, SkinID);
             print($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color>");
         }
         catch (System.Exception e)
         {
             Debug.LogError(e.Message, this);
             //Si algo falla, le pone la skin default
-            textureScript.texturePacks = animationBundles.bundles[0].texturePacks;
-            textureScript.ID = 0;
+            textureScript.UpdateAnimationDictionary(animationBundles.bundles[0].texturePacks, 0);
         }
     }
 }

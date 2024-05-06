@@ -23,9 +23,11 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public int CurrentSkinID;
 
     PhotonView photonView;
+    CanvasChat canvasChat;
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
+        canvasChat = FindObjectOfType<CanvasChat>();
 
         Hashtable roomProps = new Hashtable
         {
@@ -66,6 +68,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         //actualiza el boton de Ready
         playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
         playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
+
+        canvasChat.SendSystemMessage($"Player {PhotonNetwork.LocalPlayer.NickName} is {(isReady ? "<color=green>ready" : "<color=red>not ready")}</color>");
     }
 
     //Se llama cada vez que se actualizan las propiedades de un player con hastables
@@ -79,6 +83,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
             playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
             playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
+
+            
         }
 
         //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos

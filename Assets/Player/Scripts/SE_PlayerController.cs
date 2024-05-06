@@ -25,7 +25,7 @@ public class SE_PlayerController : MonoBehaviour
     public float nearGroundDist;
     bool isGrounded, isFlipped, isFacingBackwards, canMove, isGliding, isRunning;
 
-    public enum PlayerStates { Idle, Walk, Run, JumpUp, JumpDown, Glide, Attack }
+    public enum PlayerStates { Idle, Walk, Run, JumpUp, JumpDown, Glide, Attack, Typing }
     public PlayerStates playerState;
 
     KeyCode jump, run;
@@ -34,12 +34,14 @@ public class SE_PlayerController : MonoBehaviour
     public GameObject Mark;
     public TMP_Text nicknameText;
     PhotonView photonView;
+    TMP_InputField chat_inputField;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         photonView = GetComponent<PhotonView>();
+        chat_inputField = FindObjectOfType<CanvasChat>().inputField;
 
         groundPoint = transform.Find("GroundCheckPoint");
 
@@ -83,6 +85,13 @@ public class SE_PlayerController : MonoBehaviour
     {
         if (!photonView.IsMine)
             return;
+
+        if(chat_inputField.isFocused && isGrounded)
+        {
+            playerState = PlayerStates.Typing;
+            m_animator.SetInteger("player states", (int)playerState);
+            return;
+        }
 
         if (canMove)
         {

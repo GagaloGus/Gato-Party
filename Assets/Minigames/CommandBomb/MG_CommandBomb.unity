@@ -1489,34 +1489,34 @@ MonoBehaviour:
       back: {fileID: 2800000, guid: 6404ef0de7e29664ba3f639bbf11e63b, type: 3}
     - name: death_01
       front: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
-      back: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
+      back: {fileID: 2800000, guid: cf75e3d5aa6364f409302d38aa55da60, type: 3}
     - name: death_02
       front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
-      back: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
+      back: {fileID: 2800000, guid: 439e683e71058384e8be7d9f179b4300, type: 3}
   - Name: Beeko
     ID: 1
     texturePacks:
     - name: recieve_01
-      front: {fileID: 2800000, guid: b23592cbeb76b1643afd47324bd4679c, type: 3}
-      back: {fileID: 2800000, guid: b23592cbeb76b1643afd47324bd4679c, type: 3}
+      front: {fileID: 2800000, guid: 543215cc02ccb6849aeb8e2eeb5057b5, type: 3}
+      back: {fileID: 2800000, guid: 543215cc02ccb6849aeb8e2eeb5057b5, type: 3}
     - name: recieve_02
-      front: {fileID: 2800000, guid: 8017ada832abbd842847e7746bbb5a65, type: 3}
-      back: {fileID: 2800000, guid: 8017ada832abbd842847e7746bbb5a65, type: 3}
+      front: {fileID: 2800000, guid: b3502084d1692f84490b689cc37d2796, type: 3}
+      back: {fileID: 2800000, guid: b3502084d1692f84490b689cc37d2796, type: 3}
     - name: idle_01
-      front: {fileID: 2800000, guid: c987ee3538a204641a2bd9a6ca976baf, type: 3}
-      back: {fileID: 2800000, guid: c987ee3538a204641a2bd9a6ca976baf, type: 3}
+      front: {fileID: 2800000, guid: e4f94641249d1fe41a28d333e4639d93, type: 3}
+      back: {fileID: 2800000, guid: e4f94641249d1fe41a28d333e4639d93, type: 3}
     - name: idle_02
-      front: {fileID: 2800000, guid: 06bd4c49a7baf45418990ff2180026fb, type: 3}
-      back: {fileID: 2800000, guid: 06bd4c49a7baf45418990ff2180026fb, type: 3}
+      front: {fileID: 2800000, guid: a3d5f9577e0a3a54ea9757744c68d10e, type: 3}
+      back: {fileID: 2800000, guid: a3d5f9577e0a3a54ea9757744c68d10e, type: 3}
     - name: throw_01
-      front: {fileID: 2800000, guid: 6404ef0de7e29664ba3f639bbf11e63b, type: 3}
-      back: {fileID: 2800000, guid: 6404ef0de7e29664ba3f639bbf11e63b, type: 3}
+      front: {fileID: 2800000, guid: 8b9f82e6d8e927843aa4afc9cf48ca7d, type: 3}
+      back: {fileID: 2800000, guid: 8b9f82e6d8e927843aa4afc9cf48ca7d, type: 3}
     - name: death_01
-      front: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
-      back: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
+      front: {fileID: 2800000, guid: a1112a2bc935fd04f86cb5d506a312db, type: 3}
+      back: {fileID: 2800000, guid: f2fc6fbd94737d749a82084f9fdfa5f4, type: 3}
     - name: death_02
-      front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
-      back: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
+      front: {fileID: 2800000, guid: 31b91024c1abace4b8ed5970d08427c6, type: 3}
+      back: {fileID: 2800000, guid: 31b91024c1abace4b8ed5970d08427c6, type: 3}
   - Name: Misheow
     ID: 2
     texturePacks:
@@ -1537,10 +1537,10 @@ MonoBehaviour:
       back: {fileID: 2800000, guid: 6404ef0de7e29664ba3f639bbf11e63b, type: 3}
     - name: death_01
       front: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
-      back: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
+      back: {fileID: 2800000, guid: cf75e3d5aa6364f409302d38aa55da60, type: 3}
     - name: death_02
       front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
-      back: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
+      back: {fileID: 2800000, guid: 439e683e71058384e8be7d9f179b4300, type: 3}
 --- !u!4 &1671745627
 Transform:
   m_ObjectHideFlags: 0

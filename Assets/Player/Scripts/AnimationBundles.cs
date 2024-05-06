@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum SkinNames
 {
-    Sko, Beeko, Misheow, News, test1, test2
+    Sko, Beeko, Misheow, News, Kiroi, test2
 }
 
 public class AnimationBundles : MonoBehaviour
@@ -29,14 +29,21 @@ public class AnimationBundles : MonoBehaviour
 #endif
     void CreatePack(AnimationPacks[] newPack)
     {
-        AnimationSpriteBundle bundle = new AnimationSpriteBundle
+        if (bundles.Count < System.Enum.GetValues(typeof(SkinNames)).Length)
         {
-            Name = Enum.GetName(typeof(SkinNames), bundles.Count).ToString(),
-            ID = bundles.Count,
-            texturePacks = newPack
-        };
+            AnimationSpriteBundle bundle = new AnimationSpriteBundle
+            {
+                Name = Enum.GetName(typeof(SkinNames), bundles.Count).ToString(),
+                ID = bundles.Count,
+                texturePacks = newPack
+            };
 
-        bundles.Add(bundle);
+            bundles.Add(bundle);
+        }
+        else
+        {
+            Debug.LogWarning("Reached the maximum number of skins, increase the size of <color=green>SkinNames</color> enum for more");
+        }
     }
 
     public void CreateDefaultAnimationBundle()

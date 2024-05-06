@@ -66,6 +66,7 @@ MonoBehaviour:
   - RPC_FinishGame
   - RPC_StartGame
   - RPC_Setup
+  - GetSystemMessage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

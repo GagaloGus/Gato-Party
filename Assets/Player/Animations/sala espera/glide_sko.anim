@@ -1116,7 +1116,7 @@ AnimationClip:
     messageOptions: 0
   - time: 1.15
     functionName: ChangeTexture
-    data: glide_01
+    data: glideIdle_01
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 28

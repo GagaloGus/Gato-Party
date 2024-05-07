@@ -140,13 +140,13 @@ public static class CoolFunctions
             ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
 
             //Busca el paquete de texturas acorde al ID del jugador
-            AnimationSpriteBundle selectedBundle = Array.Find(animationBundles.bundles.ToArray(), x => x.ID == otherSkinID);
+            AnimationSpriteBundle selectedBundle = Array.Find(animationBundles.bundles.ToArray(), x => (int)x.skinName == otherSkinID);
 
             try
             {
                 //Establece el ID del script y actualiza su diccionario
                 textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, otherSkinID);
-                Debug.Log($"Loaded sprites of <color=cyan>{otherPhotonView.Owner.NickName}</color>, skin id: {otherSkinID} <color=yellow>({selectedBundle.Name})</color> -> {player.name}");
+                Debug.Log($"Loaded sprites of <color=cyan>{otherPhotonView.Owner.NickName}</color>, skin id: {otherSkinID} <color=yellow>({selectedBundle.skinName})</color> -> {player.name}");
             }
             catch (Exception e)
             {

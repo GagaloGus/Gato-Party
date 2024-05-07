@@ -215,8 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bundles:
-  - Name: Sko
-    ID: 0
+  - skinName: 0
     texturePacks:
     - name: lookUp_01
       front: {fileID: 2800000, guid: 82e01af1b31379b46ac9a853bff6bd16, type: 3}
@@ -233,8 +232,7 @@ MonoBehaviour:
     - name: bonked_01
       front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
       back: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
-  - Name: Beeko
-    ID: 1
+  - skinName: 1
     texturePacks:
     - name: lookUp_01
       front: {fileID: 2800000, guid: 118430846b3b2e847a6cc8fb7d88c4f6, type: 3}
@@ -251,6 +249,40 @@ MonoBehaviour:
     - name: bonked_01
       front: {fileID: 2800000, guid: 31b91024c1abace4b8ed5970d08427c6, type: 3}
       back: {fileID: 2800000, guid: 31b91024c1abace4b8ed5970d08427c6, type: 3}
+  - skinName: 2
+    texturePacks:
+    - name: lookUp_01
+      front: {fileID: 2800000, guid: 35e83a1e62039d94083ff00dcb38bae1, type: 3}
+      back: {fileID: 2800000, guid: 35e83a1e62039d94083ff00dcb38bae1, type: 3}
+    - name: idleScared_01
+      front: {fileID: 2800000, guid: 3658f85ea9d6a68478b91d2b73034d50, type: 3}
+      back: {fileID: 2800000, guid: 3658f85ea9d6a68478b91d2b73034d50, type: 3}
+    - name: idleScared_02
+      front: {fileID: 2800000, guid: de4e3d10b6cf701409e448f6d5b7d2d9, type: 3}
+      back: {fileID: 2800000, guid: de4e3d10b6cf701409e448f6d5b7d2d9, type: 3}
+    - name: press_01
+      front: {fileID: 2800000, guid: 93106d514d5822746bec97cdc1d233cc, type: 3}
+      back: {fileID: 2800000, guid: 93106d514d5822746bec97cdc1d233cc, type: 3}
+    - name: bonked_01
+      front: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+      back: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+  - skinName: 3
+    texturePacks:
+    - name: lookUp_01
+      front: {fileID: 2800000, guid: 82e01af1b31379b46ac9a853bff6bd16, type: 3}
+      back: {fileID: 2800000, guid: 82e01af1b31379b46ac9a853bff6bd16, type: 3}
+    - name: idleScared_01
+      front: {fileID: 2800000, guid: a2b1f0056fa09db46ba1598ffa8d0757, type: 3}
+      back: {fileID: 2800000, guid: a2b1f0056fa09db46ba1598ffa8d0757, type: 3}
+    - name: idleScared_02
+      front: {fileID: 2800000, guid: 58290bf03cd18524bb9afb273a3759c9, type: 3}
+      back: {fileID: 2800000, guid: 58290bf03cd18524bb9afb273a3759c9, type: 3}
+    - name: press_01
+      front: {fileID: 2800000, guid: 4a0eb7112ad8e7b40beb7be24de44b10, type: 3}
+      back: {fileID: 2800000, guid: 4a0eb7112ad8e7b40beb7be24de44b10, type: 3}
+    - name: bonked_01
+      front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
+      back: {fileID: 2800000, guid: 439e683e71058384e8be7d9f179b4300, type: 3}
 --- !u!4 &319023830
 Transform:
   m_ObjectHideFlags: 0

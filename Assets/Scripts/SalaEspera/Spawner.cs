@@ -84,7 +84,6 @@ public class Spawner : MonoBehaviourPunCallbacks
         playerSpawned.transform.position = new Vector3(
                 Random.Range(minPositions.x, maxPositions.x),
                 Random.Range(minPositions.y, maxPositions.y),
-                Random.Range(minPositions.z, maxPositions.z))
-            ;
+                Random.Range(minPositions.z, maxPositions.z));
     }
 }

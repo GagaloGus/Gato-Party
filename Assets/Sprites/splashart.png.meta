@@ -126,8 +126,8 @@ TextureImporter:
       name: splashart_Sko
       rect:
         serializedVersion: 2
-        x: 227
-        y: 1581
+        x: 1227
+        y: 2781
         width: 463
         height: 596
       alignment: 0
@@ -147,8 +147,8 @@ TextureImporter:
       name: splashart_Beeko
       rect:
         serializedVersion: 2
-        x: 767
-        y: 904
+        x: 1767
+        y: 2104
         width: 463
         height: 596
       alignment: 0
@@ -168,8 +168,8 @@ TextureImporter:
       name: splashart_Misheow
       rect:
         serializedVersion: 2
-        x: 1308
-        y: 231
+        x: 2308
+        y: 1431
         width: 463
         height: 596
       alignment: 0
@@ -189,8 +189,8 @@ TextureImporter:
       name: splashart_placeholder
       rect:
         serializedVersion: 2
-        x: 768
-        y: 231
+        x: 1768
+        y: 1431
         width: 463
         height: 596
       alignment: 0
@@ -210,12 +210,12 @@ TextureImporter:
       name: splashart_News
       rect:
         serializedVersion: 2
-        x: 227
-        y: 231
+        x: 1227
+        y: 1431
         width: 463
         height: 596
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,12 +231,12 @@ TextureImporter:
       name: splashart_Kiroi
       rect:
         serializedVersion: 2
-        x: 1308
-        y: 1581
+        x: 2308
+        y: 2781
         width: 463
         height: 596
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -1384,15 +1384,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bundles:
-  - Name: Sko
-    ID: 0
+  - skinName: 0
     texturePacks:
     - name: think_01
-      front: {fileID: 2800000, guid: dabe789a7c470d049844a5f6ebbb2367, type: 3}
-      back: {fileID: 2800000, guid: 5e22ae3981ea3ad41a5fd06897ee8b6c, type: 3}
+      front: {fileID: 2800000, guid: f5cdfdda6aaadc5418668450dec9fd5a, type: 3}
+      back: {fileID: 2800000, guid: de12c0795f305ab48b8f4ab9b7dac8f7, type: 3}
     - name: think_02
-      front: {fileID: 2800000, guid: dabe789a7c470d049844a5f6ebbb2367, type: 3}
-      back: {fileID: 2800000, guid: 5e22ae3981ea3ad41a5fd06897ee8b6c, type: 3}
+      front: {fileID: 2800000, guid: b221cba251e6801468c8c32cfa2970a5, type: 3}
+      back: {fileID: 2800000, guid: 8e0c3d3ec7e6af74fbfdb75575586fd4, type: 3}
     - name: walk_01
       front: {fileID: 2800000, guid: fb1c108a9d1bb8b4088f06907b3dba08, type: 3}
       back: {fileID: 2800000, guid: 4d6bd230286e71b40ab325ba145ad9d0, type: 3}
@@ -1414,8 +1413,7 @@ MonoBehaviour:
     - name: happy_01
       front: {fileID: 2800000, guid: 3922cc11c3c58fb4680cd93df4dddf79, type: 3}
       back: {fileID: 2800000, guid: 3922cc11c3c58fb4680cd93df4dddf79, type: 3}
-  - Name: Beeko
-    ID: 1
+  - skinName: 1
     texturePacks:
     - name: think_01
       front: {fileID: 2800000, guid: 7b0d68ac838e41f40907478a91c27cc2, type: 3}
@@ -1444,6 +1442,64 @@ MonoBehaviour:
     - name: happy_01
       front: {fileID: 2800000, guid: 1f5e3cacd9f9cd3459d0d8cda1ebe4f7, type: 3}
       back: {fileID: 2800000, guid: 1f5e3cacd9f9cd3459d0d8cda1ebe4f7, type: 3}
+  - skinName: 2
+    texturePacks:
+    - name: think_01
+      front: {fileID: 2800000, guid: 688d4698e0cb36a48bd134a4d9f4eabf, type: 3}
+      back: {fileID: 2800000, guid: 69bc3fcee964df644a3d375bf1f63647, type: 3}
+    - name: think_02
+      front: {fileID: 2800000, guid: 7be34c06f6f775246ae9d782f35bf831, type: 3}
+      back: {fileID: 2800000, guid: 441f464d9fb57854480b7af148ce3829, type: 3}
+    - name: walk_01
+      front: {fileID: 2800000, guid: 8a5a204caa351de4496a50c12b1ce055, type: 3}
+      back: {fileID: 2800000, guid: e8807c39a15e2244f9d5f363a1bb6d3a, type: 3}
+    - name: walk_02
+      front: {fileID: 2800000, guid: b7e25cc36e2f32547ab91fd0edf2bd6c, type: 3}
+      back: {fileID: 2800000, guid: 8a294860e7ca3a542abdc414c237afe0, type: 3}
+    - name: open_01
+      front: {fileID: 2800000, guid: 74152568deca8754ca4590dd0e30d4ec, type: 3}
+      back: {fileID: 2800000, guid: 74152568deca8754ca4590dd0e30d4ec, type: 3}
+    - name: open_02
+      front: {fileID: 2800000, guid: 580057d9c9f9e23498b9af0b36178cd4, type: 3}
+      back: {fileID: 2800000, guid: 580057d9c9f9e23498b9af0b36178cd4, type: 3}
+    - name: open_03
+      front: {fileID: 2800000, guid: fb98a436f8f823048a183bf899294657, type: 3}
+      back: {fileID: 2800000, guid: fb98a436f8f823048a183bf899294657, type: 3}
+    - name: sad_01
+      front: {fileID: 2800000, guid: 35b0aac662fe54440a60fd02d35aa49c, type: 3}
+      back: {fileID: 2800000, guid: 35b0aac662fe54440a60fd02d35aa49c, type: 3}
+    - name: happy_01
+      front: {fileID: 2800000, guid: 259090c633800844ebc8cfa5f0e34fb2, type: 3}
+      back: {fileID: 2800000, guid: 259090c633800844ebc8cfa5f0e34fb2, type: 3}
+  - skinName: 3
+    texturePacks:
+    - name: think_01
+      front: {fileID: 2800000, guid: 9ff633d792d60df4888d84b82385140b, type: 3}
+      back: {fileID: 2800000, guid: a2f2fd4bb936ebc4a8838aab0362e0e0, type: 3}
+    - name: think_02
+      front: {fileID: 2800000, guid: 28f212b279ed0a443b7f51f4b01b696e, type: 3}
+      back: {fileID: 2800000, guid: c8be0153d0ebf1b42aedc8911d7860bc, type: 3}
+    - name: walk_01
+      front: {fileID: 2800000, guid: 2afaede1fcfd9c54e88248bd857cc22f, type: 3}
+      back: {fileID: 2800000, guid: 54d8d4d035e482746ab6751149dcbfd2, type: 3}
+    - name: walk_02
+      front: {fileID: 2800000, guid: 9ff633d792d60df4888d84b82385140b, type: 3}
+      back: {fileID: 2800000, guid: a2f2fd4bb936ebc4a8838aab0362e0e0, type: 3}
+    - name: open_01
+      front: {fileID: 2800000, guid: 0d52af832f131014691c4d2abccab48a, type: 3}
+      back: {fileID: 2800000, guid: 0d52af832f131014691c4d2abccab48a, type: 3}
+    - name: open_02
+      front: {fileID: 2800000, guid: 5df89f53d67f5d146a0907e86e03cf69, type: 3}
+      back: {fileID: 2800000, guid: 5df89f53d67f5d146a0907e86e03cf69, type: 3}
+    - name: open_03
+      front: {fileID: 2800000, guid: 48de2158964e313468467450b3807cd7, type: 3}
+      back: {fileID: 2800000, guid: 48de2158964e313468467450b3807cd7, type: 3}
+    - name: sad_01
+      front: {fileID: 2800000, guid: f7d504ff63614034e8051b9f621da5e9, type: 3}
+      back: {fileID: 2800000, guid: f7d504ff63614034e8051b9f621da5e9, type: 3}
+    - name: happy_01
+      front: {fileID: 2800000, guid: 693892b96d906e1489fb496fe1027319, type: 3}
+      back: {fileID: 2800000, guid: 693892b96d906e1489fb496fe1027319, type: 3}
 --- !u!4 &850636124
 Transform:
   m_ObjectHideFlags: 0

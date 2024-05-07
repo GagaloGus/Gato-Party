@@ -89,6 +89,7 @@ public class SE_PlayerController : MonoBehaviour
         if(chat_inputField.isFocused && isGrounded)
         {
             playerState = PlayerStates.Typing;
+            rb.velocity = Vector3.zero;
             m_animator.SetInteger("player states", (int)playerState);
             return;
         }

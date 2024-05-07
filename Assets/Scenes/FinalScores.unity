@@ -302,8 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bundles:
-  - Name: Sko
-    ID: 0
+  - skinName: 0
     texturePacks:
     - name: idle_01
       front: {fileID: 2800000, guid: f5cdfdda6aaadc5418668450dec9fd5a, type: 3}
@@ -326,8 +325,7 @@ MonoBehaviour:
     - name: victory_02
       front: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
       back: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
-  - Name: Beeko
-    ID: 1
+  - skinName: 1
     texturePacks:
     - name: idle_01
       front: {fileID: 2800000, guid: 7b0d68ac838e41f40907478a91c27cc2, type: 3}
@@ -350,6 +348,52 @@ MonoBehaviour:
     - name: victory_02
       front: {fileID: 2800000, guid: 43409fbca1236c446b21adb14b6fe7ec, type: 3}
       back: {fileID: 2800000, guid: 9d3170399a22aaf4aa218e9c0dca8fcf, type: 3}
+  - skinName: 2
+    texturePacks:
+    - name: idle_01
+      front: {fileID: 2800000, guid: 688d4698e0cb36a48bd134a4d9f4eabf, type: 3}
+      back: {fileID: 2800000, guid: 69bc3fcee964df644a3d375bf1f63647, type: 3}
+    - name: idle_02
+      front: {fileID: 2800000, guid: 7be34c06f6f775246ae9d782f35bf831, type: 3}
+      back: {fileID: 2800000, guid: 441f464d9fb57854480b7af148ce3829, type: 3}
+    - name: jumpDown_01
+      front: {fileID: 2800000, guid: 1f21279b57024ef4b9119e071e93b0d3, type: 3}
+      back: {fileID: 2800000, guid: 2a997decb420ed24f9d31bd52af68149, type: 3}
+    - name: fall_01
+      front: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+      back: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+    - name: fall_02
+      front: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+      back: {fileID: 2800000, guid: 8c4405ff02cd02e409cd4f860ad23bc6, type: 3}
+    - name: victory_01
+      front: {fileID: 2800000, guid: 8a5a204caa351de4496a50c12b1ce055, type: 3}
+      back: {fileID: 2800000, guid: e8807c39a15e2244f9d5f363a1bb6d3a, type: 3}
+    - name: victory_02
+      front: {fileID: 2800000, guid: b7e25cc36e2f32547ab91fd0edf2bd6c, type: 3}
+      back: {fileID: 2800000, guid: 8a294860e7ca3a542abdc414c237afe0, type: 3}
+  - skinName: 3
+    texturePacks:
+    - name: idle_01
+      front: {fileID: 2800000, guid: f5cdfdda6aaadc5418668450dec9fd5a, type: 3}
+      back: {fileID: 2800000, guid: de12c0795f305ab48b8f4ab9b7dac8f7, type: 3}
+    - name: idle_02
+      front: {fileID: 2800000, guid: b221cba251e6801468c8c32cfa2970a5, type: 3}
+      back: {fileID: 2800000, guid: 8e0c3d3ec7e6af74fbfdb75575586fd4, type: 3}
+    - name: jumpDown_01
+      front: {fileID: 2800000, guid: ce87c45a857140c4e9ea4c8adf04a0e6, type: 3}
+      back: {fileID: 2800000, guid: c875c9b7ea10ae546a7a28ed873a55b5, type: 3}
+    - name: fall_01
+      front: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
+      back: {fileID: 2800000, guid: cf75e3d5aa6364f409302d38aa55da60, type: 3}
+    - name: fall_02
+      front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
+      back: {fileID: 2800000, guid: 439e683e71058384e8be7d9f179b4300, type: 3}
+    - name: victory_01
+      front: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
+      back: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
+    - name: victory_02
+      front: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
+      back: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
 --- !u!1 &135070224 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 655780311901164889, guid: de010183f60effc4aa6342a5a0ed796f, type: 3}

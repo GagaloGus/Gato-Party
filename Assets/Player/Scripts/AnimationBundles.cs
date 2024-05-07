@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum SkinNames
 {
-    Sko, Beeko, Misheow, News, Kiroi, test2
+    Sko, Beeko, BeekoBlue, SkoPink
 }
 
 public class AnimationBundles : MonoBehaviour
@@ -33,8 +33,7 @@ public class AnimationBundles : MonoBehaviour
         {
             AnimationSpriteBundle bundle = new AnimationSpriteBundle
             {
-                Name = Enum.GetName(typeof(SkinNames), bundles.Count).ToString(),
-                ID = bundles.Count,
+                skinName = (SkinNames)bundles.Count,
                 texturePacks = newPack
             };
 
@@ -167,8 +166,7 @@ public class AnimationBundles : MonoBehaviour
 [System.Serializable]
 public struct AnimationSpriteBundle
 {
-    public string Name;
-    public int ID;
+    public SkinNames skinName;
     public AnimationPacks[] texturePacks;
 }
 

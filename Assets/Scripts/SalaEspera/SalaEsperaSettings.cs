@@ -189,12 +189,12 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         GameObject player = PhotonView.Find(photonViewID).gameObject;
         ChangeTextureAnimEvent textureScript = player.GetComponentInChildren<ChangeTextureAnimEvent>();
 
-        AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
+        AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => (int)x.skinName == SkinID);
 
         try
         {
             textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, SkinID);
-            print($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color>");
+            print($"Loaded sprites of <color=cyan>{PhotonView.Find(photonViewID).Owner.NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.skinName})</color>");
         }
         catch (System.Exception e)
         {

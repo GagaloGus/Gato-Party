@@ -128,10 +128,10 @@ public class FinalScoreAnimation : MonoBehaviour
             {
                 int SkinID = (int)Players[i].CustomProperties[Constantes.PlayerKey_Skin];
 
-                AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => x.ID == SkinID);
+                AnimationSpriteBundle selectedBundle = System.Array.Find(animationBundles.bundles.ToArray(), x => (int)x.skinName == SkinID);
 
                 textureScript.UpdateAnimationDictionary(selectedBundle.texturePacks, SkinID);
-                Debug.Log($"Loaded sprites of <color=cyan>{Players[i].NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.Name})</color> -> {PlayerObjects[i].name}");
+                Debug.Log($"Loaded sprites of <color=cyan>{Players[i].NickName}</color>, skin id: {SkinID} <color=yellow>({selectedBundle.skinName})</color> -> {PlayerObjects[i].name}");
             }
             catch
             {

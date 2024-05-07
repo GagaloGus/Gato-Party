@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class CanvasChat : MonoBehaviourPunCallbacks
 {
     public TMP_InputField inputField;
-    public GameObject content;
+    public Transform content;
 
     [Header("Prefabs")]
     public GameObject messagePrefab;
@@ -40,7 +40,9 @@ public class CanvasChat : MonoBehaviourPunCallbacks
     void GetSystemMessage(string text)
     {
         GameObject message = Instantiate(systemMessagePrefab, Vector3.zero, Quaternion.identity, content.transform);
-        message.transform.Find("Display").Find("Text").GetComponent<TMP_Text>().text = text;
+        message.transform.Find("Text").GetComponent<TMP_Text>().text = text;
+
+        CanvasUpdate();
     }
 
     public void SendMessage()
@@ -68,9 +70,34 @@ public class CanvasChat : MonoBehaviourPunCallbacks
     [PunRPC]
     void GetMessage(object[] paramsMessage)
     {
-        GameObject message = Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content.transform);
-        message.transform.Find("Text").GetComponent<TMP_Text>().text = paramsMessage[0].ToString();
-        message.transform.Find("Nickname").GetComponent<TMP_Text>().text = paramsMessage[1].ToString();
-        message.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{paramsMessage[2]}_notready");
+        if(content.transform.childCount > 0)
+        {
+            Transform previousMessage = content.GetChild(content.transform.childCount - 1);
+            //si el nickname del mensaje anterior es el mismo que el actual
+            if (previousMessage.Find("Info").Find("Nickname").GetComponent<TMP_Text>().text == paramsMessage[1].ToString())
+            {
+                previousMessage.Find("Text").GetComponent<TMP_Text>().text += $"\n{paramsMessage[0]}";
+                CanvasUpdate();
+                return;
+            }
+        }
+
+        Transform message = Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content).transform;
+
+        message.Find("Text").GetComponent<TMP_Text>().text = paramsMessage[0].ToString();
+        message.Find("Info").Find("Nickname").GetComponent<TMP_Text>().text = paramsMessage[1].ToString();
+        message.Find("Info").Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{paramsMessage[2]}_notready");
+
+        CanvasUpdate();
+    }
+
+    void CanvasUpdate()
+    {
+        Canvas.ForceUpdateCanvases();
+
+        content.GetComponent<VerticalLayoutGroup>().CalculateLayoutInputVertical();
+        content.GetComponent<ContentSizeFitter>().SetLayoutVertical();
+
+        content.parent.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0;
     }
 }

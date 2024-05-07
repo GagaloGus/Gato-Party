@@ -70,7 +70,7 @@ public class CanvasChat : MonoBehaviourPunCallbacks
     [PunRPC]
     void GetMessage(object[] paramsMessage)
     {
-        if(content.transform.childCount > 0)
+        try
         {
             Transform previousMessage = content.GetChild(content.transform.childCount - 1);
             //si el nickname del mensaje anterior es el mismo que el actual
@@ -81,6 +81,7 @@ public class CanvasChat : MonoBehaviourPunCallbacks
                 return;
             }
         }
+        catch { Debug.Log("No hay primer mensaje o no es de tipo Mensaje"); }
 
         Transform message = Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content).transform;
 

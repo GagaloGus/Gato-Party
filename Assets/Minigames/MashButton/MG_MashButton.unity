@@ -253,7 +253,7 @@ MonoBehaviour:
     - name: mash_02
       front: {fileID: 2800000, guid: e4c509f3b52fe2e478985d916aafce7c, type: 3}
       back: {fileID: 2800000, guid: 5fc3c8b9236824d4f95756eb339871aa, type: 3}
-  - skinName: 2
+  - skinName: 1
     texturePacks:
     - name: mash_01
       front: {fileID: 2800000, guid: 8fd38ba28cf07284abe435a0674aa439, type: 3}
@@ -272,11 +272,11 @@ MonoBehaviour:
   - skinName: 3
     texturePacks:
     - name: mash_01
-      front: {fileID: 2800000, guid: e696166cb9c8f944b8b8babfc26f85e9, type: 3}
-      back: {fileID: 2800000, guid: 9b398ddba1e367a4b856bc9981e9c398, type: 3}
+      front: {fileID: 2800000, guid: a75629a828e0cbf489b3835bc4385711, type: 3}
+      back: {fileID: 2800000, guid: 8cd5ab1e3b2315a41a51619e7754cc18, type: 3}
     - name: mash_02
-      front: {fileID: 2800000, guid: e4c509f3b52fe2e478985d916aafce7c, type: 3}
-      back: {fileID: 2800000, guid: 5fc3c8b9236824d4f95756eb339871aa, type: 3}
+      front: {fileID: 2800000, guid: c9d8660abf97dfd4c87cc45e068ec593, type: 3}
+      back: {fileID: 2800000, guid: 5f4c6a3521efaac4fa74137dbad93b62, type: 3}
 --- !u!4 &201465411
 Transform:
   m_ObjectHideFlags: 0
@@ -437,7 +437,6 @@ GameObject:
   - component: {fileID: 421527413}
   - component: {fileID: 421527414}
   - component: {fileID: 421527417}
-  - component: {fileID: 421527416}
   - component: {fileID: 421527415}
   m_Layer: 0
   m_Name: MinigameManager
@@ -473,13 +472,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47441cf024eaa064b955f98ccc30acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 10
   resultsText: {fileID: 887950884}
   PlayerObjects:
   - {fileID: 1053788408}
   - {fileID: 1845877020}
   - {fileID: 1777095499}
   - {fileID: 1860963431}
+  Timer: {fileID: 2126003876}
+  maxTime: 8
+  interval: 1
   aireColors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 0.685112, b: 1, a: 1}
@@ -507,20 +508,6 @@ MonoBehaviour:
   sceneViewId: 10
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &421527416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 421527412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b9da9426144d134dbb0351e418c9895, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  counterGameObject: {fileID: 2126003876}
-  counterText: {fileID: 284717798}
 --- !u!114 &421527417
 MonoBehaviour:
   m_ObjectHideFlags: 0

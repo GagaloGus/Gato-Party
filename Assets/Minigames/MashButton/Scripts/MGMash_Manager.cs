@@ -8,23 +8,30 @@ using UnityEngine;
 
 public class MGMash_Manager : MonoBehaviourPunCallbacks
 {
-    [Header("Minigame Info")]
-    public int maxTime;
-
     [Header("References")]
     public GameObject resultsText;
     public List<GameObject> PlayerObjects = new List<GameObject>();
 
+    [Header("Timer")]
+    public GameObject Timer;
+    public int maxTime;
+    float currentTime;
+    public float interval;
+
     Dictionary<Player, int> resultPlayerlist = new();
 
     public Color[] aireColors;
+    PhotonView photonView;
+    GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         resultsText.SetActive(false);
+        Timer.SetActive(false);
 
-        GameObject player = FindObjectOfType<AssignObjectToPlayer>().AssignObject();
+        player = FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
         //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
         //- aqui habra que poner una pantalla de carga en vez del delay -//
@@ -40,16 +47,10 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         {
             //Deja que los players se muevan
             player.GetComponent<MGMash_PlayerController>().canMove = true;
-
-            //Cuenta atras hasta el final del minijuego
-            GetComponent<CountdownController>().StartCountdown(
-                maxTime: maxTime,
-                incrementAmount: 1,
-                stringFormat: "00",
-                endCounterFunction: () =>
-                {
-                    player.GetComponent<MGMash_PlayerController>().MinigameFinished();
-                });
+            if(PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
+            }
         }, 2);
 
         for(int i = 0; i < Mathf.Min(PlayerObjects.Count, aireColors.Length); i++)
@@ -93,7 +94,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                 }
 
                 //muestra las puntuaciones para el resto de jugadores
-                GetComponent<PhotonView>().RPC(nameof(ShowResults), RpcTarget.All, results);
+                photonView.RPC(nameof(ShowResults), RpcTarget.All, results);
             }
         }
     }
@@ -108,5 +109,39 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LoadLevel("Puntuacion");
         }, 4);
+    }
+
+    [PunRPC]
+    void RPC_StartCountdown(int maxTime, float interval)
+    {
+        currentTime = maxTime;
+        this.maxTime = maxTime;
+        this.interval = interval;
+
+        Timer.SetActive(true);
+
+        InvokeRepeating(nameof(Countdown), 0, interval);
+    }
+
+    void Countdown()
+    {
+        currentTime -= interval;
+        Timer.GetComponentInChildren<TMP_Text>().text = currentTime.ToString("00");
+
+        if(currentTime <= 0)
+        {
+            Debug.Log("stopu");
+            CancelInvoke(nameof(Countdown));
+            if(PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC(nameof(RPC_FinishGame), RpcTarget.All);
+            }
+        }
+    }
+
+    [PunRPC]
+    void RPC_FinishGame()
+    {
+        player.GetComponent<MGMash_PlayerController>().MinigameFinished();
     }
 }

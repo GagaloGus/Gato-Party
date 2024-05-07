@@ -130,7 +130,12 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     public List<int> GetRemainingSkinIDs()
     {
         List<int> AllIDs = new List<int>();
-        List<int> remainingIDs = new List<int>() { 0, 1, 2, 3, 4, 5 };
+        List<int> remainingIDs = new List<int>();
+
+        for (int i = 0; i < System.Enum.GetValues(typeof(SkinNames)).Length; i++)
+        {
+            remainingIDs.Add(i);
+        }
 
         //Coge los IDs de todas las skins que estan siendo usadas
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)

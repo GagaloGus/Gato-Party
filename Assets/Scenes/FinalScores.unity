@@ -374,26 +374,26 @@ MonoBehaviour:
   - skinName: 3
     texturePacks:
     - name: idle_01
-      front: {fileID: 2800000, guid: f5cdfdda6aaadc5418668450dec9fd5a, type: 3}
-      back: {fileID: 2800000, guid: de12c0795f305ab48b8f4ab9b7dac8f7, type: 3}
+      front: {fileID: 2800000, guid: 9ff633d792d60df4888d84b82385140b, type: 3}
+      back: {fileID: 2800000, guid: a2f2fd4bb936ebc4a8838aab0362e0e0, type: 3}
     - name: idle_02
-      front: {fileID: 2800000, guid: b221cba251e6801468c8c32cfa2970a5, type: 3}
-      back: {fileID: 2800000, guid: 8e0c3d3ec7e6af74fbfdb75575586fd4, type: 3}
+      front: {fileID: 2800000, guid: 28f212b279ed0a443b7f51f4b01b696e, type: 3}
+      back: {fileID: 2800000, guid: c8be0153d0ebf1b42aedc8911d7860bc, type: 3}
     - name: jumpDown_01
-      front: {fileID: 2800000, guid: ce87c45a857140c4e9ea4c8adf04a0e6, type: 3}
-      back: {fileID: 2800000, guid: c875c9b7ea10ae546a7a28ed873a55b5, type: 3}
+      front: {fileID: 2800000, guid: 49918dae24dc3f64b8a90546efd15ade, type: 3}
+      back: {fileID: 2800000, guid: 5cbc0109ae7958b42b7b9d53514bd804, type: 3}
     - name: fall_01
-      front: {fileID: 2800000, guid: 9edd8d6be7c26744ca037ae834895b76, type: 3}
-      back: {fileID: 2800000, guid: cf75e3d5aa6364f409302d38aa55da60, type: 3}
+      front: {fileID: 2800000, guid: 7e8be53ad0f0118469febdcadeb005aa, type: 3}
+      back: {fileID: 2800000, guid: 9ca41ef5719e59b448c637b31fbc162e, type: 3}
     - name: fall_02
-      front: {fileID: 2800000, guid: 97c86638a1d350049bd7c1ec52fa5f0d, type: 3}
-      back: {fileID: 2800000, guid: 439e683e71058384e8be7d9f179b4300, type: 3}
+      front: {fileID: 2800000, guid: d1b98ff44bd13c1488611bb0b6814071, type: 3}
+      back: {fileID: 2800000, guid: 4141998821cd5f94582c5d67f3d8f316, type: 3}
     - name: victory_01
-      front: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
-      back: {fileID: 2800000, guid: 0a82f1638b1fd984d93a34ac39d6ccaa, type: 3}
+      front: {fileID: 2800000, guid: 9848018087369644da11abab136fce93, type: 3}
+      back: {fileID: 2800000, guid: 9848018087369644da11abab136fce93, type: 3}
     - name: victory_02
-      front: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
-      back: {fileID: 2800000, guid: 706f5ee3574e5b74eb0f4485ef2469e8, type: 3}
+      front: {fileID: 2800000, guid: 61eab4c06d3f03145a67769c7ad54dd4, type: 3}
+      back: {fileID: 2800000, guid: 61eab4c06d3f03145a67769c7ad54dd4, type: 3}
 --- !u!1 &135070224 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 655780311901164889, guid: de010183f60effc4aa6342a5a0ed796f, type: 3}

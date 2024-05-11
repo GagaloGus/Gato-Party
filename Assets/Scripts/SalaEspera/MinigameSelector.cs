@@ -83,7 +83,8 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
 
             Hashtable roomNewProp = new Hashtable
             {
-                [Constantes.SkinIDOrder_Room] = usingIDs.ToArray()
+                [Constantes.SkinIDOrder_Room] = usingIDs.ToArray(),
+                [Constantes.AmountPlayers_Room] = PhotonNetwork.CurrentRoom.PlayerCount
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomNewProp);
         }

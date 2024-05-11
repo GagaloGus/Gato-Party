@@ -20,6 +20,7 @@ public static class Constantes
     public static readonly string MinigameScene_Room = "MINIGAME_SCENE";
     public static readonly string SkinIDOrder_Room = "SKIN_ID_ORDER";
     public static readonly string RoundsOver_Room = "ROUNDSOVER";
+    public static readonly string AmountPlayers_Room = "AMOUNTPLAYERS";
 
     //Minijuegos
     public static readonly string KeyOrder_MGCommand = "KEY_ORDER";

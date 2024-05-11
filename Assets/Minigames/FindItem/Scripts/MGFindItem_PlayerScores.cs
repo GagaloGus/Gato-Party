@@ -45,7 +45,6 @@ public class MGFindItem_PlayerScores : MonoBehaviour
 
     public void UpdateScore(int player, int scoreToAdd)
     {
-        Debug.LogWarning($"turncount -> {player} + {scoreToAdd}");
         Transform child = PlayerList.transform.GetChild(player);
 
         playerScores[player] += scoreToAdd;

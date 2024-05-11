@@ -135,7 +135,9 @@ public class RoomHandler : MonoBehaviourPunCallbacks
             //Si la sala no esta vacia
             if (roomList[i].PlayerCount > 0)
             {
-                GameObject roomButton = Instantiate(roomButtonPrefab, Vector3.zero, Quaternion.identity, roomListContent);
+                GameObject roomButton = Instantiate(roomButtonPrefab, roomListContent);
+                roomButton.transform.SetParent(roomButton.transform, false);
+
                 Room room = roomButton.GetComponent<Room>();
                 room.roomInfo = roomList[i];
 

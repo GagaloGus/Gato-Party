@@ -49,39 +49,37 @@ public class MGLast_Manager : MonoBehaviour
 
         gameStarted = false;
         rankingText.SetActive(false);
+    }
 
-        //Cooldown hasta que se hayan unido todos los jugadores
-        CoolFunctions.Invoke(this, () =>
+    void Setup()
+    {
+        CoolFunctions.LoadAllTexturePacks<MGLast_PlayerController>();
+        remainingPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+
+        for (int i = 0; i < PlayerObjects.Count; i++)
         {
-            CoolFunctions.LoadAllTexturePacks<MGLast_PlayerController>();
-            remainingPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-            
-            for (int i = 0; i < PlayerObjects.Count; i++)
-            {
-                Bonks[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
-                
+            Bonks[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
 
-                PlayerObjects[i].GetComponent<MGLast_PlayerController>().LookUp();
-            }
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                int[] randomFruits = new int[Bonks.Count];
-                for (int i = 0; i < randomFruits.Length; i++) { randomFruits[i] = Random.Range(0, Bonks.Count); }
+            PlayerObjects[i].GetComponent<MGLast_PlayerController>().LookUp();
+        }
 
-                photonView.RPC(nameof(RPC_Setup), RpcTarget.All, randomFruits);
-            }
-
-        }, 0.5f);
-
-        //Cooldown hasta que empiece el minijuego
-        CoolFunctions.Invoke(this, () =>
+        if (PhotonNetwork.IsMasterClient)
         {
-            if(PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC(nameof(RPC_StartGame), RpcTarget.All);
-            }
-        }, 4);
+            int[] randomFruits = new int[Bonks.Count];
+            for (int i = 0; i < randomFruits.Length; i++) { randomFruits[i] = Random.Range(0, Bonks.Count); }
+
+            photonView.RPC(nameof(RPC_Setup), RpcTarget.All, randomFruits);
+        }
+    }
+
+    void StartMinigame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_StartGame), RpcTarget.All);
+        }
+
     }
 
     [PunRPC]

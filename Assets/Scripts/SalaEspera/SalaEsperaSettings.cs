@@ -107,11 +107,13 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     //Actualiza el contador de gente en la sala
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        canvasChat.SendSystemMessage($"Player <color=yellow>{PhotonNetwork.LocalPlayer.NickName}</color> entered the room!");
         UpdatePlayerCount();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        canvasChat.SendSystemMessage($"Player <color=yellow>{PhotonNetwork.LocalPlayer.NickName}</color> left the room");
         UpdatePlayerCount();
     }
 

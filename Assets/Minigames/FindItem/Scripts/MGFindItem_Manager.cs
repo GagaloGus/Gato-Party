@@ -44,12 +44,6 @@ public class MGFindItem_Manager : MonoBehaviour
 
         FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
-        CoolFunctions.Invoke(this, () =>
-        {
-            CoolFunctions.LoadAllTexturePacks<MGFindItem_PlayerController>();
-        }, 0.5f);
-
-
         //aparecen todos como false
         isOpened = new bool[ObjetoParent.childCount];
         choseObject = false;
@@ -62,16 +56,21 @@ public class MGFindItem_Manager : MonoBehaviour
         {
             ObjetosList.Add(child.gameObject);
         }
+    }
 
-        CoolFunctions.Invoke(this, () =>
+    void Setup()
+    {
+        CoolFunctions.LoadAllTexturePacks<MGFindItem_PlayerController>();
+    }
+
+    void StartMinigame()
+    {
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                List<int> randomPlaces = GenerateRandomChests(normalLataAmount, goldenLataAmount);
+            List<int> randomPlaces = GenerateRandomChests(normalLataAmount, goldenLataAmount);
 
-                photonView.RPC(nameof(RPC_StartMiniGame), RpcTarget.All, randomPlaces.ToArray());
-            }
-        }, 0.5f);
+            photonView.RPC(nameof(RPC_StartMiniGame), RpcTarget.All, randomPlaces.ToArray());
+        }
     }
 
     [PunRPC]
@@ -116,7 +115,6 @@ public class MGFindItem_Manager : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    Debug.Log(hit.collider.gameObject.name);
                     for (int i = 0; i < ObjetosList.Count; i++)
                     {
                         if (hit.collider.gameObject == ObjetosList[i] && !isOpened[i])

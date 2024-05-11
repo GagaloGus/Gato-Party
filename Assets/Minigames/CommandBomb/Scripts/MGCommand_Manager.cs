@@ -47,27 +47,26 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         ExplosionSprite.SetActive(false);
 
         GameObject player = FindObjectOfType<AssignObjectToPlayer>().AssignObject(PlayerObjects);
+    }
 
-        CoolFunctions.Invoke(this, () =>
+    void Setup()
+    {
+        CoolFunctions.LoadAllTexturePacks<MGCommand_PlayerController>();
+
+        foreach (Transform child in KeyHolder.Find("Content"))
         {
-            CoolFunctions.LoadAllTexturePacks<MGCommand_PlayerController>();
+            Destroy(child.gameObject);
+        }
+        KeyHolder.gameObject.SetActive(false);
+    }
 
-            foreach (Transform child in KeyHolder.Find("Content"))
-            {
-                Destroy(child.gameObject);
-            }
-            KeyHolder.gameObject.SetActive(false);
-
-            CoolFunctions.Invoke(this, () =>
-            {
-                playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4), 1);
-                }
-            }, 0.3f);
-
-        }, 0.5f);
+    void StartMinigame()
+    {
+        playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4), 1);
+        }
     }
 
     [PunRPC]

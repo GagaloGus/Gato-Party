@@ -75,13 +75,13 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         cmCanvas.interactable = nmCanvas.interactable = false;
 
-        for (float i = 0; i <= 1; i+= 0.01f)
+        for (float i = 0; i <= 1; i+= 0.02f)
         {
             cmCanvas.alpha = 1- i;
             yield return null;
         }
 
-        for (float i = 0; i <= 1; i += 0.01f)
+        for (float i = 0; i <= 1; i += 0.02f)
         {
             nmCanvas.alpha = i;
             yield return null;

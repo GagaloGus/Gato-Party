@@ -25,7 +25,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     GameObject player;
 
     // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
         photonView = GetComponent<PhotonView>();
         resultsText.SetActive(false);
@@ -35,7 +35,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
         //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
         //- aqui habra que poner una pantalla de carga en vez del delay -//
-        CoolFunctions.Invoke(this, () =>
+        /*CoolFunctions.Invoke(this, () =>
         {
             CoolFunctions.LoadAllTexturePacks<MGMash_PlayerController>();
             player.GetComponentInChildren<Animator>().SetBool("push", false);
@@ -51,7 +51,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
             {
                 photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
             }
-        }, 2);
+        }, 2);*/
 
         for(int i = 0; i < Mathf.Min(PlayerObjects.Count, aireColors.Length); i++)
         {
@@ -59,6 +59,21 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
             MeshRenderer mshr = playr.Find("3dmodel Sko").Find("aire").Find("tubo").GetComponent<MeshRenderer>();
 
             mshr.materials[0].color = aireColors[i];
+        }
+    }
+
+    public void Setup()
+    {
+        CoolFunctions.LoadAllTexturePacks<MGMash_PlayerController>();
+        player.GetComponentInChildren<Animator>().SetBool("push", false);
+    }
+
+    public void StartMinigame()
+    {
+        player.GetComponent<MGMash_PlayerController>().canMove = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
         }
     }
 

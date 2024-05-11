@@ -148,7 +148,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     {
         Hashtable playerProps = new Hashtable
         {
-            [Constantes.PlayerKey_CustomID] = -1
+            [Constantes.PlayerKey_CustomID] = -1,
+            [Constantes.PlayerKey_Skin] = -1
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 

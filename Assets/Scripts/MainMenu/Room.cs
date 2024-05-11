@@ -20,6 +20,6 @@ public class Room : MonoBehaviour
 
     public void JoinRoom()
     {
-        FindObjectOfType<MainMenu>().JoinRoomInList(roomInfo.Name);
+        FindObjectOfType<RoomHandler>().JoinRoomInList(roomInfo.Name);
     }
 }

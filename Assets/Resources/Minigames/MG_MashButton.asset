@@ -15,6 +15,6 @@ MonoBehaviour:
   Name: Mash Button
   Icon: {fileID: 21300000, guid: 3c540444dc31fc147b481444f9f38a7a, type: 3}
   Description: Mash the button!!!
-  HowToPlay: Apreta el Espacio lo mas rapido posible
+  HowToPlay: Mash <b>Space</b> as fast as possible
   DisplayImage: {fileID: 21300000, guid: 3c540444dc31fc147b481444f9f38a7a, type: 3}
   MG_SceneName: MG_MashButton

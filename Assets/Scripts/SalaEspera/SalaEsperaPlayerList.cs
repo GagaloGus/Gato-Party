@@ -58,7 +58,7 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        // Se llama autom�ticamente cuando las propiedades personalizadas de un jugador cambian
+        // Se llama automaticamente cuando las propiedades personalizadas de un jugador cambian
         if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SalaEspera))
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SalaEspera];

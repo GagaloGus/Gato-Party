@@ -94,6 +94,8 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
     void RPC_StartMinigameSelection()
     {
         minigameDisplay.SetActive(true);
+        FindObjectOfType<SalaEsperaSettings>().playerReadyButton.interactable = false;
+        FindObjectOfType<SalaEsperaSettings>().startGameButton.interactable = false;
 
         Transform content = minigameDisplay.transform.Find("Display").Find("Content");
 

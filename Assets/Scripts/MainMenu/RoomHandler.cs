@@ -10,11 +10,12 @@ public class RoomHandler : MonoBehaviourPunCallbacks
 {
     [Header("Room Info")]
     public Vector2Int minAndMaxPlayers;
+    public int maxPlayerCount = 4;
 
     [Header("Create and Join Rooms")]
     public GameObject createRoomMenu;
-    TMP_InputField input_Create, input_MaxPlayers;
-    public TMP_InputField input_Join;
+    TMP_InputField input_Create, input_Join;
+    TMP_Text MaxPlayersDisplay;
 
     [Header("Rooms")]
     public GameObject roomListDisplay;
@@ -30,8 +31,11 @@ public class RoomHandler : MonoBehaviourPunCallbacks
         mainMenu = FindObjectOfType<MainMenu>();
 
         input_Create = createRoomMenu.transform.Find("CreateInput").GetComponent<TMP_InputField>();
-        input_MaxPlayers = createRoomMenu.transform.Find("MaxPlayersInput").GetComponent<TMP_InputField>();
         PeopleConnectedText = roomListDisplay.transform.Find("PlayersOnline").GetComponent<TMP_Text>();
+        MaxPlayersDisplay = createRoomMenu.transform.Find("Max Players").Find("Number").GetComponentInChildren<TMP_Text>(true);
+
+        maxPlayerCount = 4;
+        MaxPlayersDisplay.text = maxPlayerCount.ToString();
     }
 
     private void Update()
@@ -43,7 +47,6 @@ public class RoomHandler : MonoBehaviourPunCallbacks
     public void CreateRoom()
     {
         string customRoomName = $"{PhotonNetwork.NickName}'s room";
-        int maxPlayers = 4;
 
         if (!string.IsNullOrEmpty(input_Create.text))
         {
@@ -56,22 +59,11 @@ public class RoomHandler : MonoBehaviourPunCallbacks
             customRoomName = input_Create.text;
         }
 
-        if (int.TryParse(input_MaxPlayers.text, out int maxNum))
-        {
-            if (minAndMaxPlayers.x <= maxNum && maxNum <= minAndMaxPlayers.y)
-            {
-                maxPlayers = maxNum;
-            }
-            else { Debug.LogWarning($"{maxNum} se sale del rango de jugadores, se cambio a 4"); }
-
-        }
-        else { Debug.LogWarning($"No se pudo parsear: {input_MaxPlayers.text}, se cambio a 4"); }
-
         mainMenu.ChangeMenu(mainMenu.LoadingScreen.name, () =>
         {
             PhotonNetwork.CreateRoom(
                 roomName: customRoomName,
-                roomOptions: new RoomOptions() { MaxPlayers = maxPlayers, IsVisible = true, IsOpen = true },
+                roomOptions: new RoomOptions() { MaxPlayers = maxPlayerCount, IsVisible = true, IsOpen = true },
                 typedLobby: TypedLobby.Default,
                 expectedUsers: null);
         });
@@ -99,6 +91,12 @@ public class RoomHandler : MonoBehaviourPunCallbacks
     public void JoinRandomRoom()
     {
         PhotonNetwork.JoinRandomRoom();
+    }
+
+    public void ChangeMaxPlayers(bool sum)
+    {
+        maxPlayerCount = Mathf.Clamp(maxPlayerCount + (sum ? 1 : -1), minAndMaxPlayers.x, minAndMaxPlayers.y);
+        MaxPlayersDisplay.text = maxPlayerCount.ToString();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)

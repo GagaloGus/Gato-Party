@@ -66,8 +66,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         //actualiza el boton de Ready
-        playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
-        playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
+        playerReadyButton.GetComponent<Animator>().SetBool("ready", isReady);
 
         canvasChat.SendSystemMessage($"Player {PhotonNetwork.LocalPlayer.NickName} is {(isReady ? "<color=green>ready" : "<color=red>not ready")}</color>");
     }
@@ -81,10 +80,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SalaEspera];
             Debug.Log("Jugador " + targetPlayer.NickName + ": " + (isReady ? "Listo" : "No Listo"));
 
-            playerReadyButton.GetComponentInChildren<TMP_Text>().text = isReady ? "Ready!" : "Ready?";
-            playerReadyButton.GetComponent<Image>().color = isReady ? Color.gray : Color.white;
-
-            
+            playerReadyButton.GetComponent<Animator>().SetBool("ready", isReady);
         }
 
         //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos

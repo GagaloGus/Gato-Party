@@ -1,6 +1,8 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -27,7 +29,14 @@ public class Username : MonoBehaviour
     public void SaveUsername()
     {
         string newUsername = inputField.text;
-        if (string.IsNullOrEmpty(newUsername))
+
+        if (CheckForDuplicateNicknames(newUsername))
+        {
+            Debug.LogWarning($"Nickname {PhotonNetwork.NickName} ya usado");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(newUsername))
         {
             newUsername = $"Player{Random.Range(1000,10000)}";
         }
@@ -35,7 +44,26 @@ public class Username : MonoBehaviour
         myUsername.text = newUsername;
 
         PlayerPrefs.SetString("USERNAME", newUsername);
-
         UsernamePanel.SetActive(false);
+    }
+
+    bool CheckForDuplicateNicknames(string nick)
+    {
+        /*List<Player> playersInLobby = PhotonNetwork.PlayerList.ToList();
+
+        string debug = "<color=yellow>Nicks:</color> ";
+        foreach (Player p in playersInLobby)
+        {
+            debug += $"{p.NickName}, ";
+        }
+        print(debug);
+
+        foreach (Player p in playersInLobby)
+        {
+            if (p.NickName == nick)
+                return true;
+        }*/
+
+        return false;
     }
 }

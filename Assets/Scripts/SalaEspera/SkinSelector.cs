@@ -38,8 +38,6 @@ public class SkinSelector : MonoBehaviourPunCallbacks
         }
 
         PhotonView[] allPhotonViews = FindObjectsOfType<PhotonView>();
-
-        //Actualiza las skins
         foreach(PhotonView view in allPhotonViews)
         {
             if(view.IsMine)
@@ -49,7 +47,7 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             }
         }
 
-        onRangeIcon = transform.Find("OnRange").gameObject;
+        onRangeIcon = transform.Find("Canvas").Find("OnRange").gameObject;
         salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
     }
 
@@ -71,6 +69,11 @@ public class SkinSelector : MonoBehaviourPunCallbacks
         {
             onRangeIcon.SetActive(false);
             SkinPanel.SetActive(false);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            onRangeIcon.SetActive(false);
         }
     }
 

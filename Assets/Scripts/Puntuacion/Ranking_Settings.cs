@@ -5,10 +5,12 @@ using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.GridBrushBase;
 
 public class Ranking_Settings : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class Ranking_Settings : MonoBehaviour
     [Header("Lists")]
     List<Sprite> rankingNumberSprites = new List<Sprite>();
     List<GameObject> RankingPanels = new List<GameObject>();
+    [SerializeField] List<Vector3> PanelPositions = new List<Vector3>();
 
     private void Awake()
     {
@@ -29,6 +32,7 @@ public class Ranking_Settings : MonoBehaviour
 
         //Guarda las variables de los numeritos de ranking
         rankingNumberSprites.Clear();
+        PanelPositions.Clear();
         rankingNumberSprites = Resources.LoadAll<Sprite>("Ranking/Numbers").ToList();
 
         //Guarda los paneles donde iran las puntuaciones
@@ -37,58 +41,10 @@ public class Ranking_Settings : MonoBehaviour
         foreach (Transform panel in rankingPanel)
         {
             RankingPanels.Add(panel.gameObject);
-        }
-
-        for (int i = 0; i < RankingPanels.Count; i++)
-        {
-            RankingPanels[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
+            PanelPositions.Add(panel.position);
         }
     }
 
-    List<Player> GetPlayerListSorted(string key)
-    {
-        Dictionary<Player, int> sortedDic = new Dictionary<Player, int>();
-
-        //Si la propKey es la de la puntuacion del anterior minijuego, guarda el propValue en el diccionario con su respectivo player
-        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
-        {
-            Hashtable playerProps = player.Value.CustomProperties;
-            foreach (System.Collections.DictionaryEntry props in playerProps)
-            {
-                if ((string)props.Key == key)
-                {
-                    sortedDic.Add(player.Value, (int)props.Value);
-                    break;
-                }
-            }
-        }
-
-        var sortedRanking = sortedDic.OrderByDescending(x => x.Value);
-        List<Player> temp = sortedRanking.Select(x => x.Key).ToList();
-
-        string debugLine = $"Sorted {key}:\n";
-        foreach (Player player in temp)
-        {
-            debugLine += $"Player <color=yellow>{player.NickName}:{(int)player.CustomProperties[key]}</color>\n";
-        }
-        print(debugLine);
-
-        return temp;
-    }
-
-    void UpdateUI(List<Player> sortedPlayerList)
-    {
-        for (int i = 0; i < sortedPlayerList.Count; i++)
-        {
-            Player currentPlayer = sortedPlayerList[i];
-            int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
-            Transform currentPanel = RankingPanels[i].transform;
-
-            currentPanel.Find("Rank").GetComponent<Image>().sprite = rankingNumberSprites[i];
-            currentPanel.Find("Name").GetComponent<TMP_Text>().text = currentPlayer.NickName;
-            currentPanel.Find("PuntGlobal").GetComponent<TMP_Text>().text = currentWinPoints.ToString();
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -96,14 +52,27 @@ public class Ranking_Settings : MonoBehaviour
         //Mira si quedan minijuegos disponibles
         roundsOver = (bool)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.RoundsOver_Room];
 
+        foreach (GameObject panel in RankingPanels)
+        {
+            panel.SetActive(false);
+        }
+
         StartCoroutine(nameof(TimeLine));
     }
 
     System.Collections.IEnumerator TimeLine()
     {
+        yield return new WaitForSeconds(0.5f);
+
         //Actualiza la interfaz con el ranking de pt globales anterior al minijuego
         List<Player> RanklistGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
         UpdateUI(RanklistGlob);
+
+        for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+        {
+            RankingPanels[i].SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+        }
 
         yield return new WaitForSeconds(0.5f);
         //Actualiza las puntuaciones solo si es el Master Client
@@ -112,27 +81,33 @@ public class Ranking_Settings : MonoBehaviour
             //Coje una lista ordenada segun la pt del minijuego anterior
             List<Player> RanklistMinigame = GetPlayerListSorted(Constantes.PlayerKey_MinigameScore);
 
-            //Añade puntos respectivamente
+            // Añade puntos respectivamente
             for (int i = 0; i < RanklistMinigame.Count; i++)
             {
                 Player currentPlayer = RanklistMinigame[i];
                 int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
+                int finalScore = currentWinPoints;
 
-                //Si hay puntuaciones repetidas
-                int amountOfPlayersSameMGScore = 0;
+                // Si hay puntuaciones repetidas
+                /*int amountOfPlayersSameMGScore = 1; // Incluir el currentPlayer
+                List<Player> playersWithSameScore = new List<Player> { currentPlayer };
+
                 for (int j = 0; j < RanklistMinigame.Count; j++)
                 {
+                    if (j == i) continue;
+
                     Player nextPlayer = RanklistMinigame[j];
                     int nextWinPoints = (int)nextPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
 
-                    if (nextWinPoints == currentWinPoints
-                        && nextPlayer != currentPlayer)
+                    if (nextWinPoints == currentWinPoints)
                     {
                         amountOfPlayersSameMGScore++;
+                        playersWithSameScore.Add(nextPlayer);
                     }
                 }
 
-                if (amountOfPlayersSameMGScore > 0)
+
+                if (amountOfPlayersSameMGScore > 1)
                 {
                     int totalScore = 0;
                     for (int k = 0; k < amountOfPlayersSameMGScore; k++)
@@ -140,11 +115,18 @@ public class Ranking_Settings : MonoBehaviour
                         totalScore += Constantes.Win_Points[k];
                     }
                     int averageScore = Mathf.RoundToInt((float)totalScore / amountOfPlayersSameMGScore);
+
+                    finalScore += averageScore;
+
                 }
+                else
+                {
+                }*/
+                finalScore += Constantes.Win_Points[i];
 
                 Hashtable newPlayerProps = new Hashtable
                 {
-                    [Constantes.PlayerKey_TotalScore] = currentWinPoints + Constantes.Win_Points[i]
+                    [Constantes.PlayerKey_TotalScore] = finalScore
                 };
                 currentPlayer.SetCustomProperties(newPlayerProps);
             }
@@ -154,9 +136,20 @@ public class Ranking_Settings : MonoBehaviour
 
         //Actualiza la interfaz con el ranking de pt globales POSTERIOR al minijuego
         List<Player> NewRankListGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
-        UpdateUI(NewRankListGlob);
+        ChangeRankedScore(NewRankListGlob);
 
-        yield return new WaitForSeconds(3);
+        List<string> playerNames = GetTMPNames();
+
+        for (int i = 0; i < NewRankListGlob.Count; i++)
+        {
+            int position = playerNames.IndexOf(NewRankListGlob[i].NickName);
+            Debug.Log($"Mover <color=red>{i} -> {position}</color>");
+            StartCoroutine(MovePanel(i, position));
+        }
+
+        ChangeRankedNumbers();
+
+        yield return new WaitForSeconds(10);
 
         //Mira si se acabaron las rondas
         if (!roundsOver)
@@ -180,6 +173,8 @@ public class Ranking_Settings : MonoBehaviour
             NextMinigamePanel.transform.Find("Name").GetComponent<TMP_Text>().text = nextMinigame.Name;
             NextMinigamePanel.transform.Find("DisplayImage").GetComponent<Image>().sprite = nextMinigame.Icon;
 
+            FindObjectOfType<Canvas>().GetComponent<Animator>().SetTrigger("next");
+
             yield return new WaitForSeconds(4);
 
             LoadingScreen.SetActive(true);
@@ -193,4 +188,96 @@ public class Ranking_Settings : MonoBehaviour
         }
     }
 
+    System.Collections.IEnumerator MovePanel(int panel, int newPos)
+    {
+        GameObject panelToMove = RankingPanels[panel];
+
+        float elapsedTime = 0f;
+        Vector3 startPos = panelToMove.transform.position, endPos = PanelPositions[newPos];
+
+        while (elapsedTime < 1)
+        {
+            float t = elapsedTime / 1;
+            panelToMove.transform.position = Vector3.Lerp(startPos, endPos, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        panelToMove.transform.position = endPos;
+    }
+
+
+    List<Player> GetPlayerListSorted(string key)
+    {
+        Dictionary<Player, int> sortedDic = new Dictionary<Player, int>();
+
+        //Si la propKey es la de la puntuacion del anterior minijuego, guarda el propValue en el diccionario con su respectivo player
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            Hashtable playerProps = player.Value.CustomProperties;
+            foreach (System.Collections.DictionaryEntry props in playerProps)
+            {
+                if ((string)props.Key == key)
+                {
+                    sortedDic.Add(player.Value, (int)props.Value);
+                    break;
+                }
+            }
+        }
+
+        var sortedRanking = sortedDic.OrderByDescending(x => x.Value);
+        List<Player> temp = sortedRanking.Select(x => x.Key).ToList();
+        return temp;
+    }
+
+    void UpdateUI(List<Player> sortedPlayerList)
+    {
+        for (int i = 0; i < sortedPlayerList.Count; i++)
+        {
+            Player currentPlayer = sortedPlayerList[i];
+            int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
+            Transform currentPanel = RankingPanels[i].transform;
+
+            currentPanel.Find("Name").GetComponent<TMP_Text>().text = currentPlayer.NickName;
+            currentPanel.Find("PuntGlobal").GetComponent<TMP_Text>().text = currentWinPoints.ToString();
+        }
+
+        ChangeRankedScore(sortedPlayerList);
+        ChangeRankedNumbers();
+    }
+
+    void ChangeRankedScore(List<Player> sortedPlayerList)
+    {
+        for (int i = 0; i < sortedPlayerList.Count; i++)
+        {
+            int currentWinPoints = (int)sortedPlayerList[i].CustomProperties[Constantes.PlayerKey_TotalScore];
+
+            RankingPanels[i].transform.Find("PuntGlobal").GetComponent<TMP_Text>().text = currentWinPoints.ToString();
+        }
+    }
+
+    void ChangeRankedNumbers()
+    {
+        for(int i = 0; i < RankingPanels.Count; i++)
+        {
+            RankingPanels[i].transform.Find("Rank").GetComponent<Image>().sprite = rankingNumberSprites[i];
+        }
+    }
+
+    List<string> GetTMPNames() 
+    { 
+        List<string> names = new List<string>();
+
+        foreach(GameObject panel in RankingPanels)
+        {
+            if (panel.activeInHierarchy)
+            {
+                TMP_Text text = panel.transform.Find("Name").GetComponent<TMP_Text>();
+                names.Add(text.text);
+            }
+        }
+
+        return names;
+    }
 }

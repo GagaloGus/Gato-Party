@@ -51,7 +51,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void ChangeMenu(string menuName)
     {
-        StartCoroutine(FadeInFadeOutMenu(menuName, () => { bool fart = true; }));
+        StartCoroutine(FadeInFadeOutMenu(menuName, () => { bool fart; }));
     }
 
     void ToggleMenu(string menuName)

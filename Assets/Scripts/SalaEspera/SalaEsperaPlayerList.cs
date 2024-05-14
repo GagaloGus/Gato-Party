@@ -41,12 +41,14 @@ public class SalaEsperaPlayerList : MonoBehaviourPunCallbacks
         //Crea tags acorde a los players que hay en la sala
         foreach (KeyValuePair<int, Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
         {
-            GameObject tag = Instantiate(playerTag, Vector3.zero, Quaternion.identity, display);
+            GameObject tag = Instantiate(playerTag);
+            tag.transform.SetParent(display, false);
 
             tag.transform.Find("Name").GetComponent<TMP_Text>().text = playerInfo.Value.NickName;
+            tag.transform.Find("IsOwner").gameObject.SetActive(false);
 
             //Si somos el owner activa la coronita
-            if(playerInfo.Value.IsMasterClient)
+            if (playerInfo.Value.IsMasterClient)
             {
                 tag.transform.Find("IsOwner").gameObject.SetActive(true);
                 MasterTag = tag.transform;

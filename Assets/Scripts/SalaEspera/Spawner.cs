@@ -20,8 +20,6 @@ public class Spawner : MonoBehaviourPunCallbacks
     {
         SalaEsperaSettings salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
 
-        FindObjectOfType<MinigameSelector>(true).loadingScreen.SetActive(true);
-
         //Instancia el player
         GameObject playerObj = 
             PhotonNetwork.Instantiate(

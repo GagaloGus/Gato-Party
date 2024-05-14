@@ -39,7 +39,9 @@ public class CanvasChat : MonoBehaviourPunCallbacks
     [PunRPC]
     void GetSystemMessage(string text)
     {
-        GameObject message = Instantiate(systemMessagePrefab, Vector3.zero, Quaternion.identity, content.transform);
+        Transform message = Instantiate(systemMessagePrefab).transform;
+        message.SetParent(content, false);
+
         message.transform.Find("Text").GetComponent<TMP_Text>().text = text;
 
         CanvasUpdate();
@@ -83,7 +85,8 @@ public class CanvasChat : MonoBehaviourPunCallbacks
         }
         catch { Debug.Log("No hay primer mensaje o no es de tipo Mensaje"); }
 
-        Transform message = Instantiate(messagePrefab, Vector3.zero, Quaternion.identity, content).transform;
+        Transform message = Instantiate(messagePrefab).transform;
+        message.SetParent(content, false);
 
         message.Find("Text").GetComponent<TMP_Text>().text = paramsMessage[0].ToString();
         message.Find("Info").Find("Nickname").GetComponent<TMP_Text>().text = paramsMessage[1].ToString();

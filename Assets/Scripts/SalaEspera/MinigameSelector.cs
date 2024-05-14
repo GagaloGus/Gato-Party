@@ -11,7 +11,7 @@ using System.Linq;
 public class MinigameSelector : MonoBehaviourPunCallbacks
 {
     [Header("Minigame lists")]
-    public List<MinigameInfo> minigames;
+    [SerializeField] List<MinigameInfo> minigames;
 
     [Header("References")]
     public GameObject minigameDisplay;
@@ -93,7 +93,6 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_StartMinigameSelection()
     {
-        minigameDisplay.SetActive(true);
         FindObjectOfType<SalaEsperaSettings>().playerReadyButton.interactable = false;
         FindObjectOfType<SalaEsperaSettings>().startGameButton.interactable = false;
 
@@ -118,7 +117,11 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
             }
         }
 
-        //cambia los valores de los iconos en orden
+        foreach (Transform child in content.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
         for (int i = 0; i < shuffledMinigames.Count; i++)
         {
             Transform display = content.GetChild(i);
@@ -127,11 +130,34 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
             display.Find("Name").GetComponent<TMP_Text>().text = shuffledMinigames[i].Name;
         }
 
-        //Activa la pantalla de carga, y luego carga la escena de showcase
-        CoolFunctions.Invoke(this, () =>
+        StartCoroutine(ShowMinigamesTimeLine(shuffledMinigames));
+    }
+
+    System.Collections.IEnumerator ShowMinigamesTimeLine(List<MinigameInfo> minigames)
+    {
+        Transform content = minigameDisplay.transform.Find("Display").Find("Content");
+
+        minigameDisplay.SetActive(true);
+        yield return new WaitForSeconds(1);
+
+        for (int i  = 0; i < content.childCount; i++)
         {
-            loadingScreen.SetActive(true);
-            CoolFunctions.Invoke(this, () => PhotonNetwork.LoadLevel("ShowcaseMG"), 1);
-        }, 2);
+            content.GetChild(i).gameObject.SetActive(i < minigames.Count);
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return new WaitForSeconds(2);
+
+        loadingScreen.SetActive(true);
+        CanvasGroup loadingScCanvas = loadingScreen.GetComponent<CanvasGroup>();
+        for (float i = 0; i <= 1; i += 0.03f)
+        {
+            loadingScCanvas.alpha = i;
+            yield return null;
+        }
+
+        loadingScCanvas.alpha = 1;
+        yield return new WaitForSeconds(3.5f);
+
+        PhotonNetwork.LoadLevel("ShowcaseMG");
     }
 }

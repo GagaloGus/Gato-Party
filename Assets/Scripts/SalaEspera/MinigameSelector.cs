@@ -101,8 +101,7 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         List<MinigameInfo> shuffledMinigames = new List<MinigameInfo>();
 
         //guarda los minijuegos randomizados en orden en la lista
-        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
-        foreach (System.Collections.DictionaryEntry entry in roomProps)
+        foreach (System.Collections.DictionaryEntry entry in PhotonNetwork.CurrentRoom.CustomProperties)
         {
             if ((string)entry.Key == Constantes.MinigameOrder_Room)
             {
@@ -138,8 +137,10 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         Transform content = minigameDisplay.transform.Find("Display").Find("Content");
 
         minigameDisplay.SetActive(true);
+        content.gameObject.SetActive(false);
         yield return new WaitForSeconds(1);
 
+        content.gameObject.SetActive(true);
         for (int i  = 0; i < content.childCount; i++)
         {
             content.GetChild(i).gameObject.SetActive(i < minigames.Count);

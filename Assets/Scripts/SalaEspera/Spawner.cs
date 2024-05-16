@@ -15,8 +15,8 @@ public class Spawner : MonoBehaviourPunCallbacks
     public Vector3 minPositions;
     public Vector3 maxPositions;
 
-    // Start is called before the first frame update
-    void Start()
+    // Debe ser awake por que en el Skin Selector se ejecuta en el start
+    void Awake()
     {
         SalaEsperaSettings salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
 

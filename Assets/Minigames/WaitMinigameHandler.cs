@@ -49,7 +49,7 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
         CountdownSpriteDisplay.SetActive(false);
 
         //allbuffered lo manda tambien a jugadores que aun no dentro de la partida
-        CoolFunctions.Invoke(this, () => { photonView.RPC(nameof(RPC_PlayerJoined), RpcTarget.AllBuffered); }, 1);
+        CoolFunctions.Invoke(this, () => { photonView.RPC(nameof(RPC_PlayerJoined), RpcTarget.AllBuffered); }, 2);
     }
 
     void SetupMinigame()

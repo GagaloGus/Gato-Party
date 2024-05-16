@@ -15,8 +15,8 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     public float detectRadius = 2;
 
     List<int> avaliableIDs = new List<int>();
-    GameObject playerObject;
-    GameObject onRangeIcon;
+    [SerializeField] GameObject playerObject;
+    [SerializeField] GameObject onRangeIcon;
 
     SalaEsperaSettings salaEsperaSettings;
 
@@ -41,16 +41,17 @@ public class SkinSelector : MonoBehaviourPunCallbacks
             avaliableButton[index] = child.GetComponentInChildren<Button>().interactable;
         }
 
-        PhotonView[] allPhotonViews = FindObjectsOfType<PhotonView>();
+        /*PhotonView[] allPhotonViews = FindObjectsOfType<PhotonView>();
         foreach(PhotonView view in allPhotonViews)
         {
-            if(view.IsMine)
+            if(view.IsMine && view.Owner.IsLocal)
             {
                 playerObject = view.gameObject;
                 break;
             }
-        }
+        }*/
 
+        playerObject = FindObjectOfType<Spawner>().playerSpawned;
         onRangeIcon = transform.Find("Canvas").Find("OnRange").gameObject;
         salaEsperaSettings = FindObjectOfType<SalaEsperaSettings>();
     }

@@ -35,6 +35,7 @@ public class MGLast_Manager : MonoBehaviour
         {
             BonkPhysics(i, false);
             Bonks[i].GetComponent<Animator>().speed = 0;
+            Bonks[i].SetActive(false);
         }
     }
 

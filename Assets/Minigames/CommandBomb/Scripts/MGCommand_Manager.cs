@@ -58,11 +58,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             Destroy(child.gameObject);
         }
         KeyHolder.gameObject.SetActive(false);
+        playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
     }
 
     void StartMinigame()
     {
-        playersRemaining = PhotonNetwork.CurrentRoom.PlayerCount;
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC(nameof(RPC_StartTurn), RpcTarget.All, GenerateRandomList(Mathf.FloorToInt(roundCount / 3) + 4), 1);

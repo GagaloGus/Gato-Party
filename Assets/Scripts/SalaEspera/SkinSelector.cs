@@ -10,6 +10,10 @@ public class SkinSelector : MonoBehaviourPunCallbacks
     public GameObject SkinPanel;
     public List<GameObject> skinButtons = new List<GameObject>();
 
+    [Header("Detect")]
+    public Vector3 offset;
+    public float detectRadius = 2;
+
     List<int> avaliableIDs = new List<int>();
     GameObject playerObject;
     GameObject onRangeIcon;
@@ -53,7 +57,7 @@ public class SkinSelector : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(Vector3.Distance(playerObject.transform.position, transform.position) < 1)
+        if(Vector3.Distance(playerObject.transform.position, transform.position + offset) < detectRadius)
         {
             onRangeIcon.SetActive(true);
             if (Input.GetKeyDown(PlayerKeybinds.openSkinMenu))
@@ -198,5 +202,11 @@ public class SkinSelector : MonoBehaviourPunCallbacks
         }
 
         return avaliableSkin;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + offset, detectRadius);
     }
 }

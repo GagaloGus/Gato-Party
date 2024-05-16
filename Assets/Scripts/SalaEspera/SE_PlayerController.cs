@@ -14,6 +14,7 @@ public class SE_PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     public float jumpForce;
+    public float respawnYHeight;
     [Range(1, 5)] public float runSpeedMult;
 
     //variables del modelo 3d
@@ -95,6 +96,9 @@ public class SE_PlayerController : MonoBehaviour
             m_animator.SetInteger("player states", (int)playerState);
             return;
         }
+
+        if (transform.position.y < respawnYHeight)
+            FindObjectOfType<Spawner>().Respawn();
 
         if (canMove)
         {

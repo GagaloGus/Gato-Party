@@ -598,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   jumpForce: 9
+  respawnYHeight: -20
   runSpeedMult: 2
   rayDetectFloorDist: 0.22
   nearGroundDist: 2

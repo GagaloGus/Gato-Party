@@ -83,8 +83,8 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
             playerReadyButton.GetComponent<Animator>().SetBool("ready", isReady);
         }
 
-        //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos
-        startGameButton.interactable = PhotonNetwork.IsMasterClient && AllPlayersReady();
+        //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos y hay mas de una persona en la sala
+        startGameButton.interactable = PhotonNetwork.IsMasterClient && AllPlayersReady() && PhotonNetwork.CurrentRoom.PlayerCount > 1;
     }
 
     bool AllPlayersReady()
@@ -103,13 +103,13 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     //Actualiza el contador de gente en la sala
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        canvasChat.SendSystemMessage($"Player <color=yellow>{PhotonNetwork.LocalPlayer.NickName}</color> entered the room!");
+        canvasChat.SendSystemMessage($"Player <color=yellow>{newPlayer.NickName}</color> entered the room!");
         UpdatePlayerCount();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        canvasChat.SendSystemMessage($"Player <color=yellow>{PhotonNetwork.LocalPlayer.NickName}</color> left the room");
+        canvasChat.SendSystemMessage($"Player <color=yellow>{otherPlayer.NickName}</color> left the room");
         UpdatePlayerCount();
     }
 

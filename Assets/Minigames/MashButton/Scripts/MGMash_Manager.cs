@@ -33,26 +33,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
         player = FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
-        //carga las texturas de los jugadores localmente, necesita un delay mas grande para que esten todos los jugadores en la sala
-        //- aqui habra que poner una pantalla de carga en vez del delay -//
-        /*CoolFunctions.Invoke(this, () =>
-        {
-            CoolFunctions.LoadAllTexturePacks<MGMash_PlayerController>();
-            player.GetComponentInChildren<Animator>().SetBool("push", false);
-        }, 0.5f);
-
-
-        //Espera 2 segundos
-        CoolFunctions.Invoke(this, () =>
-        {
-            //Deja que los players se muevan
-            player.GetComponent<MGMash_PlayerController>().canMove = true;
-            if(PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All, maxTime, interval);
-            }
-        }, 2);*/
-
         for(int i = 0; i < Mathf.Min(PlayerObjects.Count, aireColors.Length); i++)
         {
             Transform playr = PlayerObjects[i].transform;
@@ -109,21 +89,18 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
                 }
 
                 //muestra las puntuaciones para el resto de jugadores
-                photonView.RPC(nameof(ShowResults), RpcTarget.All, results);
+                photonView.RPC(nameof(RPC_Finish), RpcTarget.All, results);
             }
         }
     }
 
     [PunRPC]
-    void ShowResults(string result)
+    void RPC_Finish(string result)
     {
+        gameObject.SendMessage("FinishMinigame");
+
         resultsText.SetActive(true);
         resultsText.GetComponentInChildren<TMP_Text>().text = result;
-
-        CoolFunctions.Invoke(this, () =>
-        {
-            PhotonNetwork.LoadLevel("Puntuacion");
-        }, 4);
     }
 
     [PunRPC]

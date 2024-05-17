@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class WaitMinigameHandler : MonoBehaviourPunCallbacks
 {
     public Transform SetupObject;
-    GameObject LoadingScreen, GuideTextDisplay, CountdownSpriteDisplay;
+    GameObject LoadingScreen, GuideTextDisplay, CountdownSpriteDisplay, FinishScreen;
 
     int playerCount, maxPlayers;
 
@@ -43,10 +43,12 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
         LoadingScreen = SetupObject.Find("LoadingScreen").gameObject;
         GuideTextDisplay = SetupObject.Find("GuideText").gameObject;
         CountdownSpriteDisplay = SetupObject.Find("WaitSprites").gameObject;
+        FinishScreen = SetupObject.Find("Finish").gameObject;
 
         LoadingScreen.SetActive(true);
         GuideTextDisplay.SetActive(false);
         CountdownSpriteDisplay.SetActive(false);
+        FinishScreen.SetActive(false);
 
         //allbuffered lo manda tambien a jugadores que aun no dentro de la partida
         CoolFunctions.Invoke(this, () => { photonView.RPC(nameof(RPC_PlayerJoined), RpcTarget.AllBuffered); }, 2);
@@ -69,6 +71,16 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
                 photonView.RPC(nameof(RPC_StartCountdown), RpcTarget.All);
             }, 3.5f);
         }
+    }
+
+    void FinishMinigame()
+    {
+        FinishScreen.SetActive(true);
+
+        CoolFunctions.Invoke(this, () =>
+        {
+            PhotonNetwork.LoadLevel("Puntuacion");
+        }, 7);
     }
 
     [PunRPC]

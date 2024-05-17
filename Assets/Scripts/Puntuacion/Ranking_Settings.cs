@@ -29,7 +29,7 @@ public class Ranking_Settings : MonoBehaviour
     private void Awake()
     {
         NextMinigamePanel.SetActive(false);
-        LoadingScreen.SetActive(false);
+        LoadingScreen.SetActive(true);
 
         //Guarda las variables de los numeritos de ranking
         rankingNumberSprites.Clear();
@@ -59,7 +59,9 @@ public class Ranking_Settings : MonoBehaviour
 
     System.Collections.IEnumerator TimeLine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2);
+        yield return StartCoroutine(FadeInOutLoadingScreen(false));
+        yield return new WaitForSeconds(1);
 
         //Actualiza la interfaz con el ranking de pt globales anterior al minijuego
         List<Player> RanklistGlob = GetPlayerListSorted(Constantes.PlayerKey_TotalScore);
@@ -181,14 +183,46 @@ public class Ranking_Settings : MonoBehaviour
 
             yield return new WaitForSeconds(4);
 
-            LoadingScreen.SetActive(true);
+            yield return StartCoroutine(FadeInOutLoadingScreen(true));
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
             PhotonNetwork.LoadLevel("ShowcaseMG");
         }
         else
         {
             SceneManager.LoadScene("FinalScores");
+        }
+    }
+
+    System.Collections.IEnumerator FadeInOutLoadingScreen(bool fadeIn)
+    {
+        CanvasGroup patata = LoadingScreen.GetComponent<CanvasGroup>();
+
+        if (fadeIn)
+        {
+            patata.alpha = 0;
+            LoadingScreen.SetActive(true);
+
+            for (float i = 0; i <= 1; i += 0.05f)
+            {
+                patata.alpha = i;
+                yield return null;
+            }
+
+            patata.alpha = 1;
+        }
+        else
+        {
+            patata.alpha = 1;
+
+            for (float i = 0; i <= 1; i += 0.05f)
+            {
+                patata.alpha = 1 - i;
+                yield return null;
+            }
+
+            patata.alpha = 0;
+            LoadingScreen.SetActive(false);
         }
     }
 

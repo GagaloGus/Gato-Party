@@ -10,18 +10,25 @@ using UnityEngine.SceneManagement;
 
 public class ShowcaseManager : MonoBehaviourPunCallbacks
 {
-    [Header("References")]
+    [Header("Minigame info")]
     public TMP_Text Name;
     public TMP_Text Description;
     public TMP_Text HowToPlay;
     public Image DisplayImage;
-    public GameObject LoadingScreen;
+
+    [Header("References")]
+    public GameObject BlackScreen;
 
     MinigameInfo currentMinigame;
 
+    private void Awake()
+    {
+        BlackScreen.SetActive(true);
+    }
+
     private void Start()
     {
-        LoadingScreen.SetActive(false);
+        StartCoroutine(FadeInOutBlack(false));
 
         currentMinigame = null;
 
@@ -69,7 +76,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         // Verificar si todos los jugadores en la sala están listos
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if (!(player.CustomProperties.ContainsKey(Constantes.PlayerKey_Ready_SMG) && (bool)player.CustomProperties[Constantes.PlayerKey_Ready_SMG]))
+            if (!(bool)player.CustomProperties[Constantes.PlayerKey_Ready_SMG])
             {
                 return false;
             }
@@ -82,28 +89,16 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         //Si estan los players ready
         if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG) && AllPlayersReady())
         {
-            //Empieza el contador
-            FindObjectOfType<CountdownController>().StartCountdown(
-                maxTime: 3,
-                incrementAmount: 0.1f,
-                stringFormat: "F1",
-                finishedText: "Starting minigame...",
-                delayToInvoke: 2,
-                endCounterFunction: () =>
-                {
-                    //Tarda 2 segundos en cargar el minijuego
-                    print($"Loading minigame {currentMinigame.Name}");
-                    LoadingScreen.SetActive(true);
-
-                    CoolFunctions.Invoke(this, () =>
-                    {
-                        PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
-                    }, 2);
-                });
-
             //Si es el Master Client borra el minijuego de las propiedades de la room
             if (PhotonNetwork.IsMasterClient)
                 EraseFirstMinigame();
+
+            StartCoroutine(FadeInOutBlack(true));
+
+            CoolFunctions.Invoke(this, () =>
+            {
+                PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
+            }, 2);
         }
     }
 
@@ -131,6 +126,36 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
                 break;
             }
+        }
+    }
+
+    System.Collections.IEnumerator FadeInOutBlack(bool fadeIn)
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        CanvasGroup patata = BlackScreen.GetComponent<CanvasGroup>();
+        if (fadeIn)
+        {
+            patata.alpha = 0;
+            BlackScreen.SetActive(true);       
+            for(float i = 0; i <= 1; i += 0.1f)
+            {
+                patata.alpha = i;
+                yield return null;
+            }
+            patata.alpha = 1;
+        }
+        else
+        {
+            patata.alpha = 1;
+            BlackScreen.SetActive(true);
+            for (float i = 0; i <= 1; i += 0.1f)
+            {
+                patata.alpha = 1-i;
+                yield return null;
+            }
+            patata.alpha = 0;
+            BlackScreen.SetActive(false);
         }
     }
 

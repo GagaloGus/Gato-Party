@@ -19,27 +19,28 @@ public class MGFindItem_PlayerScores : MonoBehaviour
 
         playerSkinIDs = CoolFunctions.GetAllPlayerSkinIDs();
 
-        //Solucion temporal para que siempre haya 4 imagenes
-        while (playerSkinIDs.Count < 4)
-        {
-            playerSkinIDs.Add(0);
-        }
+        foreach(Transform child in PlayerList) { child.gameObject.SetActive(false); }
+    }
 
-        for (int i = 0; i < PlayerList.transform.childCount; i++)
+    void Setup()
+    {
+        CoolFunctions.LoadAllTexturePacks<MGFindItem_PlayerController>();
+
+        int playerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.AmountPlayers_Room];
+
+
+        for (int i = 0; i < playerCount; i++)
         {
             Transform child = PlayerList.transform.GetChild(i);
 
-            if(i < PhotonNetwork.CurrentRoom.PlayerCount)
-            {
-                TMP_Text text = child.Find("Score").GetComponent<TMP_Text>();
+            child.Find("Score").GetComponent<TMP_Text>().text = 0.ToString("00");
+            child.Find("Sprite").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinIDs[i]}_notready");
+            child.Find("Name").GetComponent<TMP_Text>().text = PhotonNetwork.CurrentRoom.Players[i].NickName;
 
-                child.Find("Sprite").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinIDs[i]}_notready");
+            playerScores.Add(0);
 
-                text.text = 0.ToString("00");
-                playerScores.Add(0);
-            }
-         
-            child.gameObject.SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
+            child.gameObject.SetActive(true);
+
         }
     }
 

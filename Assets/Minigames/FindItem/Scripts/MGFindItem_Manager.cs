@@ -10,6 +10,7 @@ using UnityEngine.Pool;
 public class MGFindItem_Manager : MonoBehaviour
 {
     public Transform ObjetoParent;
+    public Transform StartStairs;
     [SerializeField] List<GameObject> ObjetosList = new();
     [SerializeField] int turnCount;
     [SerializeField] bool choseObject;
@@ -25,7 +26,6 @@ public class MGFindItem_Manager : MonoBehaviour
     [Header("UI")]
     public TMP_Text LataNText;
     public TMP_Text LataGText;
-    public GameObject FinishScreen;
 
     [SerializeField] bool[] isOpened;
 
@@ -39,8 +39,6 @@ public class MGFindItem_Manager : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         scoreScript = FindObjectOfType<MGFindItem_PlayerScores>();
         cam = FindObjectOfType<MGFindItem_Camera>();
-
-        FinishScreen.SetActive(false);
 
         FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
@@ -170,7 +168,7 @@ public class MGFindItem_Manager : MonoBehaviour
         while (elapsedTime < 0.5f)
         {
             float t = elapsedTime / 0.5f;
-            currentPlayer.transform.position = Vector3.Lerp(originalPlayerPos, originalPlayerPos + (objectPos - originalPlayerPos).normalized, t); // Movimiento
+            currentPlayer.transform.position = Vector3.Lerp(originalPlayerPos, originalPlayerPos + (StartStairs.position - originalPlayerPos).normalized, t); // Movimiento
             yield return null;
             elapsedTime += Time.deltaTime;
         }
@@ -202,10 +200,10 @@ public class MGFindItem_Manager : MonoBehaviour
     [PunRPC]
     void RPC_FinishGame()
     {
+        gameObject.SendMessage("FinishMinigame");
+
         CoolFunctions.Invoke(this, () =>
         {
-            FinishScreen.SetActive(true);
-
             List<int> scores = scoreScript.getPlayerScores;
 
             int ID = (int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] - 1;
@@ -216,12 +214,7 @@ public class MGFindItem_Manager : MonoBehaviour
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerP);
 
-        }, 2);
-
-        CoolFunctions.Invoke(this, () =>
-        {
-            PhotonNetwork.LoadLevel("Puntuacion");
-        }, 6);
+        }, 1);
     }
 
     [PunRPC]

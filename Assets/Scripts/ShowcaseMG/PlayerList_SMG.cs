@@ -7,12 +7,21 @@ using UnityEngine.UI;
 
 public class PlayerList_SMG : MonoBehaviourPunCallbacks
 {
-    public GameObject playerList;
+    public Transform playerListDisplay;
     List<Image> playerImageList = new List<Image>();
     List<int> playerSkinsIDs = new List<int>();
 
     [Header("Button")]
     public Button readyButton;
+
+    private void Awake()
+    {
+        foreach(Transform child in playerListDisplay.Find("Display"))
+        {
+            child.gameObject.SetActive(true);
+            child.GetChild(0).gameObject.SetActive(false);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -20,36 +29,47 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         playerSkinsIDs.Clear();
         playerSkinsIDs = CoolFunctions.GetAllPlayerSkinIDs();
 
-        //Solucion temporal para que siempre haya 4 imagenes
-        while(playerSkinsIDs.Count < 4)
-        {
-            playerSkinsIDs.Add(0);
-        }
-
         Hashtable playerProps = new Hashtable
         {
             [Constantes.PlayerKey_Ready_SMG] = false
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
-        for (int i = 0; i < playerList.transform.childCount; i++)
+        Transform display = playerListDisplay.Find("Display");
+        int playerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.AmountPlayers_Room];
+
+        for (int i = 0; i < display.childCount; i++)
         {
-            Transform child = playerList.transform.GetChild(i);
+            Transform child = display.GetChild(i);
+            Image childImage = child.GetComponent<Image>();
 
-            playerImageList.Add(child.GetComponent<Image>());
+            child.gameObject.SetActive(true);
 
-            child.GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_notready");
+            playerImageList.Add(childImage);
+
+            if(i < playerCount)
+            {
+                childImage.sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_notready");
+            }
+            else
+            {
+                childImage.sprite = Resources.Load<Sprite>($"ReadySprites/0_notready"); ;
+                childImage.color = new Color(0, 0, 0, 0.5f);
+            }
+
         }
-        readyButton.interactable = true;
 
+        readyButton.interactable = true;
         readyButton.onClick.AddListener(OnReadyButtonClicked);
     }
 
     //si le das es true siempre no puedes decir no ready
     void OnReadyButtonClicked()
     {
-        Hashtable playerProps = new Hashtable();
-        playerProps[Constantes.PlayerKey_Ready_SMG] = true;
+        Hashtable playerProps = new Hashtable
+        {
+            [Constantes.PlayerKey_Ready_SMG] = true
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         readyButton.interactable = false;
@@ -69,6 +89,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
                 if(int.Parse(image.gameObject.name) == (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID] && isReady)
                 {
                     image.sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_ready"); ;
+                    image.transform.GetChild(0).gameObject.SetActive(true);
                     break;
                 }
             }

@@ -33,7 +33,7 @@ public class SE_PlayerController : MonoBehaviour
 
     [Header("Photon Stuff")]
     public GameObject Mark;
-    public TMP_Text nicknameText;
+    public GameObject Nickname;
     PhotonView photonView;
     TMP_InputField chat_inputField;
 
@@ -70,13 +70,13 @@ public class SE_PlayerController : MonoBehaviour
     private void Start()
     {
         Mark.SetActive(photonView.IsMine);
+        Nickname.SetActive(!photonView.IsMine);
 
         nearGroundDist = rayDetectFloorDist * jumpForce;
 
         if (!photonView.IsMine)
         {
-            GetComponentInChildren<Canvas>().transform.Find("NicknameHolder").gameObject.SetActive(true);
-            nicknameText.text = photonView.Controller.NickName;
+            Nickname.GetComponentInChildren<TMP_Text>(true).text = photonView.Controller.NickName;
         }
 
     }

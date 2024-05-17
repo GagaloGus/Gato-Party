@@ -215,6 +215,8 @@ public class MGLast_Manager : MonoBehaviour
     [PunRPC]
     void RPC_FinishedGame()
     {
+        gameObject.SendMessage("FinishMinigame");
+
         Player[] currentPlayers = PhotonNetwork.CurrentRoom.Players.Select(x => x.Value).ToArray();
         string results = $"<color=yellow>Ranking:</color>\n";
 
@@ -237,11 +239,6 @@ public class MGLast_Manager : MonoBehaviour
 
         rankingText.SetActive(true);
         rankingText.GetComponent<TMP_Text>().text = results;
-
-        CoolFunctions.Invoke(this, () =>
-        {
-            PhotonNetwork.LoadLevel("Puntuacion");
-        }, 4);
     }
 
 

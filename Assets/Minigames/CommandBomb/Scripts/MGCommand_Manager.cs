@@ -231,6 +231,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_FinishedGame()
     {
+        gameObject.SendMessage("FinishMinigame");
+
         Debug.Log($"PLAYER {(turnCount % PhotonNetwork.CurrentRoom.PlayerCount) + 1} WINS!!!!");
 
         //Le da la puntuacion mas alta al jugador que no quedo eliminado
@@ -250,11 +252,6 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
                 }
             }
         }
-
-        CoolFunctions.Invoke(this, () =>
-        {
-            PhotonNetwork.LoadLevel("Puntuacion");
-        }, 1.5f);
     }
 
 

@@ -9,38 +9,37 @@ using UnityEngine.UI;
 public class MGFindItem_PlayerScores : MonoBehaviour
 {
     public Transform PlayerList;
-    List<int> playerSkinIDs;
+    [SerializeField] List<int> playerSkinIDs;
 
-    List<int> playerScores = new List<int>(); 
+    [SerializeField] List<int> playerScores = new List<int>(); 
     // Start is called before the first frame update
     void Start()
     {
         playerScores.Clear();
 
         playerSkinIDs = CoolFunctions.GetAllPlayerSkinIDs();
-
-        foreach(Transform child in PlayerList) { child.gameObject.SetActive(false); }
     }
 
     void Setup()
     {
-        CoolFunctions.LoadAllTexturePacks<MGFindItem_PlayerController>();
-
         int playerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.AmountPlayers_Room];
+        List<Player> playerList = CoolFunctions.GetPlayerListOrdered();
 
-
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < PlayerList.childCount; i++)
         {
             Transform child = PlayerList.transform.GetChild(i);
 
-            child.Find("Score").GetComponent<TMP_Text>().text = 0.ToString("00");
-            child.Find("Sprite").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinIDs[i]}_notready");
-            child.Find("Name").GetComponent<TMP_Text>().text = PhotonNetwork.CurrentRoom.Players[i].NickName;
+            child.gameObject.SetActive(i < playerCount);
 
-            playerScores.Add(0);
+            if (i < playerCount)
+            {
+                Debug.Log($"Added thing <color=blue>hsghxb</color> {i} / {playerCount}");
+                child.Find("Score").GetComponent<TMP_Text>().text = 0.ToString("00");
+                child.Find("Sprite").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinIDs[i]}_notready");
 
-            child.gameObject.SetActive(true);
-
+                child.Find("Name").GetComponent<TMP_Text>().text = playerList[i].NickName;
+                playerScores.Add(0);
+            }
         }
     }
 

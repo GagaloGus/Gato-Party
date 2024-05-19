@@ -9,8 +9,9 @@ using UnityEngine;
 public class FinalScoreAnimation : MonoBehaviour
 {
     [Header("Player Objects")]
-    [SerializeField] List<GameObject> PlayerObjects;
-    [SerializeField] List<GameObject> Boxes;
+    public List<GameObject> PlayerObjects;
+    public List<GameObject> Boxes;
+    [SerializeField] List<Vector3> Positions;
 
     [Header("UI Objects")]
     public GameObject Rankings;
@@ -24,13 +25,17 @@ public class FinalScoreAnimation : MonoBehaviour
         CanvasAnimator = FindObjectOfType<BasicButtonFunctions>().GetComponent<Animator>();
         CanvasAnimator.speed = 0;
 
-        Rankings.SetActive(false);
-
         StartCoroutine(nameof(AnimationTimeLine));
 
         for (int i = 0; i < PlayerObjects.Count; i++)
         {
             PlayerObjects[i].GetComponent<FinalScore_PlayerAnimator>().order = 4 - i;
+        }
+
+        Positions.Clear();
+        foreach(GameObject obj in Boxes) 
+        {
+            Positions.Add(obj.transform.position);
         }
     }
 
@@ -47,25 +52,18 @@ public class FinalScoreAnimation : MonoBehaviour
 
         //Recorre solo los 3 primeros players
         //Van cayendo poco a poco en orden inverso
-        for (int i = 3; i >= 1; i--)
+        for(int i = 3; i >= 0; i--)
         {
-            Boxes[i].SetActive(false);
-            print($"Cae el player {i + 1}");
+            //Espera un poco mas si es el primer player
+            yield return new WaitForSeconds((i == 0 ? 1.5f : 1));
 
-            yield return new WaitForSeconds(1f);
+            PlayerObjects[i].transform.position = Positions[i];
+            print($"Cae el player {i}");
         }
 
-        //Espera un poco y cae el primer player
-        yield return new WaitForSeconds(0.5f);
-        Boxes[0].SetActive(false);
-        print($"Cae el player {1}");
-
-        //Mostrar la UI de la puntuacion
-        yield return new WaitForSeconds(2.5f);
+        //Mostrar la UI
+        yield return new WaitForSeconds(3f);
         UpdateScoreUI();
-        Rankings.SetActive(true);
-
-        yield return new WaitForSeconds(1f);
         CanvasAnimator.speed = 1f;
     }
 

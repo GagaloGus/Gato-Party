@@ -76,7 +76,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         // Verificar si todos los jugadores en la sala están listos
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if (!(bool)player.CustomProperties[Constantes.PlayerKey_Ready_SMG])
+            if (!(player.CustomProperties.ContainsKey(Constantes.PlayerKey_Ready_SMG) && (bool)player.CustomProperties[Constantes.PlayerKey_Ready_SMG]))
             {
                 return false;
             }
@@ -131,7 +131,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
     System.Collections.IEnumerator FadeInOutBlack(bool fadeIn)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.7f);
 
         CanvasGroup patata = BlackScreen.GetComponent<CanvasGroup>();
         if (fadeIn)

@@ -102,6 +102,14 @@ public static class CoolFunctions
         return false;
     }
 
+    public static List<Player> GetPlayerListOrdered()
+    {
+        List<Player> randomlist = PhotonNetwork.CurrentRoom.Players.Select(x => x.Value).ToList();
+        List<Player> orderedlist = randomlist.OrderBy(player => (int)player.CustomProperties[Constantes.PlayerKey_CustomID]).ToList();
+
+        return orderedlist;
+    }
+
     //Seguramente habra que cambiarlo para que tambien devuelva players, por ahora funciona
     public static List<int> GetAllPlayerSkinIDs()
     {

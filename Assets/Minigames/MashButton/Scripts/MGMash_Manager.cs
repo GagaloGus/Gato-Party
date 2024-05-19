@@ -14,15 +14,14 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
     [Header("Timer")]
     public GameObject Timer;
-    public int maxTime;
-    float currentTime;
-    public float interval;
+    public int maxTime, currentTime, interval;
 
     Dictionary<Player, int> resultPlayerlist = new();
 
     public Color[] aireColors;
     PhotonView photonView;
     GameObject player;
+    DigitalTimerDisplay timerDisplay;
 
     // Start is called before the first frame update
     void Start() 
@@ -32,6 +31,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
         Timer.SetActive(false);
 
         player = FindObjectOfType<AssignObjectToPlayer>().AssignObject();
+        timerDisplay = FindObjectOfType<DigitalTimerDisplay>(true);
 
         for(int i = 0; i < Mathf.Min(PlayerObjects.Count, aireColors.Length); i++)
         {
@@ -104,7 +104,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void RPC_StartCountdown(int maxTime, float interval)
+    void RPC_StartCountdown(int maxTime, int interval)
     {
         currentTime = maxTime;
         this.maxTime = maxTime;
@@ -118,7 +118,7 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
     void Countdown()
     {
         currentTime -= interval;
-        Timer.GetComponentInChildren<TMP_Text>().text = currentTime.ToString("00");
+        timerDisplay.ChangeNumber(currentTime);
 
         if(currentTime <= 0)
         {

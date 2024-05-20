@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,6 +61,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         }
 
         readyButton.interactable = true;
+        readyButton.GetComponentInChildren<TMP_Text>().text = "Ready?";
         readyButton.onClick.AddListener(OnReadyButtonClicked);
     }
 
@@ -73,6 +75,7 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         readyButton.interactable = false;
+        readyButton.GetComponentInChildren<TMP_Text>().text = "Ready!";
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)

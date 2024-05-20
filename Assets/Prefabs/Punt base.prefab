@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 3601000613780813902}
   - component: {fileID: 6286724871227349523}
   m_Layer: 5
-  m_Name: Punt Find
+  m_Name: Punt base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

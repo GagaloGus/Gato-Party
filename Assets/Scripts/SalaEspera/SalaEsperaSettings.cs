@@ -84,7 +84,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         }
 
         //Actualiza si el boton de empezar el juego es interactuable si somos el ADMIN y todos estan listos y hay mas de una persona en la sala
-        startGameButton.interactable = PhotonNetwork.IsMasterClient && AllPlayersReady() && PhotonNetwork.CurrentRoom.PlayerCount > 1;
+        startGameButton.interactable = PhotonNetwork.IsMasterClient && AllPlayersReady() /*&& PhotonNetwork.CurrentRoom.PlayerCount > 1*/;
     }
 
     bool AllPlayersReady()

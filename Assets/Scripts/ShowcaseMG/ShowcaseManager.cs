@@ -131,7 +131,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
     System.Collections.IEnumerator FadeInOutBlack(bool fadeIn)
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.3f);
 
         CanvasGroup patata = BlackScreen.GetComponent<CanvasGroup>();
         if (fadeIn)
@@ -147,6 +147,8 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            yield return new WaitForSeconds(1.5f);
+
             patata.alpha = 1;
             BlackScreen.SetActive(true);
             for (float i = 0; i <= 1; i += 0.1f)

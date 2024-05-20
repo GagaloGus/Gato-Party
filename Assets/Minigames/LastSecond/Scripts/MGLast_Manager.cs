@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MGLast_Manager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class MGLast_Manager : MonoBehaviour
     PhotonView photonView;
 
     [Header("UI")]
-    public GameObject rankingText;
+    public Transform Rankings;
 
     private void Awake()
     {
@@ -49,7 +50,7 @@ public class MGLast_Manager : MonoBehaviour
         FindObjectOfType<AssignObjectToPlayer>().AssignObject(PlayerObjects);
 
         gameStarted = false;
-        rankingText.SetActive(false);
+        Rankings.gameObject.SetActive(false);
     }
 
     void Setup()
@@ -60,15 +61,13 @@ public class MGLast_Manager : MonoBehaviour
         for (int i = 0; i < PlayerObjects.Count; i++)
         {
             Bonks[i].SetActive(i < PhotonNetwork.CurrentRoom.PlayerCount);
-
-
             PlayerObjects[i].GetComponent<MGLast_PlayerController>().LookUp();
         }
 
         if (PhotonNetwork.IsMasterClient)
         {
             int[] randomFruits = new int[Bonks.Count];
-            for (int i = 0; i < randomFruits.Length; i++) { randomFruits[i] = Random.Range(0, Bonks.Count); }
+            for (int i = 0; i < randomFruits.Length; i++) { randomFruits[i] = Random.Range(0, Bonks[0].transform.Find("Fruits").childCount); }
 
             photonView.RPC(nameof(RPC_Setup), RpcTarget.All, randomFruits);
         }
@@ -215,10 +214,9 @@ public class MGLast_Manager : MonoBehaviour
     [PunRPC]
     void RPC_FinishedGame()
     {
-        gameObject.SendMessage("FinishMinigame");
 
         Player[] currentPlayers = PhotonNetwork.CurrentRoom.Players.Select(x => x.Value).ToArray();
-        string results = $"<color=yellow>Ranking:</color>\n";
+        List<string> results = new();
 
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
@@ -228,17 +226,41 @@ public class MGLast_Manager : MonoBehaviour
 
             if ((bool)currentPlayer.CustomProperties[Constantes.PlayerKey_Eliminated])
             {
-                results += $"{currentPlayer.NickName} -> ------\n";
+                results.Add("---");
             }
             else
             {
-                results += $"{currentPlayer.NickName} -> {score}m\n";
+                results.Add(score.ToString("000"));
                 
             }
         }
 
-        rankingText.SetActive(true);
-        rankingText.GetComponent<TMP_Text>().text = results;
+        UpdateRankingUI(results);
+        Rankings.gameObject.SetActive(true);
+
+        CoolFunctions.Invoke(this, () => { gameObject.SendMessage("FinishMinigame"); }, 1);
+    }
+
+    void UpdateRankingUI(List<string> results)
+    {
+        int playerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[Constantes.AmountPlayers_Room];
+        List<Player> playerList = CoolFunctions.GetPlayerListOrdered();
+
+        for (int i = 0; i < Rankings.childCount; i++)
+        {
+            Transform child = Rankings.GetChild(i);
+
+            child.gameObject.SetActive(i < playerCount);
+
+            if (i < playerCount)
+            {
+                int skinID = (int)playerList[i].CustomProperties[Constantes.PlayerKey_Skin];
+
+                child.Find("Score").GetComponent<TMP_Text>().text = $"{results[i]}m";
+                child.Find("Sprite").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{skinID}_notready");
+                child.Find("Name").GetComponent<TMP_Text>().text = playerList[i].NickName;
+            }
+        }
     }
 
 

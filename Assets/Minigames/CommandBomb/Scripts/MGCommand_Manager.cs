@@ -102,7 +102,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             //Si el turno corresponde con el ID del player
             if ((int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] == turnCount)
             {
-                StartCoroutine(nameof(Round));
+                StartCoroutine(Round());
             }
         }, 1);
     }

@@ -815,6 +815,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MashB_Player_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4007948878575381204, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
+      propertyPath: Mark
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007948878575381204, guid: 9450636f5b0080445ad5b4ff6b9da515, type: 3}
+      propertyPath: nicknameHolder
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

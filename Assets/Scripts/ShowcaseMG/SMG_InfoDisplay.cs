@@ -39,6 +39,5 @@ public class SMG_InfoDisplay : MonoBehaviour
         }
 
         Buttons.GetComponent<Image>().sprite = info_buttonSprites[index];
-        Debug.Log($"Panel {index} toggled!");
     }
 }

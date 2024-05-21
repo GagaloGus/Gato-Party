@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115b90cd64bced14db10b6f60791eb86, type: 3}
+  m_Name: MG_FindItem
+  m_EditorClassIdentifier: 
+  Name: Find the item
+  Icon: {fileID: 21300000, guid: df44a6f7b7ec6f54b80c9d3b15138f26, type: 3}
+  Description: Hay latas escondidas en algunos cofres, el que encuentre mas gana
+    !!
+  HowToPlay: Click on the different chests
+  DisplayImages:
+  - {fileID: 21300000, guid: 472cdfa5fd669ed41b8701f1a98e5513, type: 3}
+  - {fileID: 21300000, guid: 9f84ffc485abb5c488e8ad3a0a1afe05, type: 3}
+  - {fileID: 21300000, guid: 0f9223fb93b28514186c1789e107dcb6, type: 3}
+  - {fileID: 21300000, guid: 8962b36b3464f0a43aadda7a5a5577dc, type: 3}
+  MG_SceneName: MG_FindItem

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 115b90cd64bced14db10b6f60791eb86, type: 3}
-  m_Name: MG_FindItem
+  m_Name: MG_MashButton
   m_EditorClassIdentifier: 
-  Name: Find the item
-  Icon: {fileID: 21300000, guid: df44a6f7b7ec6f54b80c9d3b15138f26, type: 3}
-  Description: Hay latas escondidas en algunos cofres, el que encuentre mas gana
-    !!
-  HowToPlay: Click on the different chests
-  DisplayImage: {fileID: 21300000, guid: df44a6f7b7ec6f54b80c9d3b15138f26, type: 3}
-  MG_SceneName: MG_FindItem
+  Name: Mash Button
+  Icon: {fileID: 21300000, guid: 3c540444dc31fc147b481444f9f38a7a, type: 3}
+  Description: Mash the button!!!
+  HowToPlay: Mash <b>Space</b> as fast as possible
+  DisplayImages:
+  - {fileID: 21300000, guid: ccbfbbea6c025284587258e75d027533, type: 3}
+  MG_SceneName: MG_MashButton

@@ -89,8 +89,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         ToggleMenu(menuName);
 
-        if(menuName == LoadingScreen.name) { yield return new WaitForSeconds(0.5f); }
-
         cmCanvas.interactable = nmCanvas.interactable = true;
         cmCanvas.alpha = nmCanvas.alpha = 1;
 

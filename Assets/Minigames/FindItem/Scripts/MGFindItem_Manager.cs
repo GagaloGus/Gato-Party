@@ -143,8 +143,6 @@ public class MGFindItem_Manager : MonoBehaviour
         chosenChest = index;
         choseObject = true;
 
-        Debug.Log($"<color=red>{chosenChest} / {index}</color>");
-
         StartCoroutine(OpenChestMiniCinematic(index));
     }
 
@@ -221,7 +219,6 @@ public class MGFindItem_Manager : MonoBehaviour
     void RPC_FinishRound(int turn, int lataState)
     {
         turnCount = turn;
-        Debug.Log($"<color=cyan>{turnCount}</color>");
 
         switch (lataState)
         {

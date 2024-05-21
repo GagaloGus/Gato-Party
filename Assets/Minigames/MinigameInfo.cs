@@ -10,7 +10,7 @@ public class MinigameInfo : ScriptableObject
     public Sprite Icon;
     [TextArea(3,2)] public string Description;
     [TextArea(3, 2)] public string HowToPlay;
-    public Sprite DisplayImage;
+    public Sprite[] DisplayImages;
 
     [Header("Scene")]
     public string MG_SceneName;

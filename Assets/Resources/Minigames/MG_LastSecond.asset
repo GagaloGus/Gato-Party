@@ -17,5 +17,6 @@ MonoBehaviour:
   Description: Ayuda conchetumare
   HowToPlay: Press <b>Space</b> the latest possible without the fruit hitting your
     character's head
-  DisplayImage: {fileID: 21300000, guid: 6c3990fda4fc7734f8eb12c1994553c7, type: 3}
+  DisplayImages:
+  - {fileID: 21300000, guid: fec08cc89980b7f4bba667cad31ce75f, type: 3}
   MG_SceneName: MG_LastSecond

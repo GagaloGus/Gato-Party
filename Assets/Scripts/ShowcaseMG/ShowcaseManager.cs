@@ -10,11 +10,16 @@ using UnityEngine.SceneManagement;
 
 public class ShowcaseManager : MonoBehaviourPunCallbacks
 {
+    [Header("Display Settings")]
+    public float swapImageTime;
+
     [Header("Minigame info")]
     public TMP_Text Name;
     public TMP_Text Description;
     public TMP_Text HowToPlay;
-    public Image DisplayImage;
+    public Transform DisplayImage;
+    Transform Puntos;
+    Image Image1, Image2;
 
     [Header("References")]
     public GameObject BlackScreen;
@@ -29,6 +34,10 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         StartCoroutine(FadeInOutBlack(false));
+
+        Puntos = DisplayImage.Find("Puntos");
+        Image1 = DisplayImage.Find("Mask").Find("Image1").GetComponent<Image>();
+        Image2 = DisplayImage.Find("Mask").Find("Image2").GetComponent<Image>();
 
         currentMinigame = null;
 
@@ -68,7 +77,46 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         Name.text = minigameInfo.Name;
         Description.text = minigameInfo.Description;
         HowToPlay.text = minigameInfo.HowToPlay;
-        DisplayImage.sprite = minigameInfo.DisplayImage;
+
+        for (int i = 0; i < Puntos.childCount; i++)
+        {
+            Puntos.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+            Puntos.GetChild(i).gameObject.SetActive(i < minigameInfo.DisplayImages.Length); 
+        }
+
+        Image1.sprite = currentMinigame.DisplayImages[0];
+        Puntos.GetChild(0).GetComponent<Image>().color = Color.white;
+
+        StartCoroutine(SwapDisplayImages());
+    }
+
+    System.Collections.IEnumerator SwapDisplayImages()
+    {
+        if(currentMinigame.DisplayImages.Length > 1)
+        {
+            for (int i = 0; i < currentMinigame.DisplayImages.Length; i++)
+            {
+                yield return new WaitForSeconds(swapImageTime);
+
+                DisplayImage.GetComponent<Animator>().SetTrigger("swap");
+
+                int nextInt = (i == currentMinigame.DisplayImages.Length - 1 ? 0 : i + 1);
+
+                Image1.sprite = currentMinigame.DisplayImages[i];
+                foreach (Transform child in Puntos) { child.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f); }
+
+                Image2.sprite = currentMinigame.DisplayImages[nextInt];
+                Puntos.GetChild(nextInt).GetComponent<Image>().color = Color.white;
+
+            }
+
+            StartCoroutine(SwapDisplayImages());
+        }
+        else
+        {
+            Image1.sprite = currentMinigame.DisplayImages[0];
+            Puntos.gameObject.SetActive(false);
+        }
     }
 
     bool AllPlayersReady()
@@ -98,7 +146,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
             CoolFunctions.Invoke(this, () =>
             {
                 PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
-            }, 2);
+            }, 4);
         }
     }
 
@@ -131,11 +179,13 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
 
     System.Collections.IEnumerator FadeInOutBlack(bool fadeIn)
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.7f);
 
         CanvasGroup patata = BlackScreen.GetComponent<CanvasGroup>();
         if (fadeIn)
         {
+            yield return new WaitForSeconds(1f);
+
             patata.alpha = 0;
             BlackScreen.SetActive(true);       
             for(float i = 0; i <= 1; i += 0.1f)
@@ -147,8 +197,6 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            yield return new WaitForSeconds(1.5f);
-
             patata.alpha = 1;
             BlackScreen.SetActive(true);
             for (float i = 0; i <= 1; i += 0.1f)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MG_FindItem
   m_EditorClassIdentifier: 
   Name: Find the item
-  Icon: {fileID: 21300000, guid: df44a6f7b7ec6f54b80c9d3b15138f26, type: 3}
+  Icon: {fileID: 21300000, guid: a5414e104ab806440b5856123818f507, type: 3}
   Description: Hay latas escondidas en algunos cofres, el que encuentre mas gana
     !!
   HowToPlay: Click on the different chests

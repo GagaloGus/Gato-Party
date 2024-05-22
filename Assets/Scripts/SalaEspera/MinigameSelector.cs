@@ -15,12 +15,13 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
 
     [Header("References")]
     public GameObject minigameDisplay;
-    public GameObject loadingScreen;
+    public GameObject loadingScreen, BlackScreen;
 
     private void Start()
     {
         //Guarda todos los minijuegos en Resources
         minigames = Resources.LoadAll<MinigameInfo>($"Minigames").ToList();
+        BlackScreen.SetActive(false);
         minigameDisplay.SetActive(false);
 
         if(PhotonNetwork.IsMasterClient)
@@ -138,13 +139,14 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
 
         minigameDisplay.SetActive(true);
         content.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1);
+        StartCoroutine(LoadingTextPuntos());
+        yield return new WaitForSeconds(1.5f);
 
         content.gameObject.SetActive(true);
         for (int i  = 0; i < content.childCount; i++)
         {
             content.GetChild(i).gameObject.SetActive(i < minigames.Count);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.75f);
         }
         yield return new WaitForSeconds(2);
 
@@ -157,8 +159,35 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         }
 
         loadingScCanvas.alpha = 1;
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2.5f);
+
+        Image blackImage = BlackScreen.GetComponent<Image>();
+        blackImage.color = new Color(0, 0, 0, 0);
+        BlackScreen.SetActive(true);
+
+        for (float i = 0; i <= 1; i += 0.05f)
+        {
+            blackImage.color = new Color(0, 0, 0, i);
+            yield return null;
+        }
 
         PhotonNetwork.LoadLevel("ShowcaseMG");
+    }
+
+    System.Collections.IEnumerator LoadingTextPuntos()
+    {
+        TMP_Text loadingText = minigameDisplay.transform.Find("Title").GetComponent<TMP_Text>();
+
+        loadingText.text = "Loading game cartdriges";
+
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            loadingText.text += ".";
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(LoadingTextPuntos());
     }
 }

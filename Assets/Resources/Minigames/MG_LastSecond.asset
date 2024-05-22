@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MG_LastSecond
   m_EditorClassIdentifier: 
   Name: Watch Out!
-  Icon: {fileID: 21300000, guid: 6c3990fda4fc7734f8eb12c1994553c7, type: 3}
+  Icon: {fileID: 21300000, guid: fd81ec954892a2745abf75f69bb06e91, type: 3}
   Description: Ayuda conchetumare
   HowToPlay: Press <b>Space</b> the latest possible without the fruit hitting your
     character's head

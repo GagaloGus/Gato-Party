@@ -562,6 +562,7 @@ GameObject:
   - component: {fileID: 732992297}
   - component: {fileID: 732992296}
   - component: {fileID: 732992295}
+  - component: {fileID: 732992298}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -643,6 +644,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -14.849, y: 180, z: 0}
+--- !u!95 &732992298
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732992294}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 667913faa78b7a345af1db5a57cc98aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &748589551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,6 +1302,8 @@ MonoBehaviour:
   minMaxScore: {x: 500, y: 0}
   remainingPlayers: 0
   Rankings: {fileID: 2014050645}
+  suspenseTheme: {fileID: 8300000, guid: 2ebc9614f43e2174e8f34c00d9ac7428, type: 3}
+  mandoClickSound: {fileID: 8300000, guid: 6dbad5aa6de584548b2f03bb030c09a3, type: 3}
   ArrowSound: {fileID: 8300000, guid: 0070519b011a09f43bed4cb985749481, type: 3}
   BonkSound: {fileID: 8300000, guid: 29b6254918495fd4aa5e8e1ef833da26, type: 3}
 --- !u!114 &1161608281
@@ -1334,8 +1358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SetupObject: {fileID: 968977724}
-  maxTime: 3
-  currentTime: 0
   guideText: Press the Spacebar at the last second!
   minigameTheme: {fileID: 0}
 --- !u!1001 &1360493836
@@ -1892,6 +1914,7 @@ GameObject:
   - component: {fileID: 2014050645}
   - component: {fileID: 2014050646}
   - component: {fileID: 2014050647}
+  - component: {fileID: 2014050648}
   m_Layer: 5
   m_Name: Puntuacion
   m_TagString: Untagged
@@ -1969,6 +1992,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2014050648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014050644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2026fd40bc8ddb94391a2af1b1401683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2022595812
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
     [Header("Audios")]
     public AudioClip minigameTheme;
     AudioClip[] catSounds, catHurtSounds;
-    AudioClip count_idle, count_GO;
+    AudioClip count_idle, count_GO, finished;
 
     PhotonView photonView;
 
@@ -39,6 +39,7 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
 
         count_idle = Resources.Load<AudioClip>("Sounds/Countdown/count_idle");
         count_GO = Resources.Load<AudioClip>("Sounds/Countdown/count_GO");
+        finished = Resources.Load<AudioClip>("Sounds/Countdown/finished");
 
         catSounds = Resources.LoadAll<AudioClip>("Sounds/Gato/Meow");
         catHurtSounds = Resources.LoadAll<AudioClip>("Sounds/Gato/Hurt");
@@ -104,6 +105,7 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
     void FinishMinigame()
     {
         FinishScreen.SetActive(true);
+        AudioManager.instance.PlaySFX2D(finished);
 
         CoolFunctions.Invoke(this, () =>
         {

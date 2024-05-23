@@ -626,8 +626,8 @@ Rigidbody:
   m_GameObject: {fileID: 5412757126594415575}
   serializedVersion: 4
   m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 3
+  m_AngularDrag: 1.2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -652,9 +652,9 @@ ConstantForce:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5412757126594415575}
   m_Enabled: 1
-  m_Force: {x: 0, y: 300, z: 0}
+  m_Force: {x: 0, y: 0, z: 0}
   m_RelativeForce: {x: 0, y: 0, z: 0}
-  m_Torque: {x: 0, y: 0, z: 10}
+  m_Torque: {x: 0, y: 0, z: 2}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!95 &3389073094266672873
 Animator:

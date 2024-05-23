@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115b90cd64bced14db10b6f60791eb86, type: 3}
   m_Name: MG_LastSecond
   m_EditorClassIdentifier: 
-  Name: Watch Out!
+  Name: Last Second
   Icon: {fileID: 21300000, guid: fd81ec954892a2745abf75f69bb06e91, type: 3}
-  Description: Ayuda conchetumare
+  Description: Fruits are falling!!! what the <i>meow</i> !
   HowToPlay: Press <b>Space</b> the latest possible without the fruit hitting your
     character's head
   DisplayImages:

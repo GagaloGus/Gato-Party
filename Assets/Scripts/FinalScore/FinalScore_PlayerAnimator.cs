@@ -60,7 +60,7 @@ public class FinalScore_PlayerAnimator : MonoBehaviour
             playerState = PlayerStates.Idle;
         }
 
-        AudioManager.instance.PlaySFX3D(orderedSounds[order-1], transform.position);
+        AudioManager.instance.PlaySFX3D(orderedSounds[order-1], transform.position, 0.5f);
 
         // Se actualiza el estado del animador
         m_animator.SetInteger("player states", (int)playerState);

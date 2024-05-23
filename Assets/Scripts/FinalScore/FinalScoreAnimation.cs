@@ -16,6 +16,7 @@ public class FinalScoreAnimation : MonoBehaviour
 
     [Header("UI Objects")]
     public GameObject Rankings;
+    public GameObject Confetti;
     [SerializeField] Animator CanvasAnimator;
 
     List<Player> Players = new List<Player>();
@@ -28,6 +29,8 @@ public class FinalScoreAnimation : MonoBehaviour
     void Start()
     {
         AudioManager.instance.StopAmbientMusic();
+
+        Confetti.SetActive(false);
 
         CanvasAnimator = FindObjectOfType<BasicButtonFunctions>().GetComponent<Animator>();
         CanvasAnimator.speed = 0;
@@ -68,12 +71,13 @@ public class FinalScoreAnimation : MonoBehaviour
             yield return new WaitForSeconds((i == 0 ? 1.5f : 1));
 
             PlayerObjects[i].transform.position = Positions[i];
-            print($"Cae el player {i}");
         }
 
         yield return new WaitForSeconds(1.5f);
         AudioClip positionClip = Tingles[Mathf.Clamp(position, 0, Tingles.Length)];
+
         AudioManager.instance.PlaySFX2D(positionClip);
+        Confetti.SetActive(true);
         
         //Espera lo que dura el tingle
         yield return new WaitForSeconds(positionClip.length + 0.5f);

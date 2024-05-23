@@ -29,8 +29,8 @@ public class MGLast_Manager : MonoBehaviour
     public Transform Rankings;
 
     [Header("Audio")]
-    public AudioClip ArrowSound;
-    public AudioClip BonkSound;
+    public AudioClip suspenseTheme;
+    public AudioClip mandoClickSound ,ArrowSound, BonkSound;
 
     private void Awake()
     {
@@ -112,6 +112,9 @@ public class MGLast_Manager : MonoBehaviour
             PlayerObjects[i].GetComponent<MGLast_PlayerController>().StartGame();
             BonkPhysics(i, true);
         }
+
+        AudioManager.instance.ForcePlayAmbientMusic(suspenseTheme);
+        Camera.main.GetComponent<Animator>().SetTrigger("move");
     }
 
     // Update is called once per frame
@@ -160,7 +163,8 @@ public class MGLast_Manager : MonoBehaviour
             theBonk.GetComponent<Animator>().speed = 1;
             PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
 
-            AudioManager.instance.PlaySFX2D(ArrowSound);
+            AudioManager.instance.PlaySFX2D(mandoClickSound);
+            CoolFunctions.Invoke(this, () => { AudioManager.instance.PlaySFX2D(ArrowSound); }, 0.1f);
         }
 
         BonkPhysics(playerInt, false);
@@ -222,6 +226,7 @@ public class MGLast_Manager : MonoBehaviour
     [PunRPC]
     void RPC_FinishedGame()
     {
+        AudioManager.instance.StopAmbientMusic();
 
         Player[] currentPlayers = PhotonNetwork.CurrentRoom.Players.Select(x => x.Value).ToArray();
         List<string> results = new();

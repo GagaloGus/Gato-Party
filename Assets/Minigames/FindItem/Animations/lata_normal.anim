@@ -708,6 +708,20 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0
+    functionName: PlaySFX2D
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 45dc04bac969e374a96d60cdc6e5dd19, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.05
+    functionName: PlaySFX2D
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 34e42fc4902da1d47892f37ea9028166, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 4.05
     functionName: FinishedCutscene
     data: 

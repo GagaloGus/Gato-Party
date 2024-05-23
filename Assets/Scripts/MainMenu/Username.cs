@@ -9,7 +9,7 @@ using UnityEngine;
 public class Username : MonoBehaviour
 {
     public TMP_InputField inputField;
-    public TMP_Text myUsername;
+    public TMP_Text myUsername, myUsername2;
     public GameObject UsernamePanel;
 
     private void Start()
@@ -18,6 +18,7 @@ public class Username : MonoBehaviour
         {
             PhotonNetwork.NickName = PlayerPrefs.GetString("USERNAME");
             myUsername.text = PlayerPrefs.GetString("USERNAME");
+            myUsername2.text = $"Username: {PlayerPrefs.GetString("USERNAME")}";
             UsernamePanel.SetActive(false);
         }
         else
@@ -42,11 +43,12 @@ public class Username : MonoBehaviour
         }
         PhotonNetwork.NickName = newUsername;
         myUsername.text = newUsername;
+        myUsername2.text = $"Username: {newUsername}";
 
         PlayerPrefs.SetString("USERNAME", newUsername);
-        UsernamePanel.SetActive(false);
     }
 
+    //No funciona de momento
     bool CheckForDuplicateNicknames(string nick)
     {
         /*List<Player> playersInLobby = PhotonNetwork.PlayerList.ToList();

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField] string currentMenu;
+    public AudioClip menuTheme;
 
     [Header("Menus")]
     public GameObject StartMenu;
@@ -26,6 +27,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             ToggleMenu(StartMenu.name);
         }
+
+        if(menuTheme != null) 
+            AudioManager.instance.PlayAmbientMusic(menuTheme);
     }
 
     public void StartGame()
@@ -51,7 +55,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void ChangeMenu(string menuName)
     {
-        StartCoroutine(FadeInFadeOutMenu(menuName, () => { bool fart; }));
+        StartCoroutine(FadeInFadeOutMenu(menuName, () => { }));
     }
 
     void ToggleMenu(string menuName)
@@ -116,6 +120,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        AudioManager.instance.StopAmbientMusic();
         PhotonNetwork.LoadLevel("SalaEspera");
     }
 

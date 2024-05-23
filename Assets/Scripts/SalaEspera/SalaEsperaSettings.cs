@@ -9,6 +9,11 @@ using UnityEngine.SceneManagement;
 
 public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 {
+    [Header("Audio")]
+    public AudioClip playerEnter;
+    public AudioClip playerExit;
+    public AudioClip SalaTheme;
+
     [Header("References")]
     public GameObject playerList;
     public Button playerReadyButton;
@@ -52,6 +57,9 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         playerReadyButton.onClick.AddListener(OnReadyButtonClicked);
 
         errorMessage.SetActive(false);
+
+        if(SalaTheme != null)
+            AudioManager.instance.PlayAmbientMusic(SalaTheme);
     }
 
     void OnReadyButtonClicked()
@@ -104,12 +112,14 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         canvasChat.SendSystemMessage($"Player <color=yellow>{newPlayer.NickName}</color> entered the room!");
+        AudioManager.instance.PlaySFX2D(playerEnter);
         UpdatePlayerCount();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         canvasChat.SendSystemMessage($"Player <color=yellow>{otherPlayer.NickName}</color> left the room");
+        AudioManager.instance.PlaySFX2D(playerExit);
         UpdatePlayerCount();
     }
 

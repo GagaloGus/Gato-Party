@@ -12,6 +12,8 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
     List<Image> playerImageList = new List<Image>();
     List<int> playerSkinsIDs = new List<int>();
 
+    AudioClip[] catSounds;
+
     [Header("Button")]
     public Button readyButton;
 
@@ -63,6 +65,8 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         readyButton.interactable = true;
         readyButton.GetComponentInChildren<TMP_Text>().text = "Ready?";
         readyButton.onClick.AddListener(OnReadyButtonClicked);
+
+        catSounds = Resources.LoadAll<AudioClip>("Sounds/Gato/Meow");
     }
 
     //si le das es true siempre no puedes decir no ready
@@ -83,13 +87,16 @@ public class PlayerList_SMG : MonoBehaviourPunCallbacks
         if(changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG))
         {
             bool isReady = (bool)changedProps[Constantes.PlayerKey_Ready_SMG];
+            int playerID = (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID];
+
+            AudioManager.instance.PlaySFX2D(catSounds[playerID-1]);
 
             for (int i = 0; i < playerImageList.Count; i++)
             {
                 Image image = playerImageList[i];
 
                 //Si el ID del player es el mismo que el de su sprite
-                if(int.Parse(image.gameObject.name) == (int)targetPlayer.CustomProperties[Constantes.PlayerKey_CustomID] && isReady)
+                if(int.Parse(image.gameObject.name) == playerID && isReady)
                 {
                     image.sprite = Resources.Load<Sprite>($"ReadySprites/{playerSkinsIDs[i]}_ready"); ;
                     image.transform.GetChild(0).gameObject.SetActive(true);

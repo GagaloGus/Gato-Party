@@ -9,26 +9,12 @@ public class MGMash_PlayerController : MonoBehaviour
     public bool canMove;
     public int score;
     Animator m_animator;
-    KeyCode push;
-
-    [Header("Photon Stuff")]
-    public GameObject Mark;
-    public GameObject nicknameHolder;
-    PhotonView photonView;
 
     private void Awake()
     {
         score = 0;
         canMove = false;
-        photonView = GetComponent<PhotonView>();
         m_animator = transform.Find("3dmodel Sko").gameObject.GetComponent<Animator>();
-
-        push = PlayerKeybinds.push_mashMG;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        Mark.SetActive(photonView.IsMine);
     }
 
     // Update is called once per frame
@@ -39,13 +25,13 @@ public class MGMash_PlayerController : MonoBehaviour
         //Si nos podemos mover y somos el player
         if (canMove)
         {
-            if (Input.GetKeyDown(push))
+            if (Input.GetKeyDown(PlayerKeybinds.push_mashMG))
             {
                 m_animator.SetBool("push", true);
                 score++;
             }
 
-            if (Input.GetKeyUp(push))
+            if (Input.GetKeyUp(PlayerKeybinds.push_mashMG))
             {
                 m_animator.SetBool("push", false);
             }

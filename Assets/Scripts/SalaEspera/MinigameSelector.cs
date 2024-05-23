@@ -17,6 +17,9 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
     public GameObject minigameDisplay;
     public GameObject loadingScreen, BlackScreen;
 
+    [Header("Sonidos")]
+    public AudioClip popUpMinigame;
+
     private void Start()
     {
         //Guarda todos los minijuegos en Resources
@@ -143,9 +146,10 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1.5f);
 
         content.gameObject.SetActive(true);
-        for (int i  = 0; i < content.childCount; i++)
+        for (int i = 0; i < minigames.Count; i++)
         {
-            content.GetChild(i).gameObject.SetActive(i < minigames.Count);
+            content.GetChild(i).gameObject.SetActive(true);
+            AudioManager.instance.PlaySFX2D(popUpMinigame);
             yield return new WaitForSeconds(0.75f);
         }
         yield return new WaitForSeconds(2);
@@ -159,12 +163,11 @@ public class MinigameSelector : MonoBehaviourPunCallbacks
         }
 
         loadingScCanvas.alpha = 1;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
 
         Image blackImage = BlackScreen.GetComponent<Image>();
         blackImage.color = new Color(0, 0, 0, 0);
         BlackScreen.SetActive(true);
-
         for (float i = 0; i <= 1; i += 0.05f)
         {
             blackImage.color = new Color(0, 0, 0, i);

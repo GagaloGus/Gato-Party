@@ -26,8 +26,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     public float playerEliminatedReduceTime;
     public float roundCountReduceTime;
     public float minTime;
-
     float currentTime;
+
+    [Header("Audios")]
+    public AudioClip explosionSound;
+    public AudioClip keyCorrectSound, keyWrongSound, throwSound, recieveSound;
 
     [Header("Photon")]
     public int[] randomKeyOrder;
@@ -104,6 +107,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
             {
                 StartCoroutine(Round());
             }
+
+            AudioManager.instance.PlaySFX2D(recieveSound);
         }, 1);
     }
 
@@ -130,6 +135,9 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         if (currentTime < 0)
         {
             ExplosionSprite.SetActive(true);
+            AudioManager.instance.PlaySFX2D(explosionSound);
+            FindObjectOfType<WaitMinigameHandler>().PlayRandomHurtMeow();
+
             bombPrefab.transform.position = PlayerObjects[GetNextTurn()].transform.position + Vector3.up * 15;
             CancelInvoke(nameof(Countdown));
 
@@ -175,7 +183,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
             yield return new WaitUntil(() =>
             {
-                if (Input.anyKeyDown)
+                if (Input.anyKeyDown && !Input.GetKeyDown(PlayerKeybinds.openSettings))
                 {
                     if (Input.GetKeyDown(currentPair.KeyCode))
                     {
@@ -201,6 +209,8 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_ClickedKey(int i, bool correct)
     {
+        AudioManager.instance.PlaySFX2D(correct ? keyCorrectSound : keyWrongSound);
+
         if (correct)
         {
             KeyHolder.Find("Content").GetChild(i).gameObject.GetComponent<Image>().color = Color.gray;
@@ -229,7 +239,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void RPC_FinishedGame()
+    void RPC_FinishedGame() //Se termino el minijeugo
     {
         gameObject.SendMessage("FinishMinigame");
 
@@ -256,8 +266,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
 
     [PunRPC]
-    void RPC_Finished()
+    void RPC_Finished() //Cada vez que se termina una ronda
     {
+        FindObjectOfType<WaitMinigameHandler>().PlayRandomMeow();
+        AudioManager.instance.PlaySFX2D(throwSound);
+
         CancelInvoke(nameof(Countdown));
         KeyHolder.gameObject.SetActive(false);
         foreach (Transform child in KeyHolder.Find("Content"))

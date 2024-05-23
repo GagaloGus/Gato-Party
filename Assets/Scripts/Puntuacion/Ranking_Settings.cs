@@ -24,7 +24,11 @@ public class Ranking_Settings : MonoBehaviour
     List<Sprite> rankingNumberSprites = new List<Sprite>();
     [SerializeField] List<Vector3> PanelPositions = new List<Vector3>();
 
-    [SerializeField] List<PlayerPanelPair> playerPanelPairs = new List<PlayerPanelPair>(4);
+    List<PlayerPanelPair> playerPanelPairs = new List<PlayerPanelPair>(4);
+
+    [Header("Audios")]
+    public AudioClip victoryTheme;
+    public AudioClip drumrollSound, drumCymbalSound;
 
     private void Awake()
     {
@@ -54,6 +58,7 @@ public class Ranking_Settings : MonoBehaviour
             panel.gameObject.SetActive(false);
         }
 
+        AudioManager.instance.StopAmbientMusic();
         StartCoroutine(nameof(TimeLine));
     }
 
@@ -61,6 +66,8 @@ public class Ranking_Settings : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         yield return StartCoroutine(FadeInOutLoadingScreen(false));
+
+        AudioManager.instance.PlaySFX2D(drumrollSound);
         yield return new WaitForSeconds(1);
 
         //Actualiza la interfaz con el ranking de pt globales anterior al minijuego
@@ -79,6 +86,7 @@ public class Ranking_Settings : MonoBehaviour
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
             playerPanelPairs[i].Panel.SetActive(true);
+
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -149,11 +157,16 @@ public class Ranking_Settings : MonoBehaviour
             int position = NewRankListGlob.IndexOf(Array.Find(NewRankListGlob.ToArray(), x => x == playerPanelPairs[i].player));
             Debug.Log($"Mover <color=red>{i} -> {position}</color>");
             StartCoroutine(MovePanel(i, position));
-
         }
 
         UpdateUI();
         ChangeRankedNumbers(NewRankListGlob);
+
+        AudioManager.instance.ClearAudioList();
+        AudioManager.instance.PlaySFX2D(drumCymbalSound);
+
+        yield return new WaitForSeconds(1);
+        AudioManager.instance.ForcePlayAmbientMusic(victoryTheme);
 
         yield return new WaitForSeconds(2.5f);
 
@@ -181,7 +194,7 @@ public class Ranking_Settings : MonoBehaviour
 
             FindObjectOfType<Canvas>().GetComponent<Animator>().SetTrigger("next");
 
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(7);
 
             yield return StartCoroutine(FadeInOutLoadingScreen(true));
 
@@ -190,6 +203,7 @@ public class Ranking_Settings : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(5);
             SceneManager.LoadScene("FinalScores");
         }
     }

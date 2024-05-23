@@ -122,7 +122,6 @@ public class MGMash_Manager : MonoBehaviourPunCallbacks
 
         if(currentTime <= 0)
         {
-            Debug.Log("stopu");
             CancelInvoke(nameof(Countdown));
             if(PhotonNetwork.IsMasterClient)
             {

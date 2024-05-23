@@ -11,7 +11,8 @@ public class FinalScoreAnimation : MonoBehaviour
     [Header("Player Objects")]
     public List<GameObject> PlayerObjects;
     public List<GameObject> Boxes;
-    [SerializeField] List<Vector3> Positions;
+    List<Vector3> Positions = new List<Vector3>();
+    [SerializeField] int position;
 
     [Header("UI Objects")]
     public GameObject Rankings;
@@ -19,9 +20,15 @@ public class FinalScoreAnimation : MonoBehaviour
 
     List<Player> Players = new List<Player>();
 
+    [Header("Audio")]
+    public AudioClip Theme;
+    public AudioClip[] Tingles;
+
     // Start is called before the first frame update
     void Start()
     {
+        AudioManager.instance.StopAmbientMusic();
+
         CanvasAnimator = FindObjectOfType<BasicButtonFunctions>().GetComponent<Animator>();
         CanvasAnimator.speed = 0;
 
@@ -47,6 +54,9 @@ public class FinalScoreAnimation : MonoBehaviour
         //Ordena los players de mayor a menor por su puntuacion
         Players = GetPlayerFinalScoreSorted();
 
+        //Obtiene la posicion del jugador local
+        position = Players.IndexOf(PhotonNetwork.LocalPlayer);
+
         //Carga sus skins acorde a la lista ordenada
         LoadSkins();
 
@@ -61,8 +71,16 @@ public class FinalScoreAnimation : MonoBehaviour
             print($"Cae el player {i}");
         }
 
+        yield return new WaitForSeconds(1.5f);
+        AudioClip positionClip = Tingles[Mathf.Clamp(position, 0, Tingles.Length)];
+        AudioManager.instance.PlaySFX2D(positionClip);
+        
+        //Espera lo que dura el tingle
+        yield return new WaitForSeconds(positionClip.length + 0.5f);
+
+        AudioManager.instance.ClearAudioList();
+        AudioManager.instance.PlayAmbientMusic(Theme);
         //Mostrar la UI
-        yield return new WaitForSeconds(3f);
         UpdateScoreUI();
         CanvasAnimator.speed = 1f;
     }

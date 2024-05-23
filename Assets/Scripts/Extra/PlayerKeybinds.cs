@@ -9,6 +9,7 @@ public static class PlayerKeybinds
         run = KeyCode.LeftShift,
         openSkinMenu = KeyCode.E,
         push_mashMG = KeyCode.Space,
-        stop_lastSecMG = KeyCode.Space;
+        stop_lastSecMG = KeyCode.Space,
+        openSettings = KeyCode.Escape;
         
 }

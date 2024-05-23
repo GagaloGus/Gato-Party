@@ -15,6 +15,9 @@ public class CanvasChat : MonoBehaviourPunCallbacks
     public GameObject messagePrefab;
     public GameObject systemMessagePrefab;
 
+    [Header("Audios")]
+    public AudioClip messageRecievedSound;
+
     private void Update()
     {
         //No funciona
@@ -91,6 +94,8 @@ public class CanvasChat : MonoBehaviourPunCallbacks
         message.Find("Text").GetComponent<TMP_Text>().text = paramsMessage[0].ToString();
         message.Find("Info").Find("Nickname").GetComponent<TMP_Text>().text = paramsMessage[1].ToString();
         message.Find("Info").Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"ReadySprites/{paramsMessage[2]}_notready");
+
+        AudioManager.instance.PlaySFX2D(messageRecievedSound, 0.7f);
 
         CanvasUpdate();
     }

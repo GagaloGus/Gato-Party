@@ -28,6 +28,10 @@ public class MGLast_Manager : MonoBehaviour
     [Header("UI")]
     public Transform Rankings;
 
+    [Header("Audio")]
+    public AudioClip ArrowSound;
+    public AudioClip BonkSound;
+
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
@@ -148,11 +152,15 @@ public class MGLast_Manager : MonoBehaviour
             theBonk.transform.Find("Canvas").Find("Explosion").gameObject.SetActive(true);
             theBonk.transform.Find("Fruits").gameObject.SetActive(false);
             PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().Bonked();
+
+            AudioManager.instance.PlaySFX2D(BonkSound);
         }
         else
         {
             theBonk.GetComponent<Animator>().speed = 1;
             PlayerObjects[playerInt].GetComponent<MGLast_PlayerController>().PressedButton();
+
+            AudioManager.instance.PlaySFX2D(ArrowSound);
         }
 
         BonkPhysics(playerInt, false);

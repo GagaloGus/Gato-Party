@@ -15,20 +15,45 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
     int playerCount, maxPlayers;
 
     [Header("Countdown")]
-    public int maxTime = 3;
-    public int currentTime;
+    int maxTime = 3;
+    int currentTime;
 
     [Header("Setup")]
     public string guideText;
     List<Sprite> countdownSprites = new List<Sprite>();
 
+    [Header("Audios")]
+    public AudioClip minigameTheme;
+    AudioClip[] catSounds, catHurtSounds;
+    AudioClip count_idle, count_GO;
+
     PhotonView photonView;
 
     private void Awake()
     {
+        SetupObject.SetAsLastSibling();
+
         countdownSprites.Clear();
         countdownSprites.Add(Resources.Load<Sprite>("CountdownSprites/start"));
         for(int i = 1; i <= 3; i++) { countdownSprites.Add(Resources.Load<Sprite>($"CountdownSprites/{i}")); }
+
+        count_idle = Resources.Load<AudioClip>("Sounds/Countdown/count_idle");
+        count_GO = Resources.Load<AudioClip>("Sounds/Countdown/count_GO");
+
+        catSounds = Resources.LoadAll<AudioClip>("Sounds/Gato/Meow");
+        catHurtSounds = Resources.LoadAll<AudioClip>("Sounds/Gato/Hurt");
+    }
+
+    public void PlayRandomMeow()
+    {
+        int rnd = Random.Range(0, catSounds.Length);
+        AudioManager.instance.PlaySFX2D(catSounds[rnd]);
+    }
+
+    public void PlayRandomHurtMeow()
+    {
+        int rnd = Random.Range(0, catHurtSounds.Length);
+        AudioManager.instance.PlaySFX2D(catHurtSounds[rnd]);
     }
 
     // Start is called before the first frame update
@@ -63,6 +88,9 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
         GuideTextDisplay.GetComponentInChildren<TMP_Text>(true).text = guideText;
 
         StartCoroutine(nameof(FadeOutLoading));
+
+        if(minigameTheme != null)
+            AudioManager.instance.PlayAmbientMusic(minigameTheme);
 
         if(PhotonNetwork.IsMasterClient)
         {
@@ -119,8 +147,16 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
         {
             CancelInvoke(nameof(Countdown));
 
+            if(count_GO != null)
+                AudioManager.instance.PlaySFX2D(count_GO);
+
             if (PhotonNetwork.IsMasterClient)
                 CoolFunctions.Invoke(this, () => { photonView.RPC(nameof(RPC_StartMinigame), RpcTarget.All);}, 2);
+        }
+        else
+        {
+            if(count_idle != null)
+                AudioManager.instance.PlaySFX2D(count_idle);
         }
     }
 
@@ -135,5 +171,7 @@ public class WaitMinigameHandler : MonoBehaviourPunCallbacks
             yield return null;
         }
         canvasGroup.alpha = 0;
+
+        LoadingScreen.SetActive(false);
     }
 }

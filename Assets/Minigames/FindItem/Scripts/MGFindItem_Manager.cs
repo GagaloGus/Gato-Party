@@ -11,23 +11,26 @@ public class MGFindItem_Manager : MonoBehaviour
 {
     public Transform ObjetoParent;
     public Transform StartStairs;
-    [SerializeField] List<GameObject> ObjetosList = new();
-    [SerializeField] int turnCount;
-    [SerializeField] bool choseObject;
+    List<GameObject> ObjetosList = new();
+    int turnCount;
+    bool choseObject;
 
     public List<GameObject> PlayerObjects = new List<GameObject>();
 
     [Header("Lata managment")]
     public int normalLataAmount;
     public int goldenLataAmount;
-    public int nLata_Score, gLata_Score;
-    [SerializeField] int chosenChest;
+    int nLata_Score, gLata_Score;
+    int chosenChest;
+    bool[] isOpened;
 
     [Header("UI")]
     public TMP_Text LataNText;
     public TMP_Text LataGText;
 
-    [SerializeField] bool[] isOpened;
+    [Header("Audios")]
+    public AudioClip clickChestSound; 
+    public AudioClip myTurnSound, otherTurnSound;
 
     MGFindItem_Camera cam;
     MGFindItem_PlayerScores scoreScript;
@@ -39,6 +42,8 @@ public class MGFindItem_Manager : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         scoreScript = FindObjectOfType<MGFindItem_PlayerScores>();
         cam = FindObjectOfType<MGFindItem_Camera>();
+
+        nLata_Score = 1; gLata_Score = 3;
 
         FindObjectOfType<AssignObjectToPlayer>().AssignObject();
 
@@ -93,7 +98,11 @@ public class MGFindItem_Manager : MonoBehaviour
     [PunRPC]
     void RPC_NewRound(int turn)
     {
-        if ((int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] - 1 == turn)
+        bool myTurn = (int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] - 1 == turn;
+
+        AudioManager.instance.PlaySFX2D(myTurn ? myTurnSound : otherTurnSound);
+
+        if (myTurn)
         {
             StartCoroutine(Round());
         }
@@ -148,6 +157,8 @@ public class MGFindItem_Manager : MonoBehaviour
 
     System.Collections.IEnumerator OpenChestMiniCinematic(int index)
     {
+        AudioManager.instance.PlaySFX2D(clickChestSound);
+
         GameObject currentPlayer = PlayerObjects[turnCount];
         MGFindItem_PlayerController playerScript = currentPlayer.GetComponent<MGFindItem_PlayerController>();
         MGFindItem_Cofre cofreScript = ObjetosList[index].GetComponent<MGFindItem_Cofre>();

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DigitalTimerDisplay : MonoBehaviour
 {
     public Transform TimerDisplay;
+    public AudioClip tickAudio;
     Image Tens, Units;
 
     List<Sprite> numberSprites = new List<Sprite>();
@@ -30,5 +31,8 @@ public class DigitalTimerDisplay : MonoBehaviour
 
         Tens.sprite = numberSprites[tens];
         Units.sprite = numberSprites[units];
+
+        if(tickAudio != null)
+            AudioManager.instance.PlaySFX2D(tickAudio);
     }
 }

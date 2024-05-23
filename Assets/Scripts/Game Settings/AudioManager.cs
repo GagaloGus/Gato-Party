@@ -7,6 +7,11 @@ public class AudioManager : MonoBehaviour
     static public AudioManager instance;
     public List<AudioSource> activeAudioSources;
     public GameObjPool audioPool;
+    AudioSource ambientSource;
+
+    [Header("Volume")]
+    [Range(0, 1)] public float volumeMusic;
+    [Range(0, 1)]public float volumeSFX;
 
     void Awake()
     {
@@ -18,19 +23,33 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             activeAudioSources = new List<AudioSource>();
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         audioPool = transform.Find("GameObjPoolAudios").gameObject.GetComponent<GameObjPool>();
+        ambientSource = transform.Find("AmbientMusic").GetComponent<AudioSource>();
+
         AudioListener.volume = 1;
+    }
+
+    private void Update()
+    {
+        ambientSource.volume = volumeMusic;
+    }
+    public void SetMusicVolume(float volume)
+    {
+        volumeMusic = Mathf.Clamp01(volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        volumeSFX = Mathf.Clamp01(volume);
     }
 
     public void SetMasterVolume(float volume)
     {
-        AudioListener.volume = volume;
+        AudioListener.volume = Mathf.Clamp01(volume);
     }
 
-
-    //Volume: [0, 1]
     void PlaySFX(AudioClip clip, Vector3 position, bool audio3d, float volume = 1)
     {
         GameObject sourceObj = audioPool.GetFirstInactiveGameObject();
@@ -43,9 +62,11 @@ public class AudioManager : MonoBehaviour
         source.spatialBlend = ( audio3d ? 1 : 0 );
 
         source.clip = clip;
-        source.volume = volume * AudioListener.volume;
+        source.volume = volume * volumeSFX;
         source.Play();
         StartCoroutine(PlayAudio(source));
+
+        //Debug.Log($"Play SFX: {clip.name}, {(audio3d ? "3D" : "2D")}, {volume}");
     }
 
     public void PlaySFX2D(AudioClip clip, float volume = 1)
@@ -58,6 +79,71 @@ public class AudioManager : MonoBehaviour
         PlaySFX(clip, position, true,volume);    
     }
 
+    public void PlayAmbientMusic(AudioClip clip, float volume = 1)
+    {
+        StopCoroutine(nameof(FadeOutInAmbientMusic));
+
+        StartCoroutine(FadeOutInAmbientMusic(clip, volume));
+    }
+
+    public void StopAmbientMusic()
+    {
+        StartCoroutine(FadeOutAmbientMusic());
+    }
+
+    public void ForcePlayAmbientMusic(AudioClip clip, float volume = 1)
+    {
+        ambientSource.clip = clip;
+        ambientSource.volume = volume;
+        AudioListener.volume = 1;
+
+        ambientSource.Play();
+    }
+
+    IEnumerator FadeOutAmbientMusic()
+    {
+        float originalVolume = AudioListener.volume;
+
+        for (float i = originalVolume; i > 0; i -= 0.02f)
+        {
+            AudioListener.volume = i;
+            yield return null;
+        }
+
+        ambientSource.Stop();
+        AudioListener.volume = 1;
+    }
+
+    IEnumerator FadeOutInAmbientMusic(AudioClip clip, float volume = 1)
+    {
+        if(ambientSource.isPlaying)
+        {
+            float originalVolume = AudioListener.volume;
+
+            for (float i = originalVolume; i > 0; i -= 0.02f)
+            {
+                AudioListener.volume = i;
+                yield return null;
+            }
+
+            AudioListener.volume = 0;
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        ambientSource.clip = clip;
+        ambientSource.volume = volume * volumeMusic;
+        AudioListener.volume = 0;
+        ambientSource.Play();
+
+        for (float i = 0; i <= volume; i+= 0.02f)
+        {
+            AudioListener.volume = i;
+            yield return null;
+        }
+
+        AudioListener.volume = 1;
+    }
+
     public void PlayMusic(AudioClip clip, Vector3 position , float volume = 1)
     {
         GameObject sourceObj = audioPool.GetFirstInactiveGameObject();
@@ -68,7 +154,7 @@ public class AudioManager : MonoBehaviour
         activeAudioSources.Add(source);
 
         source.clip = clip;
-        source.volume = volume * AudioListener.volume;
+        source.volume = volume * volumeMusic;
         source.loop = true;
         source.Play();
         StartCoroutine(PlayAudio(source));
@@ -81,6 +167,10 @@ public class AudioManager : MonoBehaviour
             source.Stop();
             source.gameObject.SetActive(false);
         }
+
+        ambientSource.Stop();
+        StopAllCoroutines();
+        AudioListener.volume = 1;
         activeAudioSources.Clear();
     }
 

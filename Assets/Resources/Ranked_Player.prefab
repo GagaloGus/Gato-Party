@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6251499554506505221}
   - component: {fileID: 633838612113041092}
   - component: {fileID: 6417574422441294096}
+  - component: {fileID: 6104538842484872129}
   m_Layer: 0
   m_Name: Ranked_Player
   m_TagString: Player
@@ -79,6 +80,11 @@ MonoBehaviour:
   order: 0
   skinID: 0
   rayDetectFloorDist: 0.5
+  orderedSounds:
+  - {fileID: 8300000, guid: 4f3cb0b8b8712fc47980edacdf78f6c0, type: 3}
+  - {fileID: 8300000, guid: 534470838782be94c9152049bef19ad4, type: 3}
+  - {fileID: 8300000, guid: 29c91615b893d594a90e86a5cf3e3dbd, type: 3}
+  - {fileID: 8300000, guid: d2b60fd86785fde44b42a80bf532383c, type: 3}
   playerState: 0
 --- !u!75 &633838612113041092
 ConstantForce:
@@ -113,6 +119,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7408306, y: 0.8100978, z: 0.47}
   m_Center: {x: 0.00019797683, y: 0.28735262, z: 0.000000029802322}
+--- !u!114 &6104538842484872129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655780311901164889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2026fd40bc8ddb94391a2af1b1401683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2338613614177214415
 GameObject:
   m_ObjectHideFlags: 0

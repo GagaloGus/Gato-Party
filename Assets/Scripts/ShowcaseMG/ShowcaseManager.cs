@@ -18,11 +18,16 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
     public TMP_Text Description;
     public TMP_Text HowToPlay;
     public Transform DisplayImage;
+    public Image CartuchoImage;
     Transform Puntos;
     Image Image1, Image2;
 
     [Header("References")]
     public GameObject BlackScreen;
+
+    [Header("Audios")]
+    public AudioClip Theme;
+    
 
     MinigameInfo currentMinigame;
 
@@ -70,6 +75,9 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 print($"Minigame loaded {currentMG.Name}");
             }
         }
+
+        AudioManager.instance.ClearAudioList();
+        AudioManager.instance.PlayAmbientMusic(Theme);
     }
 
     void ShowMinigameInfo(MinigameInfo minigameInfo)
@@ -77,6 +85,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
         Name.text = minigameInfo.Name;
         Description.text = minigameInfo.Description;
         HowToPlay.text = minigameInfo.HowToPlay;
+        CartuchoImage.sprite = minigameInfo.Icon;
 
         for (int i = 0; i < Puntos.childCount; i++)
         {
@@ -135,18 +144,22 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         //Si estan los players ready
-        if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG) && AllPlayersReady())
+        if (changedProps.ContainsKey(Constantes.PlayerKey_Ready_SMG))
         {
-            //Si es el Master Client borra el minijuego de las propiedades de la room
-            if (PhotonNetwork.IsMasterClient)
-                EraseFirstMinigame();
-
-            StartCoroutine(FadeInOutBlack(true));
-
-            CoolFunctions.Invoke(this, () =>
+            if (AllPlayersReady())
             {
-                PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
-            }, 4);
+                //Si es el Master Client borra el minijuego de las propiedades de la room
+                if (PhotonNetwork.IsMasterClient)
+                    EraseFirstMinigame();
+
+                StartCoroutine(FadeInOutBlack(true));
+
+                CoolFunctions.Invoke(this, () =>
+                {
+                    PhotonNetwork.LoadLevel(currentMinigame.MG_SceneName);
+                }, 4);
+            }
+            
         }
     }
 
@@ -194,6 +207,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
                 yield return null;
             }
             patata.alpha = 1;
+            AudioManager.instance.StopAmbientMusic();
         }
         else
         {
@@ -206,6 +220,7 @@ public class ShowcaseManager : MonoBehaviourPunCallbacks
             }
             patata.alpha = 0;
             BlackScreen.SetActive(false);
+
         }
     }
 

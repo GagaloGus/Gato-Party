@@ -16,6 +16,9 @@ public class FinalScore_PlayerAnimator : MonoBehaviour
     [Range(0f, 2f)] public float rayDetectFloorDist;
     private bool hasTouchedGround;
 
+    [Header("Audios")]
+    public AudioClip[] orderedSounds;
+
     public enum PlayerStates { Idle, JumpDown, Fall, Victory }
     public PlayerStates playerState;
 
@@ -56,6 +59,8 @@ public class FinalScore_PlayerAnimator : MonoBehaviour
         {
             playerState = PlayerStates.Idle;
         }
+
+        AudioManager.instance.PlaySFX3D(orderedSounds[order-1], transform.position);
 
         // Se actualiza el estado del animador
         m_animator.SetInteger("player states", (int)playerState);

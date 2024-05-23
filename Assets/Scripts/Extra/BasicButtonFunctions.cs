@@ -26,4 +26,24 @@ public class BasicButtonFunctions : MonoBehaviourPunCallbacks
         //Al salir de la sala carga la escena del lobby
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        AudioManager.instance.PlaySFX2D(clip);
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        AudioManager.instance.SetMusicVolume(volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        AudioManager.instance.SetSFXVolume(volume);
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        AudioManager.instance.SetMasterVolume(volume);
+    }
 }

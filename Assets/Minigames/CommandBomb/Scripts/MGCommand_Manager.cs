@@ -49,12 +49,13 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
 
         ExplosionSprite.SetActive(false);
 
-        GameObject player = FindObjectOfType<AssignObjectToPlayer>().AssignObject(PlayerObjects);
+        FindObjectOfType<AssignObjectToPlayer>().AssignObject(PlayerObjects);
     }
 
     void Setup()
     {
         CoolFunctions.LoadAllTexturePacks<MGCommand_PlayerController>();
+        PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().IdleBomb();
 
         foreach (Transform child in KeyHolder.Find("Content"))
         {
@@ -77,10 +78,15 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     {
         //turnCount = turno anterior
         //turn = turno actual
-        Debug.Log($"Actual Turn:{turn} -> Object: {PlayerObjects[turn - 1].name} / Rounds: {roundCount}");
+        Debug.Log($"Last turn: {turnCount} / Actual Turn:{turn} -> Object: {PlayerObjects[turn - 1].name} / Rounds: {roundCount}");
 
         PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().ThrowBomb();
         PlayerObjects[turn - 1].GetComponent<MGCommand_PlayerController>().RecieveBomb();
+
+        //Da la vuelta a los jugadores si pasan la bomba hacia atras
+        bool throwBack = ThrowBack(turnCount, turn);
+        PlayerObjects[turnCount - 1].transform.localScale = new Vector3((throwBack ? -1 : 1), 1, 1);
+        PlayerObjects[turn - 1].transform.localScale = new Vector3((throwBack ? -1 : 1), 1, 1);
 
         roundCount++;
         turnCount = turn;
@@ -119,6 +125,7 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
         this.interval = interval;
 
         PlayerObjects[turnCount - 1].GetComponent<MGCommand_PlayerController>().IdleBomb();
+        PlayerObjects.ForEach(obj => obj.transform.localScale = Vector3.one);
 
         Debug.Log($"StartCountdown {this.maxTime}, {this.interval}");
         InvokeRepeating(nameof(Countdown), 0, interval);
@@ -320,6 +327,11 @@ public class MGCommand_Manager : MonoBehaviourPunCallbacks
     void ReduceMaxTime(float reduceAmount)
     {
         maxTime = Mathf.Clamp(maxTime-reduceAmount, minTime, Mathf.Infinity);
+    }
+
+    bool ThrowBack(int currentTurn, int nextTurn)
+    {
+        return (currentTurn == nextTurn + 1 || (currentTurn == PhotonNetwork.CurrentRoom.PlayerCount && nextTurn == 1));
     }
 }
 

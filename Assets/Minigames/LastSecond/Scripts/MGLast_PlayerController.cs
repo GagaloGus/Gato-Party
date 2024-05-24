@@ -9,7 +9,7 @@ public class MGLast_PlayerController : MonoBehaviour
 
     Animator m_animator;
 
-    private void Start()
+    private void Awake()
     {
         m_animator = GetComponentInChildren<Animator>();
     }

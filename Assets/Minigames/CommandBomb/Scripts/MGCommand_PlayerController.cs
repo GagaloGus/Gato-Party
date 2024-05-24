@@ -8,10 +8,9 @@ public class MGCommand_PlayerController : MonoBehaviour
     Animator m_animator;
     enum ThrowStates { Recieve, Idle, Throw}
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_animator = GetComponentInChildren<Animator>();
-        m_animator.SetInteger("state", -1);
     }
 
     public void RecieveBomb()

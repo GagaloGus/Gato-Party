@@ -895,8 +895,6 @@ MonoBehaviour:
   SetupObject: {fileID: 976210965}
   guideText: Press the keys in order to pass the bomb!
   minigameTheme: {fileID: 8300000, guid: 1aa070e722e112c44ac791b42fa07757, type: 3}
-  catSounds: []
-  catHurtSounds: []
 --- !u!1 &966569436
 GameObject:
   m_ObjectHideFlags: 0

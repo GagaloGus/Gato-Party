@@ -113,8 +113,9 @@ public class MGLast_Manager : MonoBehaviour
             BonkPhysics(i, true);
         }
 
+        Debug.Log("Move");
+        Camera.main.gameObject.GetComponent<Animator>().Play("move");
         AudioManager.instance.ForcePlayAmbientMusic(suspenseTheme);
-        Camera.main.GetComponent<Animator>().SetTrigger("move");
     }
 
     // Update is called once per frame
@@ -180,7 +181,8 @@ public class MGLast_Manager : MonoBehaviour
             if (remainingPlayers <= 0 && PhotonNetwork.IsMasterClient)
                 FinishGame();
         }, 1);
-        
+
+        if(remainingPlayers <= 0) { AudioManager.instance.StopAmbientMusic(); }     
     }
 
 
@@ -226,8 +228,6 @@ public class MGLast_Manager : MonoBehaviour
     [PunRPC]
     void RPC_FinishedGame()
     {
-        AudioManager.instance.StopAmbientMusic();
-
         Player[] currentPlayers = PhotonNetwork.CurrentRoom.Players.Select(x => x.Value).ToArray();
         List<string> results = new();
 

@@ -1535,10 +1535,10 @@ RectTransform:
   - {fileID: 585392391}
   m_Father: {fileID: 2000434612}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -269.8552}
+  m_SizeDelta: {x: 100, y: 87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &233375451
 CanvasRenderer:
@@ -1734,7 +1734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &267406089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7514,11 +7514,11 @@ MonoBehaviour:
       front: {fileID: 2800000, guid: f2983bdcb752e9b4f8e2a74aa46ec10b, type: 3}
       back: {fileID: 2800000, guid: 8577a29c5081e49488547f785960cb77, type: 3}
     - name: menuIdle_01
-      front: {fileID: 0}
-      back: {fileID: 0}
+      front: {fileID: 2800000, guid: f2983bdcb752e9b4f8e2a74aa46ec10b, type: 3}
+      back: {fileID: 2800000, guid: 8577a29c5081e49488547f785960cb77, type: 3}
     - name: menuIdle_02
-      front: {fileID: 0}
-      back: {fileID: 0}
+      front: {fileID: 2800000, guid: a57bcc69b1612ca458eaab628bc6912a, type: 3}
+      back: {fileID: 2800000, guid: bf1a131409348be4d9dd152d7f32cef8, type: 3}
   - skinName: 2
     texturePacks:
     - name: idle_01
@@ -7570,11 +7570,11 @@ MonoBehaviour:
       front: {fileID: 2800000, guid: faf83b34861c2c645bbf57eb379bd58c, type: 3}
       back: {fileID: 2800000, guid: 9eadc9744a67f974f9670288764f9986, type: 3}
     - name: menuIdle_01
-      front: {fileID: 0}
-      back: {fileID: 0}
+      front: {fileID: 2800000, guid: faf83b34861c2c645bbf57eb379bd58c, type: 3}
+      back: {fileID: 2800000, guid: 9eadc9744a67f974f9670288764f9986, type: 3}
     - name: menuIdle_02
-      front: {fileID: 0}
-      back: {fileID: 0}
+      front: {fileID: 2800000, guid: b28aa17b57c9b834ab8dfd49c48a0cb0, type: 3}
+      back: {fileID: 2800000, guid: 8106103af7157cb45887bc5cdb6fe2ec, type: 3}
   - skinName: 3
     texturePacks:
     - name: idle_01
@@ -7687,7 +7687,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 26}
-  m_SizeDelta: {x: 0, y: 539.7104}
+  m_SizeDelta: {x: 200, y: 539.7104}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2000434614
 MonoBehaviour:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Mash Button
   Icon: {fileID: 21300000, guid: f510b600e52b4fc4693abed9086168d0, type: 3}
-  Description: Mash the button!!!
+  Description: Press the thing as much as possible!
   HowToPlay: Mash <b>Space</b> as fast as possible
   DisplayImages:
   - {fileID: 21300000, guid: ccbfbbea6c025284587258e75d027533, type: 3}

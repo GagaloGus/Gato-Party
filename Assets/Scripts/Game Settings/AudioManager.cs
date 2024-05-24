@@ -116,10 +116,12 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FadeOutInAmbientMusic(AudioClip clip, float volume = 1)
     {
+        //Observa si se esta reproduciendo alguna cancion
         if(ambientSource.isPlaying)
         {
             float originalVolume = AudioListener.volume;
-
+            
+            //Baja el volumen gradualmente
             for (float i = originalVolume; i > 0; i -= 0.02f)
             {
                 AudioListener.volume = i;
@@ -129,12 +131,16 @@ public class AudioManager : MonoBehaviour
             AudioListener.volume = 0;
             yield return new WaitForSeconds(0.3f);
         }
+        
+        //Pone el volumen a 0 del AudioListener
+        AudioListener.volume = 0;
 
+        //Cambia de cancion
         ambientSource.clip = clip;
         ambientSource.volume = volume * volumeMusic;
-        AudioListener.volume = 0;
         ambientSource.Play();
 
+        //Sube el volumen gradualmente
         for (float i = 0; i <= volume; i+= 0.02f)
         {
             AudioListener.volume = i;
@@ -142,22 +148,6 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioListener.volume = 1;
-    }
-
-    public void PlayMusic(AudioClip clip, Vector3 position , float volume = 1)
-    {
-        GameObject sourceObj = audioPool.GetFirstInactiveGameObject();
-        sourceObj.SetActive(true);
-        sourceObj.transform.position = position;
-
-        AudioSource source = sourceObj.GetComponent<AudioSource>();
-        activeAudioSources.Add(source);
-
-        source.clip = clip;
-        source.volume = volume * volumeMusic;
-        source.loop = true;
-        source.Play();
-        StartCoroutine(PlayAudio(source));
     }
 
     public void ClearAudioList()

@@ -30,6 +30,8 @@ public class Ranking_Settings : MonoBehaviour
     public AudioClip victoryTheme;
     public AudioClip drumrollSound, drumCymbalSound;
 
+    bool toggleSameScoreSettings = false;
+
     private void Awake()
     {
         NextMinigamePanel.SetActive(false);
@@ -103,41 +105,49 @@ public class Ranking_Settings : MonoBehaviour
                 int currentWinPoints = (int)currentPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
                 int finalScore = currentWinPoints;
 
-                // Si hay puntuaciones repetidas
-                /*int amountOfPlayersSameMGScore = 1; // Incluir el currentPlayer
-                List<Player> playersWithSameScore = new List<Player> { currentPlayer };
-
-                for (int j = 0; j < RanklistMinigame.Count; j++)
+                if (toggleSameScoreSettings)
                 {
-                    if (j == i) continue;
+                    // Si hay puntuaciones repetidas
+                    int amountOfPlayersSameMGScore = 1; // Incluir el currentPlayer
+                    List<Player> playersWithSameScore = new List<Player> { currentPlayer };
 
-                    Player nextPlayer = RanklistMinigame[j];
-                    int nextWinPoints = (int)nextPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
-
-                    if (nextWinPoints == currentWinPoints)
+                    for (int j = 0; j < RanklistMinigame.Count; j++)
                     {
-                        amountOfPlayersSameMGScore++;
-                        playersWithSameScore.Add(nextPlayer);
+                        if (j == i) continue;
+
+                        Player nextPlayer = RanklistMinigame[j];
+                        int nextWinPoints = (int)nextPlayer.CustomProperties[Constantes.PlayerKey_TotalScore];
+
+                        if (nextWinPoints == currentWinPoints)
+                        {
+                            amountOfPlayersSameMGScore++;
+                            playersWithSameScore.Add(nextPlayer);
+                        }
                     }
-                }
 
 
-                if (amountOfPlayersSameMGScore > 1)
-                {
-                    int totalScore = 0;
-                    for (int k = 0; k < amountOfPlayersSameMGScore; k++)
+                    if (amountOfPlayersSameMGScore > 1)
                     {
-                        totalScore += Constantes.Win_Points[k];
+                        int totalScore = 0;
+                        for (int k = 0; k < amountOfPlayersSameMGScore; k++)
+                        {
+                            totalScore += Constantes.Win_Points[k];
+                        }
+                        int averageScore = Mathf.RoundToInt((float)totalScore / amountOfPlayersSameMGScore);
+
+                        finalScore += averageScore;
+
                     }
-                    int averageScore = Mathf.RoundToInt((float)totalScore / amountOfPlayersSameMGScore);
-
-                    finalScore += averageScore;
-
+                    else
+                    {
+                        finalScore += Constantes.Win_Points[i];
+                    }
                 }
                 else
                 {
-                }*/
-                finalScore += Constantes.Win_Points[i];
+                    finalScore += Constantes.Win_Points[i];
+                }
+                
 
                 Hashtable newPlayerProps = new Hashtable
                 {

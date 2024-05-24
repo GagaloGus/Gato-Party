@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Command Bomb
   Icon: {fileID: 21300000, guid: 531ffb2b1897ccc4388848ef59fe1b70, type: 3}
-  Description: 'Bomb is running! Press the correct buttons to give the bomb to another
-    player.
+  Description: 'The bomb is about to blow! Press the correct buttons to pass the
+    bomb to another player!
 
 
     The last player standing wins!'

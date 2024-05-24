@@ -127,6 +127,7 @@ public class MGFindItem_Manager : MonoBehaviour
                         if (hit.collider.gameObject == ObjetosList[i] && !isOpened[i])
                         {
                             chosenChest = i;
+                            choseObject = true;
                             return true;
                         }
                     }
@@ -206,20 +207,19 @@ public class MGFindItem_Manager : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    void RPC_FinishGame()
+
+    void FinishGame()
     {
         gameObject.SendMessage("FinishMinigame");
 
         CoolFunctions.Invoke(this, () =>
         {
             List<int> scores = scoreScript.getPlayerScores;
-
-            int ID = (int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID] - 1;
+            int ID = (int)PhotonNetwork.LocalPlayer.CustomProperties[Constantes.PlayerKey_CustomID];
 
             Hashtable playerP = new Hashtable
             {
-                [Constantes.PlayerKey_MinigameScore] = scores[ID]
+                [Constantes.PlayerKey_MinigameScore] = scores[ID - 1]
             };
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerP);
 
@@ -246,7 +246,7 @@ public class MGFindItem_Manager : MonoBehaviour
 
         if(AllOpened())
         {
-            RPC_FinishGame();
+            FinishGame();
             return;
         }
 

@@ -14,7 +14,7 @@ public class RoomHandler : MonoBehaviourPunCallbacks
 
     [Header("Create and Join Rooms")]
     public GameObject createRoomMenu;
-    TMP_InputField input_Create, input_Join;
+    TMP_InputField input_Create;
     TMP_Text MaxPlayersDisplay;
 
     [Header("Rooms")]
@@ -69,19 +69,6 @@ public class RoomHandler : MonoBehaviourPunCallbacks
         });
     }
 
-    public void JoinRoomInputText()
-    {
-        if (!string.IsNullOrEmpty(input_Join.text))
-        {
-            if (CoolFunctions.SearchRoomByName(input_Join.text, roomList))
-            {
-                PhotonNetwork.JoinRoom(input_Join.text);
-            }
-            else { Debug.LogWarning($"No se encontro ninguna room llamada: {input_Join.text}"); }
-        }
-        else { Debug.LogWarning("No se ha dado ningun input de cuarto"); }
-    }
-
     public void JoinRoomInList(string roomName)
     {
         Debug.Log($"Join room {roomName}");
@@ -92,7 +79,7 @@ public class RoomHandler : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRandomRoom();
     }
-
+     //boton de createroom
     public void ChangeMaxPlayers(bool sum)
     {
         maxPlayerCount = Mathf.Clamp(maxPlayerCount + (sum ? 1 : -1), minAndMaxPlayers.x, minAndMaxPlayers.y);

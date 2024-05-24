@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 {
@@ -44,8 +45,6 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        //Establece el is ready de la sala de espera a false al entrar, por si acaso
-
         UpdatePlayerCount();
         roomName.text = $"Room Name:\n{PhotonNetwork.CurrentRoom.Name}";
 
@@ -127,8 +126,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     {
         //Al cambiar de Master Client (o sea, que el Master Client se salio) se cierra la room
         errorMessage.SetActive(true);
-        errorMessage.GetComponentInChildren<TMP_Text>().text =
-            $"Master Client left the room";
+        errorMessage.GetComponentInChildren<TMP_Text>().text = $"Master Client left the room";
 
         //Hace la sala invisible para que nadie se una
         PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -136,10 +134,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
 
         //Los players no se muevan
         SE_PlayerController[] playerList = FindObjectsOfType<SE_PlayerController>();
-        foreach (SE_PlayerController player in playerList)
-        {
-            player.player_canMove = false;
-        }
+        playerList.ToList().ForEach(player => player.player_canMove = false );
 
         //Espera tantos segundos para salir de la room
         CoolFunctions.Invoke(this, () =>
@@ -149,11 +144,6 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     }
     public void ExitRoom()
     {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnLeftRoom()
-    {
         Hashtable playerProps = new Hashtable
         {
             [Constantes.PlayerKey_CustomID] = -1,
@@ -161,6 +151,11 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
         //Al salir de la sala carga la escena del lobby
         SceneManager.LoadScene("MainMenu");
     }

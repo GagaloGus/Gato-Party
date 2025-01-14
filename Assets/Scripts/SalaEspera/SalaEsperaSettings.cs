@@ -46,7 +46,7 @@ public class SalaEsperaSettings : MonoBehaviourPunCallbacks
     void Start()
     {
         UpdatePlayerCount();
-        roomName.text = $"Room Name:\n{PhotonNetwork.CurrentRoom.Name}";
+        roomName.text = $"{PhotonNetwork.CurrentRoom.Name}\n<size=30><color=white>{PhotonNetwork.LocalPlayer.NickName}'s room</size>";
 
         startGameButton.interactable = false;
 
